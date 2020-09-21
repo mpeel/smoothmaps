@@ -14,7 +14,7 @@
 import numpy as np
 import numba
 import healpy as hp
-from astrocode.fitspectrum.smoothmap import smoothmap, conv_nobs_variance_map
+from smoothmap import smoothmap, conv_nobs_variance_map
 import astropy.io.fits as fits
 import os
 from scipy import optimize

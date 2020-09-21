@@ -31,6 +31,8 @@ def noiserealisation(inputmap, numpixels):
 def precalc_C(Q, U, QU):
 	B = np.asarray([[Q,QU],[-QU,U]]).T
 	print(B)
+	print(np.linalg.eigvalsh(B))
+	print(np.min(np.linalg.eigvalsh(B)))
 	return np.linalg.cholesky(B)
 
 def noiserealisation_QU(C,inputmap_Q,inputmap_U):

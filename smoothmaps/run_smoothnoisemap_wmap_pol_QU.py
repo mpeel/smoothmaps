@@ -10,14 +10,14 @@ import matplotlib.pyplot as plt
 # Settings
 output_resolution = [60.0]#,120.0,240.0]
 output_nside = [512, 256, 128, 64, 32, 16, 8]
-numrealisations = 1000
+numrealisations = 10
 mapnumbers = [0,1,3,2] # II,QQ,UU,QU
 hdu=2 # WMAP stores the variance maps in the 2nd header
 units_out = 'mK' # MUST MATCH sigma_0 AND sigma_P UNITS BELOW
 
 # directory = '/Users/mpeel/Documents/maps/'
 directory = '/scratch1/mpeel/maps/'
-outdirectory = directory+"wmap9_tqu_noise_v0.6/"
+outdirectory = directory+"wmap9_tqu_noise_v0.6_TEST/"
 os.makedirs(outdirectory, exist_ok=True)
 # Read in the beams
 beamtf_K = np.loadtxt(directory+'wmap9/wmap_ampl_bl_K1_9yr_v5p1.txt',usecols=(1,))
@@ -32,7 +32,7 @@ for i in range(0,len(output_resolution)):
 
 	sigma_0 = 1.429 # mK
 	sigma_P = 1.435 # mK
-	smoothnoisemap(directory+'/wmap9/', outdirectory, str(output_resolution[i])+'smoothed_wmap9beam_22.8_512_2013_mKCMBunits', 'wmap_band_iqumap_r9_9yr_K_v5.fits',mapnumber=mapnumbers,numrealisations=numrealisations,fwhm=output_resolution[i],windowfunction=beamtf_K,sigma_0=sigma_0,sigma_P=sigma_P,nside=output_nside,hdu=hdu,do_intensity=True,do_polarisation=True,units_out=units_out)
+	smoothnoisemap(directory+'/wmap9/', outdirectory, str(output_resolution[i])+'smoothed_wmap9beam_22.8_512_2013_mKCMBunits', 'wmap_band_iqumap_r9_9yr_K_v5.fits',mapnumber=mapnumbers,numrealisations=numrealisations,fwhm=output_resolution[i],windowfunction=beamtf_K,sigma_0=sigma_0,sigma_P=sigma_P,nside=output_nside,hdu=hdu,do_intensity=False,do_polarisation=True,units_out=units_out)
 
 	sigma_0 = 1.466 # mK
 	sigma_P = 1.472 # mk

@@ -33,6 +33,7 @@ def precalc_C(Q, U, QU):
 	print(B)
 	print(np.linalg.eigvalsh(B))
 	print(np.min(np.linalg.eigvalsh(B)))
+	print(B[np.argmin(np.linalg.eigvalsh(B))])
 	return np.linalg.cholesky(B)
 
 def noiserealisation_QU(C,inputmap_Q,inputmap_U):

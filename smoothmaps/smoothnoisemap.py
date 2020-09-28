@@ -10,6 +10,7 @@
 # Mike Peel    05 Jun 2019    v0.4 Add taper, cope with cut sky maps
 # Mike Peel    28 Aug 2019    v0.5 Add taper_gauss, normalise, hdu
 # Mike Peel    21 Sep 2020    v0.6 Rewrite to use QU covariance matrix
+# Mike Peel    28 Sep 2020    v0.7 Correctly convert the WMAP Nobs maps into variance maps
 
 import numpy as np
 import numba
@@ -46,7 +47,7 @@ def noiserealisation_QU(C,inputmap_Q,inputmap_U):
 	return Q, U
 
 def smoothnoisemap(indir, outdir, runname, inputmap, mapnumber=[2], fwhm=0.0, numrealisations=10, sigma_0 = 0.0,sigma_P=0.0, nside=[512], windowfunction = [], rescale=1.0,usehealpixfits=False,taper=False,lmin_taper=350,lmax_taper=600,taper_gauss=False,taper_gauss_sigma=0.0,normalise=True,hdu=1, use_covariance=False, do_intensity=True, do_polarisation=False, units_out='mK'):
-	ver = "0.6"
+	ver = "0.7"
 
 	if (os.path.isfile(indir+"/"+runname+"_actualvariance.fits")):
 		print("You already have a file with the output name " + indir+"/"+runname+"_actualvariance.fits" + "! Not going to overwrite it. Move it, or set a new output filename, and try again!")
@@ -77,16 +78,21 @@ def smoothnoisemap(indir, outdir, runname, inputmap, mapnumber=[2], fwhm=0.0, nu
 	map_before = maps.copy()
 
 	# If we have Nobs maps, we need to do some preprocessing
+	if sigma_0 != 0.0 and do_intensity:
+		# Simply convert the intensity map
+		maps[mapnumber[0]] = conv_nobs_variance_map(maps[mapnumber[0]], sigma_0)
 	if sigma_P != 0.0:
+		# Combine the Nobs map into a set of 2x2 matricis
 		NobsArr = np.asarray([[maps[mapnumber[1]],maps[mapnumber[3]]],[maps[mapnumber[3]],maps[mapnumber[2]]]]).T
+		# Now use the inverse of the matrix, and rescale by sigma_P
 		cov = sigma_P * sigma_P * np.linalg.inv(NobsArr)
-		print(cov)
+		# print(cov)
+		# Now wrangle it back into the original arrays, now as variances rather than Nobs
 		cov = cov.T
-		print(np.shape(cov))
+		# print(np.shape(cov))
 		maps[mapnumber[1]] = cov[0,0]
 		maps[mapnumber[2]] = cov[0,0]
 		maps[mapnumber[3]] = cov[1,1]
-		exit()
 
 	noisemap = np.zeros((len(mapnumber),len(maps[0])))
 	# noisemap = maps.copy()
@@ -94,25 +100,25 @@ def smoothnoisemap(indir, outdir, runname, inputmap, mapnumber=[2], fwhm=0.0, nu
 	for mapnum in mapnumber:
 		if sigma_0 != 0.0:
 			# If we have a value for sigma_0, then we have an Nobs map and need to convert it.
-			if i > 0 and sigma_P != 0.0:
-				# Use the polarisation value
-				# Counts in the range -1<0<1 don't make much sense, so zero them (we'll catch the inf later)
-				mask = np.zeros(len(maps[mapnum]))
-				mask[maps[mapnum]<1.0] = 1.0
-				mask[maps[mapnum]<-1.0] = 0.0
-				maps[mapnum][mask==1.0] = 0.0
-				# Convert
-				maps[mapnum] = conv_nobs_variance_map(maps[mapnum], sigma_P)
-			else:
-				# Use the intensity value
-				maps[mapnum] = conv_nobs_variance_map(maps[mapnum], sigma_0)
+			# if i > 0 and sigma_P != 0.0:
+			# 	# Use the polarisation value
+			# 	# Counts in the range -1<0<1 don't make much sense, so zero them (we'll catch the inf later)
+			# 	mask = np.zeros(len(maps[mapnum]))
+			# 	mask[maps[mapnum]<1.0] = 1.0
+			# 	mask[maps[mapnum]<-1.0] = 0.0
+			# 	maps[mapnum][mask==1.0] = 0.0
+			# 	# Convert
+			# 	maps[mapnum] = conv_nobs_variance_map(maps[mapnum], sigma_P)
+			# else:
+			# 	# Use the intensity value
+			# 	maps[mapnum] = conv_nobs_variance_map(maps[mapnum], sigma_0)
 
 		# We want to sqrt it to get a noise rms map
 		noisemap[i] = np.sqrt(np.abs(maps[mapnum]))
 		# Needed for QU, shouldn't make any difference for the others.
 		noisemap[i][maps[mapnum]<0] *= -1.0
 		noisemap[i] = noisemap[i] * rescale
-		print(np.sum(noisemap[i]<0))
+		# print(np.sum(noisemap[i]<0))
 		noisemap[i][map_before[0] == hp.UNSEEN] = 0.0
 		noisemap[i][~np.isfinite(noisemap[i])] = 0.0
 

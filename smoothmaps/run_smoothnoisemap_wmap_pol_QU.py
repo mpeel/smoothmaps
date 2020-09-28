@@ -17,7 +17,7 @@ units_out = 'mK' # MUST MATCH sigma_0 AND sigma_P UNITS BELOW
 
 # directory = '/Users/mpeel/Documents/maps/'
 directory = '/scratch1/mpeel/maps/'
-outdirectory = directory+"wmap9_tqu_noise_v0.6_TEST/"
+outdirectory = directory+"wmap9_tqu_noise_v0.7_TEST/"
 os.makedirs(outdirectory, exist_ok=True)
 # Read in the beams
 beamtf_K = np.loadtxt(directory+'wmap9/wmap_ampl_bl_K1_9yr_v5p1.txt',usecols=(1,))

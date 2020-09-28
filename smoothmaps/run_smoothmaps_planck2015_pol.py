@@ -21,7 +21,8 @@ output_nside = [2048, 1024, 512, 256, 128, 64, 32, 16, 8]
 smoothvariance = False
 
 # directory = '/Users/mpeel/Documents/maps/'
-directory = '/scratch1/mpeel/maps/'
+# directory = '/scratch1/mpeel/maps/'
+directory = '/state/nas_cbassarc/mpeel/'
 outdirectory = directory+"planck2015_tqu_v1.4/"
 os.makedirs(outdirectory, exist_ok=True)
 

@@ -28,8 +28,9 @@ rescale = 1000.0 # Convert from K to mK - this is applied to the noise map
 units_out = 'mK' # Must match rescale!
 numres = len(output_resolution)
 # directory = '/Users/mpeel/Documents/maps/'
-directory = '/scratch1/mpeel/maps/'
-outdirectory = directory+"planck2020_tqu_noise_v0.6/"
+# directory = '/scratch1/mpeel/maps/'
+directory = '/state/nas_cbassarc/mpeel/'
+outdirectory = directory+"planck2020_tqu_noise_v0.7/"
 os.makedirs(outdirectory, exist_ok=True)
 
 # Read in the beams

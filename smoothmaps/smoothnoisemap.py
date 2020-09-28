@@ -79,8 +79,9 @@ def smoothnoisemap(indir, outdir, runname, inputmap, mapnumber=[2], fwhm=0.0, nu
 	# If we have Nobs maps, we need to do some preprocessing
 	if sigma_P != 0.0:
 		NobsArr = np.asarray([[maps[mapnumber[1]],maps[mapnumber[3]]],[maps[mapnumber[3]],maps[mapnumber[2]]]]).T
-		cov = sigma_P * sigma_P / NobsArr
+		cov = sigma_P * sigma_P * np.linalg.inv(NobsArr)
 		print(cov)
+		cov = cov.T
 		print(np.shape(cov))
 		maps[mapnumber[1]] = cov[0,0]
 		maps[mapnumber[2]] = cov[0,0]

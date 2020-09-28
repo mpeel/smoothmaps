@@ -91,8 +91,8 @@ def smoothnoisemap(indir, outdir, runname, inputmap, mapnumber=[2], fwhm=0.0, nu
 		cov = cov.T
 		# print(np.shape(cov))
 		maps[mapnumber[1]] = cov[0,0]
-		maps[mapnumber[2]] = cov[0,0]
-		maps[mapnumber[3]] = cov[1,1]
+		maps[mapnumber[2]] = cov[1,1]
+		maps[mapnumber[3]] = cov[0,1]
 
 	noisemap = np.zeros((len(mapnumber),len(maps[0])))
 	# noisemap = maps.copy()

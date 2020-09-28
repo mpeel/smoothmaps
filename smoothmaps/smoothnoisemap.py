@@ -33,11 +33,11 @@ def precalc_C(Q, U, QU):
 	B = np.asarray([[Q,QU],[QU,U]]).T
 	print(B)
 	# This is test code for finding the covariance array that has a problem
-	for arr in B:
-		print(arr)
-		print(np.linalg.eigvalsh(arr))
-		print(np.linalg.cholesky(arr))
-	# print(np.min(np.linalg.eigvalsh(B)))
+	# for arr in B:
+	# 	print(arr)
+	# 	print(np.linalg.eigvalsh(arr))
+	# 	print(np.linalg.cholesky(arr))
+	# # print(np.min(np.linalg.eigvalsh(B)))
 	# print(B[np.argmin(np.linalg.eigvalsh(B))])
 	return np.linalg.cholesky(B)
 

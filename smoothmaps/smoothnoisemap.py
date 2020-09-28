@@ -98,20 +98,20 @@ def smoothnoisemap(indir, outdir, runname, inputmap, mapnumber=[2], fwhm=0.0, nu
 	# noisemap = maps.copy()
 	i = 0
 	for mapnum in mapnumber:
-		if sigma_0 != 0.0:
-			# If we have a value for sigma_0, then we have an Nobs map and need to convert it.
-			# if i > 0 and sigma_P != 0.0:
-			# 	# Use the polarisation value
-			# 	# Counts in the range -1<0<1 don't make much sense, so zero them (we'll catch the inf later)
-			# 	mask = np.zeros(len(maps[mapnum]))
-			# 	mask[maps[mapnum]<1.0] = 1.0
-			# 	mask[maps[mapnum]<-1.0] = 0.0
-			# 	maps[mapnum][mask==1.0] = 0.0
-			# 	# Convert
-			# 	maps[mapnum] = conv_nobs_variance_map(maps[mapnum], sigma_P)
-			# else:
-			# 	# Use the intensity value
-			# 	maps[mapnum] = conv_nobs_variance_map(maps[mapnum], sigma_0)
+		# if sigma_0 != 0.0:
+		# 	# If we have a value for sigma_0, then we have an Nobs map and need to convert it.
+		# 	if i > 0 and sigma_P != 0.0:
+		# 		# Use the polarisation value
+		# 		# Counts in the range -1<0<1 don't make much sense, so zero them (we'll catch the inf later)
+		# 		mask = np.zeros(len(maps[mapnum]))
+		# 		mask[maps[mapnum]<1.0] = 1.0
+		# 		mask[maps[mapnum]<-1.0] = 0.0
+		# 		maps[mapnum][mask==1.0] = 0.0
+		# 		# Convert
+		# 		maps[mapnum] = conv_nobs_variance_map(maps[mapnum], sigma_P)
+		# 	else:
+		# 		# Use the intensity value
+		# 		maps[mapnum] = conv_nobs_variance_map(maps[mapnum], sigma_0)
 
 		# We want to sqrt it to get a noise rms map
 		noisemap[i] = np.sqrt(np.abs(maps[mapnum]))

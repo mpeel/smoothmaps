@@ -29,7 +29,7 @@ units_out = 'mK' # Must match rescale!
 numres = len(output_resolution)
 # directory = '/Users/mpeel/Documents/maps/'
 # directory = '/scratch1/mpeel/maps/'
-directory = '/state/nas_cbassarc/mpeel/'
+directory = '/share/nas_cbassarc/mpeel/'
 outdirectory = directory+"planck2015_tqu_noise_v0.6/"
 os.makedirs(outdirectory, exist_ok=True)
 

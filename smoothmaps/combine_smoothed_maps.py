@@ -26,13 +26,14 @@ def docombine(outfile, iqu_file, II_file, QQ_file, UU_file,comment=''):
 	bin_hdu.writeto(outfile)
 	return 0
 
-directory = '/scratch1/mpeel/maps/'
+# directory = '/scratch1/mpeel/maps/'
+directory = '/share/nas_cbassarc/mpeel/'
 output_nside = [2048, 1024, 512, 256, 128, 64, 32, 16, 8]
-comment = "Smoothed using Mike Peel's smoothmap.py v1.4 and smoothnoisemap.py v0.6"
+comment = "Smoothed using Mike Peel's smoothmap.py v1.4 and smoothnoisemap.py v0.7"
 # WMAP9
 mapdir = directory+'wmap9_tqu_v1.4'
-noisedir = directory+'wmap9_tqu_noise_v0.6'
-outdirectory = directory+"wmap9_tqu_v1.4_noise_v0.6/"
+noisedir = directory+'wmap9_tqu_noise_v0.7'
+outdirectory = directory+"wmap9_tqu_v1.4_noise_v0.7/"
 os.makedirs(outdirectory, exist_ok=True)
 
 for nside in output_nside:

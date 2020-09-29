@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 
 # Settings
 output_resolution = [60.0]#,120.0,240.0]
-output_nside = [512, 256, 128, 64, 32, 16, 8]
+output_nside = np.asarray([512, 256, 128, 64, 32, 16, 8])
 numrealisations = 1000
 mapnumbers = [0,1,3,2] # II,QQ,UU,QU
 hdu=2 # WMAP stores the variance maps in the 2nd header

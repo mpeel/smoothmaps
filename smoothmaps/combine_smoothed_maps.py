@@ -3,6 +3,7 @@
 import numpy as np
 import healpy as hp
 import os
+import astropy.io.fits as fits
 
 def docombine(outfile, iqu_file, II_file, QQ_file, UU_file,comment=''):
 	iqu,h = hp.read_map(iqu_file,field=None,h=True)

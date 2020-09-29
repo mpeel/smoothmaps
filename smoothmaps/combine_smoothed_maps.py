@@ -40,7 +40,7 @@ for nside in output_nside:
 	if nside <= 512:
 		namestrings = ['22.8_512_2013','33.0_512_2013','40.7_512_2013','60.7_512_2013','93.5_512_2013']
 		for namestr in namestrings:
-			docombine(outdir+str(nside)+'_60.0smoothed_wmap9beamNoise_'+namestr+'_mKCMBunits.fits',\
+			docombine(outdirectory+str(nside)+'_60.0smoothed_wmap9beamNoise_'+namestr+'_mKCMBunits.fits',\
 				mapdir+str(nside)+'_60.0smoothed_wmap9beam_'+namestr+'_mKCMBunits.fits',[0,1,2],\
 				noisedir+'60.00smoothed_wmap9beam_'+namestr+'_mKCMBunits_variance_'+str(nside)+'.fits',\
 				noisedir+'60.00smoothed_wmap9beam_'+namestr+'_mKCMBunits_variance_Q_'+str(nside)+'.fits',\

@@ -42,9 +42,9 @@ for nside in output_nside:
 		for namestr in namestrings:
 			docombine(outdirectory+str(nside)+'_60.0smoothed_wmap9beamNoise_'+namestr+'_mKCMBunits.fits',\
 				mapdir+str(nside)+'_60.0smoothed_wmap9beam_'+namestr+'_mKCMBunits.fits',\
-				noisedir+'60.00smoothed_wmap9beam_'+namestr+'_mKCMBunits_variance_'+str(nside)+'.fits',\
-				noisedir+'60.00smoothed_wmap9beam_'+namestr+'_mKCMBunits_variance_Q_'+str(nside)+'.fits',\
-				noisedir+'60.00smoothed_wmap9beam_'+namestr+'_mKCMBunits_variance_U_'+str(nside)+'.fits',comment=comment)
+				noisedir+'60.0smoothed_wmap9beam_'+namestr+'_mKCMBunits_variance_'+str(nside)+'.fits',\
+				noisedir+'60.0smoothed_wmap9beam_'+namestr+'_mKCMBunits_variance_Q_'+str(nside)+'.fits',\
+				noisedir+'60.0smoothed_wmap9beam_'+namestr+'_mKCMBunits_variance_U_'+str(nside)+'.fits',comment=comment)
 
 # Planck 2018
 # outdirectory = directory+"planck2018_tqu_v1.4_noise_v0.6/"

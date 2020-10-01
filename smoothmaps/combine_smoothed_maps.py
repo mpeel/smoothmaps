@@ -85,11 +85,14 @@ for nside in output_nside:
 	if nside <= 1024:
 		namestrings = ['28.4_1024_2015','44.1_1024_2015','70.4_2048_2015','100_2048_2015','143_2048_2015','217_2048_2015','353_2048_2015']
 		for namestr in namestrings:
-			docombine(outdirectory+str(nside)+'_60.0smoothed_PlanckR2fullbeamNoise_'+namestr+'_mKCMBunits.fits',\
-				mapdir+str(nside)+'_60.0smoothed_PlanckR2fullbeam_'+namestr+'_mKCMBunits.fits',\
-				noisedir+'60.0smoothed_PlanckR2fullbeam_'+namestr+'_mKCMBunits_variance_'+str(nside)+'.fits',\
-				noisedir+'60.0smoothed_PlanckR2fullbeam_'+namestr+'_mKCMBunits_variance_Q_'+str(nside)+'.fits',\
-				noisedir+'60.0smoothed_PlanckR2fullbeam_'+namestr+'_mKCMBunits_variance_U_'+str(nside)+'.fits',comment=comment)
+			try:
+				docombine(outdirectory+str(nside)+'_60.0smoothed_PlanckR2fullbeamNoise_'+namestr+'_mKCMBunits.fits',\
+					mapdir+str(nside)+'_60.0smoothed_PlanckR2fullbeam_'+namestr+'_mKCMBunits.fits',\
+					noisedir+'60.0smoothed_PlanckR2fullbeam_'+namestr+'_mKCMBunits_variance_'+str(nside)+'.fits',\
+					noisedir+'60.0smoothed_PlanckR2fullbeam_'+namestr+'_mKCMBunits_variance_Q_'+str(nside)+'.fits',\
+					noisedir+'60.0smoothed_PlanckR2fullbeam_'+namestr+'_mKCMBunits_variance_U_'+str(nside)+'.fits',comment=comment)
+			except:
+				continue
 
 # Planck 2018
 # outdirectory = directory+"planck2018_tqu_v1.4_noise_v0.6/"

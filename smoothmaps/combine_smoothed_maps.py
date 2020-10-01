@@ -5,6 +5,12 @@ import healpy as hp
 import os
 import astropy.io.fits as fits
 
+def get_header_val(hdr,search):
+	for i in range(0,len(hdr)):
+		if search in h[i][0]:
+			return h[i][1]
+	return ''
+
 def docombine(outfile, iqu_file, II_file, QQ_file, UU_file,comment=''):
 	iqu,h = hp.read_map(iqu_file,field=None,h=True)
 	ii,hii = hp.read_map(II_file,field=None,h=True)
@@ -24,13 +30,13 @@ def docombine(outfile, iqu_file, II_file, QQ_file, UU_file,comment=''):
 	bin_hdu.header['POLCONV']='COSMO'
 	bin_hdu.header['PIXTYPE']='HEALPIX'
 	bin_hdu.header['COMMENT']=comment
-	bin_hdu.header['NSIDE'] = h['NSIDE']
-	bin_hdu.header['TUNIT1'] = h['TUNIT1']
-	bin_hdu.header['TUNIT2'] = h['TUNIT2']
-	bin_hdu.header['TUNIT3'] = h['TUNIT3']
-	bin_hdu.header['TUNIT4'] = hii['TUNIT1']
-	bin_hdu.header['TUNIT5'] = hqq['TUNIT1']
-	bin_hdu.header['TUNIT6'] = huu['TUNIT1']
+	bin_hdu.header['NSIDE'] = get_header_val(h,'NSIDE')
+	bin_hdu.header['TUNIT1'] = get_header_val(h,'TUNIT1')
+	bin_hdu.header['TUNIT2'] = get_header_val(h,'TUNIT2')
+	bin_hdu.header['TUNIT3'] = get_header_val(h,'TUNIT3')
+	bin_hdu.header['TUNIT4'] = get_header_val(hii,'TUNIT1')
+	bin_hdu.header['TUNIT5'] = get_header_val(hqq,'TUNIT1')
+	bin_hdu.header['TUNIT6'] = get_header_val(huu,'TUNIT1')
 	bin_hdu.writeto(outfile)
 	return 0
 

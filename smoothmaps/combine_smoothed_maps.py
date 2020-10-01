@@ -7,8 +7,8 @@ import astropy.io.fits as fits
 
 def get_header_val(hdr,search):
 	for i in range(0,len(hdr)):
-		if search in h[i][0]:
-			return h[i][1]
+		if search in hdr[i][0]:
+			return hdr[i][1]
 	return ''
 
 def docombine(outfile, iqu_file, II_file, QQ_file, UU_file,comment=''):

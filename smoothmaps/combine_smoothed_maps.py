@@ -12,10 +12,22 @@ def get_header_val(hdr,search):
 	return ''
 
 def docombine(outfile, iqu_file, II_file, QQ_file, UU_file,comment=''):
-	iqu,h = hp.read_map(iqu_file,field=None,h=True)
-	ii,hii = hp.read_map(II_file,field=None,h=True)
-	qq,hqq = hp.read_map(QQ_file,field=None,h=True)
-	uu,huu = hp.read_map(UU_file,field=None,h=True)
+	try:
+		iqu,h = hp.read_map(iqu_file,field=None,h=True)
+	except:
+		iqu,h = hp.read_map(iqu_file.replace('60.0','60.00'),field=None,h=True)
+	try:
+		ii,hii = hp.read_map(II_file,field=None,h=True)
+	except:
+		ii,hii = hp.read_map(II_file.replace('60.0','60.00'),field=None,h=True)
+	try:
+		qq,hqq = hp.read_map(QQ_file,field=None,h=True)
+	except:
+		qq,hqq = hp.read_map(QQ_file.replace('60.0','60.00'),field=None,h=True)
+	try:
+		uu,huu = hp.read_map(UU_file,field=None,h=True)
+	except:
+		uu,huu = hp.read_map(UU_file.replace('60.0','60.00'),field=None,h=True)
 
 	cols = []
 	cols.append(fits.Column(name='I', format='E', array=iqu[0]))

@@ -7,9 +7,9 @@ import astropy.io.fits as fits
 
 def docombine(outfile, iqu_file, II_file, QQ_file, UU_file,comment=''):
 	iqu,h = hp.read_map(iqu_file,field=None,h=True)
-	ii = hp.read_map(II_file,field=None)
-	qq = hp.read_map(QQ_file,field=None)
-	uu = hp.read_map(UU_file,field=None)
+	ii,hii = hp.read_map(II_file,field=None,h=True)
+	qq,hqq = hp.read_map(QQ_file,field=None,h=True)
+	uu,huu = hp.read_map(UU_file,field=None,h=True)
 
 	cols = []
 	cols.append(fits.Column(name='I', format='E', array=iqu[0]))
@@ -24,6 +24,13 @@ def docombine(outfile, iqu_file, II_file, QQ_file, UU_file,comment=''):
 	bin_hdu.header['POLCONV']='COSMO'
 	bin_hdu.header['PIXTYPE']='HEALPIX'
 	bin_hdu.header['COMMENT']=comment
+	bin_hdu.header['NSIDE'] = h['NSIDE']
+	bin_hdu.header['TUNIT1'] = h['TUNIT1']
+	bin_hdu.header['TUNIT2'] = h['TUNIT2']
+	bin_hdu.header['TUNIT3'] = h['TUNIT3']
+	bin_hdu.header['TUNIT4'] = hii['TUNIT1']
+	bin_hdu.header['TUNIT5'] = hqq['TUNIT1']
+	bin_hdu.header['TUNIT6'] = huu['TUNIT1']
 	bin_hdu.writeto(outfile)
 	return 0
 

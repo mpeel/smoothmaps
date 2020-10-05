@@ -117,6 +117,7 @@ def smoothnoisemap(indir, outdir, runname, inputmap, mapnumber=[2], fwhm=0.0, nu
 		# We want to sqrt it to get a noise rms map - but only for intensity
 		if i != 0:
 			noisemap[i] = maps[mapnum].copy()
+			i += 1
 		else:
 			# Needed for QU, shouldn't make any difference for the others.
 			noisemap[i][maps[mapnum]<0] *= -1.0

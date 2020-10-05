@@ -30,7 +30,7 @@ def noiserealisation(inputmap, numpixels):
 	newmap = np.random.normal(scale=1.0, size=numpixels) * inputmap
 	return newmap
 
-def precalc_C(QQ, QU, QU):
+def precalc_C(QQ, UU, QU):
 	B = np.asarray([[QQ,QU],[QU,UU]]).T
 	# print(B)
 	# This is test code for finding the covariance array that has a problem

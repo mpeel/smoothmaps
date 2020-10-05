@@ -30,7 +30,7 @@ numres = len(output_resolution)
 # directory = '/Users/mpeel/Documents/maps/'
 # directory = '/scratch1/mpeel/maps/'
 directory = '/share/nas_cbassarc/mpeel/'
-outdirectory = directory+"planck2020_tqu_noise_v0.7/"
+outdirectory = directory+"planck2020_tqu_noise_v0.8/"
 os.makedirs(outdirectory, exist_ok=True)
 
 # Read in the beams

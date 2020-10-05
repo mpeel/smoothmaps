@@ -11,7 +11,7 @@
 # Mike Peel    28 Aug 2019    v0.5 Add taper_gauss, normalise, hdu
 # Mike Peel    21 Sep 2020    v0.6 Rewrite to use QU covariance matrix
 # Mike Peel    28 Sep 2020    v0.7 Correctly convert the WMAP Nobs maps into variance maps
-# Mike Peel    05 Oct 2020    v0.7T Test fix for polarisation noise maps (use var not noise)
+# Mike Peel    05 Oct 2020    v0.8 Fix for polarisation noise maps (use var not sigma in cov)
 
 import numpy as np
 import numba
@@ -30,9 +30,9 @@ def noiserealisation(inputmap, numpixels):
 	newmap = np.random.normal(scale=1.0, size=numpixels) * inputmap
 	return newmap
 
-def precalc_C(Q, U, QU):
-	B = np.asarray([[Q,QU],[QU,U]]).T
-	print(B)
+def precalc_C(QQ, QU, QU):
+	B = np.asarray([[QQ,QU],[QU,UU]]).T
+	# print(B)
 	# This is test code for finding the covariance array that has a problem
 	# for arr in B:
 	# 	print(arr)
@@ -48,7 +48,7 @@ def noiserealisation_QU(C):
 	return Q, U
 
 def smoothnoisemap(indir, outdir, runname, inputmap, mapnumber=[2], fwhm=0.0, numrealisations=10, sigma_0 = 0.0,sigma_P=0.0, nside=[512], windowfunction = [], rescale=1.0,usehealpixfits=False,taper=False,lmin_taper=350,lmax_taper=600,taper_gauss=False,taper_gauss_sigma=0.0,normalise=True,hdu=1, use_covariance=False, do_intensity=True, do_polarisation=False, units_out='mK'):
-	ver = "0.7T"
+	ver = "0.8"
 
 	if (os.path.isfile(indir+"/"+runname+"_actualvariance.fits")):
 		print("You already have a file with the output name " + indir+"/"+runname+"_actualvariance.fits" + "! Not going to overwrite it. Move it, or set a new output filename, and try again!")

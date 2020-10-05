@@ -55,11 +55,11 @@ def docombine(outfile, iqu_file, II_file, QQ_file, UU_file,comment=''):
 # directory = '/scratch1/mpeel/maps/'
 directory = '/share/nas_cbassarc/mpeel/'
 output_nside = [2048, 1024, 512, 256, 128, 64, 32, 16, 8]
-comment = "Smoothed using Mike Peel's smoothmap.py v1.4 and smoothnoisemap.py v0.7"
+comment = "Smoothed using Mike Peel's smoothmap.py v1.4 and smoothnoisemap.py v0.8"
 # WMAP9
 mapdir = directory+'wmap9_tqu_v1.4/'
-noisedir = directory+'wmap9_tqu_noise_v0.7/'
-outdirectory = directory+"wmap9_tqu_v1.4_noise_v0.7/"
+noisedir = directory+'wmap9_tqu_noise_v0.8/'
+outdirectory = directory+"wmap9_tqu_v1.4_noise_v0.8/"
 os.makedirs(outdirectory, exist_ok=True)
 
 for nside in output_nside:
@@ -77,8 +77,8 @@ for nside in output_nside:
 
 # Planck 2015
 mapdir = directory+'planck2015_tqu_v1.4/'
-noisedir = directory+'planck2015_tqu_noise_v0.7/'
-outdirectory = directory+"planck2015_tqu_v1.4_noise_v0.7/"
+noisedir = directory+'planck2015_tqu_noise_v0.8/'
+outdirectory = directory+"planck2015_tqu_v1.4_noise_v0.8/"
 os.makedirs(outdirectory, exist_ok=True)
 
 for nside in output_nside:

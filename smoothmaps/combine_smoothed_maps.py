@@ -152,15 +152,15 @@ for nside in output_nside:
 				noisedir+'60.0smoothed_PlanckR4fullbeam_'+namestr+'_mKCMBunits_variance_U_'+str(nside)+'.fits',comment=comment)
 		except:
 			continue
-	# Dipole subtracted maps
+	# Dipole subtracted maps - using the same noise realisations
 	namestrings = ['28.4_1024_2020','44.1_1024_2020','70.4_1024_2020','100_2048_2020','143_2048_2020','217_2048_2020','353_2048_2020']
 	for namestr in namestrings:
 		try:
 			docombine(outdirectory+str(nside)+'_60.0smoothed_PlanckR4fullbeamnodpNoise_'+namestr+'_mKCMBunits.fits',\
 				mapdir+str(nside)+'_60.0smoothed_PlanckR4fullbeamnodp_'+namestr+'_mKCMBunits.fits',\
-				noisedir+'60.0smoothed_PlanckR4fullbeamnodp_'+namestr+'_mKCMBunits_variance_'+str(nside)+'.fits',\
-				noisedir+'60.0smoothed_PlanckR4fullbeamnodp_'+namestr+'_mKCMBunits_variance_Q_'+str(nside)+'.fits',\
-				noisedir+'60.0smoothed_PlanckR4fullbeamnodp_'+namestr+'_mKCMBunits_variance_U_'+str(nside)+'.fits',comment=comment)
+				noisedir+'60.0smoothed_PlanckR4fullbeam_'+namestr+'_mKCMBunits_variance_'+str(nside)+'.fits',\
+				noisedir+'60.0smoothed_PlanckR4fullbeam_'+namestr+'_mKCMBunits_variance_Q_'+str(nside)+'.fits',\
+				noisedir+'60.0smoothed_PlanckR4fullbeam_'+namestr+'_mKCMBunits_variance_U_'+str(nside)+'.fits',comment=comment)
 		except:
 			continue
 

@@ -87,7 +87,9 @@ def smoothnoisemap(indir, outdir, runname, inputmap, mapnumber=[2], fwhm=0.0, nu
 	# If we have Nobs maps, we need to do some preprocessing
 	if sigma_0 != 0.0 and do_intensity:
 		# Simply convert the intensity map
+		# print(np.max(maps[mapnumber[0]]))
 		maps[mapnumber[0]] = conv_nobs_variance_map(maps[mapnumber[0]], sigma_0)
+		# print(np.max(maps[mapnumber[0]]))
 	if sigma_P != 0.0:
 		# Combine the Nobs map into a set of 2x2 matricis
 		NobsArr = np.asarray([[maps[mapnumber[1]],maps[mapnumber[3]]],[maps[mapnumber[3]],maps[mapnumber[2]]]]).T
@@ -105,6 +107,7 @@ def smoothnoisemap(indir, outdir, runname, inputmap, mapnumber=[2], fwhm=0.0, nu
 	# noisemap = maps.copy()
 	i = 0
 	for mapnum in mapnumber:
+		# This is now done above.
 		# if sigma_0 != 0.0:
 		# 	# If we have a value for sigma_0, then we have an Nobs map and need to convert it.
 		# 	if i > 0 and sigma_P != 0.0:
@@ -126,7 +129,8 @@ def smoothnoisemap(indir, outdir, runname, inputmap, mapnumber=[2], fwhm=0.0, nu
 			i += 1
 		else:
 			# Needed for QU, shouldn't make any difference for the others.
-			noisemap[i][maps[mapnum]<0] *= -1.0
+			# noisemap[i][maps[mapnum]<0] *= -1.0
+			noisemap[i] = maps[mapnum].copy()
 			noisemap[i] = noisemap[i] * rescale
 			# print(np.sum(noisemap[i]<0))
 			noisemap[i][map_before[0] == hp.UNSEEN] = 0.0

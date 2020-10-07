@@ -17,7 +17,7 @@ def get_hfi_beam(FITSfile):
 	return newdata
 
 output_resolution = 60.0
-output_nside = [2048, 1024, 512, 256, 128, 64, 32, 16, 8]
+output_nside = np.asarray([2048, 1024, 512, 256, 128, 64, 32, 16, 8])
 smoothvariance = False
 
 # directory = '/Users/mpeel/Documents/maps/'
@@ -37,12 +37,12 @@ beamtf_p353 = get_hfi_beam(directory+'planck2018/BeamWf_HFI_R3.01/Bl_T_R3.01_ful
 beamtf_p545 = get_hfi_beam(directory+'planck2018/BeamWf_HFI_R3.01/Bl_T_R3.01_fullsky_545x545.fits')
 beamtf_p857 = get_hfi_beam(directory+'planck2018/BeamWf_HFI_R3.01/Bl_T_R3.01_fullsky_857x857.fits')
 
-dipole = 'dipole_nside2048.fits'
+dipole = 'planck2020/dipole_nside2048.fits'
 
 numnside = len(output_nside)
 for i in range(0,numnside):
-	subtractmaps = ['',dipole]
-	subtractmaps_name = ['','nodp']
+	subtractmaps = [dipole,'']
+	subtractmaps_name = ['nodp','']
 	numsubtract = len(subtractmaps)
 	for j in range(0,numsubtract):
 

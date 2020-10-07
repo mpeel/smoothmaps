@@ -369,6 +369,7 @@ def smoothmap(indir, outdir, inputfile, outputfile, fwhm_arcmin=-1, nside_out=0,
 				sub_maps = hp.reorder(sub_maps,n2r=True)
 			# We want a maximum of one map to subtract (could be extended in the future)
 			sub_maps = sub_maps[0]
+			sub_inputfits.close()
 		# We want to use the same output Nside - we'll assume they have the same resolution.
 		sub_maps = hp.ud_grade(sub_maps, nside_out=nside_out)
 		# Calculate a rescaling factor if needed
@@ -377,7 +378,6 @@ def smoothmap(indir, outdir, inputfile, outputfile, fwhm_arcmin=-1, nside_out=0,
 			# conversion = convertunits(const, subtractmap_units, units_out, frequency, pix_area)
 		# ... and do the subtraction
 		smoothed_map[0] = smoothed_map[0] - sub_maps * conversion
-		sub_inputfits.close()
 	
 	for i in range(0,nmaps):
 		cols.append(fits.Column(name=col_names[i], format='E', array=smoothed_map[i]))

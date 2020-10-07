@@ -38,6 +38,7 @@ beamtf_p545 = get_hfi_beam(directory+'planck2018/BeamWf_HFI_R3.01/Bl_T_R3.01_ful
 beamtf_p857 = get_hfi_beam(directory+'planck2018/BeamWf_HFI_R3.01/Bl_T_R3.01_fullsky_857x857.fits')
 
 dipole = 'dipole_nside2048.fits'
+subtractmap_units='KCMB'
 
 numnside = len(output_nside)
 for i in range(0,numnside):
@@ -47,23 +48,23 @@ for i in range(0,numnside):
 	for j in range(0,numsubtract):
 
 		if output_nside[i] <= 1024:
-			smoothmap(directory+'planck2020/',outdirectory,'LFI_SkyMap_030_1024_R4.00_full.fits',str(output_nside[i])+'_'+str(output_resolution)+'smoothed_PlanckR4fullbeam'+subtractmaps_name[j]+'_28.4_1024_2020_mKCMBunits.fits', output_resolution,nside_out=output_nside[i],windowfunction=beamtf_p30,units_out='mKCMB',subtractmap=subtractmaps[j],smoothvariance=smoothvariance,usehealpixfits=True)
+			smoothmap(directory+'planck2020/',outdirectory,'LFI_SkyMap_030_1024_R4.00_full.fits',str(output_nside[i])+'_'+str(output_resolution)+'smoothed_PlanckR4fullbeam'+subtractmaps_name[j]+'_28.4_1024_2020_mKCMBunits.fits', output_resolution,nside_out=output_nside[i],windowfunction=beamtf_p30,units_out='mKCMB',subtractmap=subtractmaps[j],smoothvariance=smoothvariance,usehealpixfits=True,subtractmap_units=subtractmap_units)
 
-			smoothmap(directory+'planck2020/',outdirectory,'LFI_SkyMap_044_1024_R4.00_full.fits',str(output_nside[i])+'_'+str(output_resolution)+'smoothed_PlanckR4fullbeam'+subtractmaps_name[j]+'_44.1_1024_2020_mKCMBunits.fits', output_resolution,nside_out=output_nside[i],windowfunction=beamtf_p44,units_out='mKCMB',subtractmap=subtractmaps[j],smoothvariance=smoothvariance,usehealpixfits=True)
+			smoothmap(directory+'planck2020/',outdirectory,'LFI_SkyMap_044_1024_R4.00_full.fits',str(output_nside[i])+'_'+str(output_resolution)+'smoothed_PlanckR4fullbeam'+subtractmaps_name[j]+'_44.1_1024_2020_mKCMBunits.fits', output_resolution,nside_out=output_nside[i],windowfunction=beamtf_p44,units_out='mKCMB',subtractmap=subtractmaps[j],smoothvariance=smoothvariance,usehealpixfits=True,subtractmap_units=subtractmap_units)
 
-			smoothmap(directory+'planck2020/',outdirectory,'LFI_SkyMap_070_1024_R4.00_full.fits',str(output_nside[i])+'_'+str(output_resolution)+'smoothed_PlanckR4fullbeam'+subtractmaps_name[j]+'_70.4_1024_2020_mKCMBunits.fits', output_resolution,nside_out=output_nside[i],windowfunction=beamtf_p70,units_out='mKCMB',subtractmap=subtractmaps[j],smoothvariance=smoothvariance,usehealpixfits=True)
+			smoothmap(directory+'planck2020/',outdirectory,'LFI_SkyMap_070_1024_R4.00_full.fits',str(output_nside[i])+'_'+str(output_resolution)+'smoothed_PlanckR4fullbeam'+subtractmaps_name[j]+'_70.4_1024_2020_mKCMBunits.fits', output_resolution,nside_out=output_nside[i],windowfunction=beamtf_p70,units_out='mKCMB',subtractmap=subtractmaps[j],smoothvariance=smoothvariance,usehealpixfits=True,subtractmap_units=subtractmap_units)
 
-		smoothmap(directory+'planck2020/',outdirectory,'HFI_SkyMap_100_2048_R4.00_full.fits',str(output_nside[i])+'_60.00smoothed_PlanckR4fullbeam'+subtractmaps_name[j]+'_100_2048_2020_mKCMBunits.fits', output_resolution,nside_out=output_nside[i],windowfunction=beamtf_p100,units_out='mKCMB',subtractmap=subtractmaps[j],smoothvariance=smoothvariance,usehealpixfits=True)
+		smoothmap(directory+'planck2020/',outdirectory,'HFI_SkyMap_100_2048_R4.00_full.fits',str(output_nside[i])+'_60.00smoothed_PlanckR4fullbeam'+subtractmaps_name[j]+'_100_2048_2020_mKCMBunits.fits', output_resolution,nside_out=output_nside[i],windowfunction=beamtf_p100,units_out='mKCMB',subtractmap=subtractmaps[j],smoothvariance=smoothvariance,usehealpixfits=True,subtractmap_units=subtractmap_units)
 
-		smoothmap(directory+'planck2020/',outdirectory,'HFI_SkyMap_143_2048_R4.00_full.fits',str(output_nside[i])+'_60.00smoothed_PlanckR4fullbeam'+subtractmaps_name[j]+'_143_2048_2020_mKCMBunits.fits', output_resolution,nside_out=output_nside[i],windowfunction=beamtf_p143,units_out='mKCMB',subtractmap=subtractmaps[j],smoothvariance=smoothvariance,usehealpixfits=True)
+		smoothmap(directory+'planck2020/',outdirectory,'HFI_SkyMap_143_2048_R4.00_full.fits',str(output_nside[i])+'_60.00smoothed_PlanckR4fullbeam'+subtractmaps_name[j]+'_143_2048_2020_mKCMBunits.fits', output_resolution,nside_out=output_nside[i],windowfunction=beamtf_p143,units_out='mKCMB',subtractmap=subtractmaps[j],smoothvariance=smoothvariance,usehealpixfits=True,subtractmap_units=subtractmap_units)
 
-		smoothmap(directory+'planck2020/',outdirectory,'HFI_SkyMap_217_2048_R4.00_full.fits',str(output_nside[i])+'_60.00smoothed_PlanckR4fullbeam'+subtractmaps_name[j]+'_217_2048_2020_mKCMBunits.fits', output_resolution,nside_out=output_nside[i],windowfunction=beamtf_p217,units_out='mKCMB',subtractmap=subtractmaps[j],smoothvariance=smoothvariance,usehealpixfits=True)
+		smoothmap(directory+'planck2020/',outdirectory,'HFI_SkyMap_217_2048_R4.00_full.fits',str(output_nside[i])+'_60.00smoothed_PlanckR4fullbeam'+subtractmaps_name[j]+'_217_2048_2020_mKCMBunits.fits', output_resolution,nside_out=output_nside[i],windowfunction=beamtf_p217,units_out='mKCMB',subtractmap=subtractmaps[j],smoothvariance=smoothvariance,usehealpixfits=True,subtractmap_units=subtractmap_units)
 
-		smoothmap(directory+'planck2020/',outdirectory,'HFI_SkyMap_353_2048_R4.00_full.fits',str(output_nside[i])+'_60.00smoothed_PlanckR4fullbeam'+subtractmaps_name[j]+'_353_2048_2020_mKCMBunits.fits', output_resolution,nside_out=output_nside[i],windowfunction=beamtf_p353,units_out='mKCMB',subtractmap=subtractmaps[j],smoothvariance=smoothvariance,usehealpixfits=True)
+		smoothmap(directory+'planck2020/',outdirectory,'HFI_SkyMap_353_2048_R4.00_full.fits',str(output_nside[i])+'_60.00smoothed_PlanckR4fullbeam'+subtractmaps_name[j]+'_353_2048_2020_mKCMBunits.fits', output_resolution,nside_out=output_nside[i],windowfunction=beamtf_p353,units_out='mKCMB',subtractmap=subtractmaps[j],smoothvariance=smoothvariance,usehealpixfits=True,subtractmap_units=subtractmap_units)
 
 		if subtractmaps_name[j] == '':
-			smoothmap(directory+'planck2020/',outdirectory,'HFI_SkyMap_545_2048_R4.00_full.fits',str(output_nside[i])+'_60.00smoothed_PlanckR4fullbeam'+subtractmaps_name[j]+'_545_2048_2020_MJySrunits.fits', output_resolution,nside_out=output_nside[i],windowfunction=beamtf_p545,smoothvariance=smoothvariance,usehealpixfits=True)
+			smoothmap(directory+'planck2020/',outdirectory,'HFI_SkyMap_545_2048_R4.00_full.fits',str(output_nside[i])+'_60.00smoothed_PlanckR4fullbeam'+subtractmaps_name[j]+'_545_2048_2020_MJySrunits.fits', output_resolution,nside_out=output_nside[i],windowfunction=beamtf_p545,smoothvariance=smoothvariance,usehealpixfits=True,subtractmap_units=subtractmap_units)
 
-			smoothmap(directory+'planck2020/',outdirectory,'HFI_SkyMap_857_2048_R4.00_full.fits',str(output_nside[i])+'_60.00smoothed_PlanckR4fullbeam'+subtractmaps_name[j]+'_857_2048_2020_MJySrunits.fits', output_resolution,nside_out=output_nside[i],windowfunction=beamtf_p857,smoothvariance=smoothvariance,usehealpixfits=True)
+			smoothmap(directory+'planck2020/',outdirectory,'HFI_SkyMap_857_2048_R4.00_full.fits',str(output_nside[i])+'_60.00smoothed_PlanckR4fullbeam'+subtractmaps_name[j]+'_857_2048_2020_MJySrunits.fits', output_resolution,nside_out=output_nside[i],windowfunction=beamtf_p857,smoothvariance=smoothvariance,usehealpixfits=True,subtractmap_units=subtractmap_units)
 
 # EOF

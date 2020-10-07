@@ -374,8 +374,8 @@ def smoothmap(indir, outdir, inputfile, outputfile, fwhm_arcmin=-1, nside_out=0,
 		sub_maps = hp.ud_grade(sub_maps, nside_out=nside_out)
 		# Calculate a rescaling factor if needed
 		conversion = 1.0
-		# if subtractmap_units != '':
-			# conversion = convertunits(const, subtractmap_units, units_out, frequency, pix_area)
+		if subtractmap_units != '':
+			conversion = convertunits(const, subtractmap_units, units_out, frequency, pix_area)
 		# ... and do the subtraction
 		smoothed_map[0] = smoothed_map[0] - sub_maps * conversion
 	

@@ -13,6 +13,6 @@ echo "Running job in"
 echo `pwd`
 
 # python run_smoothmaps_planck2015_pol.py
-# python run_smoothmaps_planck2018_pol.py
-python run_smoothmaps_planck2020_pol.py
+python run_smoothmaps_planck2018_pol.py
+# python run_smoothmaps_planck2020_pol.py
 # python run_smoothmaps_wmap_pol.py

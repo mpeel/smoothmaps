@@ -40,11 +40,11 @@ beamtf_p857 = get_hfi_beam(directory+'planck2018/BeamWf_HFI_R3.01/Bl_T_R3.01_ful
 numnside = len(output_nside)
 for i in range(0,numnside):
 	# Smooth CMB maps - just saved, not used below at all.
-	smoothmap(directory+'planck2018',outdirectory,'COM_CMB_IQU-commander_2048_R3.00_full.fits',str(output_nside[i])+'_60.00smoothed_PlanckCMBCommander_0.0_2048_2018_mKCMBunits.fits', np.sqrt(output_resolution**2-5.0**2),nside_out=output_nside[i],units_out='mKCMB')
-	smoothmap(directory+'planck2018',outdirectory,'COM_CMB_IQU-nilc_2048_R3.00_full.fits',str(output_nside[i])+'_60.00smoothed_PlanckCMBNILC_0.0_2048_2018_mKCMBunits.fits', np.sqrt(output_resolution**2-5.0**2),nside_out=output_nside[i],units_out='mKCMB')
-	smoothmap(directory+'planck2018',outdirectory,'COM_CMB_IQU-sevem_2048_R3.00_full.fits',str(output_nside[i])+'_60.00smoothed_PlanckCMBSevem_0.0_2048_2018_mKCMBunits.fits', np.sqrt(output_resolution**2-5.0**2),nside_out=output_nside[i],units_out='mKCMB')
-	smoothmap(directory+'planck2018',outdirectory,'COM_CMB_IQU-smica_2048_R3.00_full.fits',str(output_nside[i])+'_60.00smoothed_PlanckCMBSmica_0.0_2048_2018_mKCMBunits.fits', np.sqrt(output_resolution**2-5.0**2),nside_out=output_nside[i],units_out='mKCMB')
-	smoothmap(directory+'planck2018',outdirectory,'COM_CMB_IQU-smica-nosz_2048_R3.00_full.fits',str(output_nside[i])+'_60.00smoothed_PlanckCMBSmica-nosz_0.0_2048_2018_mKCMBunits.fits', np.sqrt(output_resolution**2-5.0**2),nside_out=output_nside[i],units_out='mKCMB')
+	smoothmap(directory+'planck2018/',outdirectory,'COM_CMB_IQU-commander_2048_R3.00_full.fits',str(output_nside[i])+'_60.00smoothed_PlanckCMBCommander_0.0_2048_2018_mKCMBunits.fits', np.sqrt(output_resolution**2-5.0**2),nside_out=output_nside[i],units_out='mKCMB')
+	smoothmap(directory+'planck2018/',outdirectory,'COM_CMB_IQU-nilc_2048_R3.00_full.fits',str(output_nside[i])+'_60.00smoothed_PlanckCMBNILC_0.0_2048_2018_mKCMBunits.fits', np.sqrt(output_resolution**2-5.0**2),nside_out=output_nside[i],units_out='mKCMB')
+	smoothmap(directory+'planck2018/',outdirectory,'COM_CMB_IQU-sevem_2048_R3.00_full.fits',str(output_nside[i])+'_60.00smoothed_PlanckCMBSevem_0.0_2048_2018_mKCMBunits.fits', np.sqrt(output_resolution**2-5.0**2),nside_out=output_nside[i],units_out='mKCMB')
+	smoothmap(directory+'planck2018/',outdirectory,'COM_CMB_IQU-smica_2048_R3.00_full.fits',str(output_nside[i])+'_60.00smoothed_PlanckCMBSmica_0.0_2048_2018_mKCMBunits.fits', np.sqrt(output_resolution**2-5.0**2),nside_out=output_nside[i],units_out='mKCMB')
+	smoothmap(directory+'planck2018/',outdirectory,'COM_CMB_IQU-smica-nosz_2048_R3.00_full.fits',str(output_nside[i])+'_60.00smoothed_PlanckCMBSmica-nosz_0.0_2048_2018_mKCMBunits.fits', np.sqrt(output_resolution**2-5.0**2),nside_out=output_nside[i],units_out='mKCMB')
 
 	subtractmaps = ['']
 	subtractmaps_name = ['']

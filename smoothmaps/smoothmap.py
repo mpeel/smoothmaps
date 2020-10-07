@@ -22,6 +22,7 @@
 # v1.3  Mike Peel   28 Aug 2019   Gaussian taper, options for normalising wf and unseen vs. 0 in map
 # v1.4  Mike Peel   24 Jul 2020   Add an option to not smooth the variance maps (but save them in the output anyway)
 # v1.4a Mike Peel   27 Jul 2020   Tweak to only check for NESTED when not using usehealpixfits
+# v1.4b Mike Peel   07 Oct 2020   Tweak to use 'usehealpixfits' for 'subtractmap'
 #
 # Requirements:
 # Numpy, healpy, matplotlib
@@ -352,19 +353,22 @@ def smoothmap(indir, outdir, inputfile, outputfile, fwhm_arcmin=-1, nside_out=0,
 	# If we want to subtract another map (e.g., a CMB map) then we need to read it in, check nside and units, and then subtract.
 	if subtractmap != '':
 		print('Subtracting CMB map ' + subtractmap)
-		sub_inputfits = fits.open(indir+subtractmap)
-		sub_cols = sub_inputfits[1].columns
-		sub_col_names = sub_cols.names
-		sub_nmaps = len(sub_cols)
-		sub_nmaps_orig = sub_nmaps
-		sub_maps = []
-		for i in range(0,sub_nmaps):
-			sub_maps.append(sub_inputfits[1].data.field(i))
-		# Check to see whether we have nested data, and switch to ring if that is the case.
-		if (sub_inputfits[1].header['ORDERING'] == 'NESTED'):
-			sub_maps = hp.reorder(sub_maps,n2r=True)
-		# We want a maximum of one map to subtract (could be extended in the future)
-		sub_maps = sub_maps[0]
+		if usehealpixfits:
+			sub_maps = hp.read_map(indir+subtractmap)
+		else:
+			sub_inputfits = fits.open(indir+subtractmap)
+			sub_cols = sub_inputfits[1].columns
+			sub_col_names = sub_cols.names
+			sub_nmaps = len(sub_cols)
+			sub_nmaps_orig = sub_nmaps
+			sub_maps = []
+			for i in range(0,sub_nmaps):
+				sub_maps.append(sub_inputfits[1].data.field(i))
+			# Check to see whether we have nested data, and switch to ring if that is the case.
+			if (sub_inputfits[1].header['ORDERING'] == 'NESTED'):
+				sub_maps = hp.reorder(sub_maps,n2r=True)
+			# We want a maximum of one map to subtract (could be extended in the future)
+			sub_maps = sub_maps[0]
 		# We want to use the same output Nside - we'll assume they have the same resolution.
 		sub_maps = hp.ud_grade(sub_maps, nside_out=nside_out)
 		# Calculate a rescaling factor if needed

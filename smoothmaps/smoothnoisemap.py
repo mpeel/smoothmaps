@@ -12,6 +12,7 @@
 # Mike Peel    21 Sep 2020    v0.6 Rewrite to use QU covariance matrix
 # Mike Peel    28 Sep 2020    v0.7 Correctly convert the WMAP Nobs maps into variance maps
 # Mike Peel    05 Oct 2020    v0.8 Fix for polarisation noise maps (use var not sigma in cov)
+# Mike Peel    07 Oct 2020    v0.8a Implement a check of QU against QQ and UU to avoid bad pixels
 
 import numpy as np
 import numba
@@ -31,6 +32,13 @@ def noiserealisation(inputmap, numpixels):
 	return newmap
 
 def precalc_C(QQ, UU, QU):
+	# Where QU is bigger than QQ, set QU to 0.99 of QQ, to avoid bad pixels.
+	check = (np.abs(QU) > QQ)
+	print('Number of cases where QU is greater than QQ: ' + str(np.sum(check)))
+	QU[check] = 0.99*QQ[check]
+	check = (np.abs(QU) > UU)
+	print('Number of cases where QU is greater than UU: ' + str(np.sum(check)))
+	QU[check] = 0.99*UU[check]
 	B = np.asarray([[QQ,QU],[QU,UU]]).T
 	# print(B)
 	# This is test code for finding the covariance array that has a problem
@@ -38,8 +46,6 @@ def precalc_C(QQ, UU, QU):
 	# 	print(arr)
 	# 	print(np.linalg.eigvalsh(arr))
 	# 	print(np.linalg.cholesky(arr))
-	# # print(np.min(np.linalg.eigvalsh(B)))
-	# print(B[np.argmin(np.linalg.eigvalsh(B))])
 	return np.linalg.cholesky(B)
 
 def noiserealisation_QU(C):

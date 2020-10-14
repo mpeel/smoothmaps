@@ -24,6 +24,7 @@ output_resolution = [60.0]#,120.0,240.0]
 output_nside = np.asarray([2048, 1024, 512, 256, 128, 64, 32, 16, 8])
 numrealisations = 1000
 mapnumbers = [4, 7, 9, 8] # II,QQ,UU,QU
+mapnumbers_bpcorrect = [3,4,5,6] # Because the bp-corrected ones are different
 rescale = 1000.0 # Convert from K to mK - this is applied to the noise map
 units_out = 'mK' # Must match rescale!
 numres = len(output_resolution)
@@ -50,15 +51,15 @@ for i in range(0,numres):
 	resolution = "%.2f" % output_resolution[i]
 
 	# LFI, no bandpass subtraction
-	smoothnoisemap(directory+'planck2015/', outdirectory, resolution+'smoothed_PlanckR2fullbeam_28.4_1024_2015_mKCMBunits', 'LFI_SkyMap_030_1024_R2.01_full.fits',mapnumber=mapnumbers,numrealisations=numrealisations,fwhm=output_resolution[i],nside=output_nside[output_nside<=1024],windowfunction=beamtf_p30,rescale=rescale,do_intensity=True,do_polarisation=True,units_out=units_out)
-	smoothnoisemap(directory+'planck2015/', outdirectory, resolution+'smoothed_PlanckR2fullbeam_44.1_1024_2015_mKCMBunits', 'LFI_SkyMap_044_1024_R2.01_full.fits',mapnumber=mapnumbers,numrealisations=numrealisations,fwhm=output_resolution[i],nside=output_nside[output_nside<=1024],windowfunction=beamtf_p44,rescale=rescale,do_intensity=True,do_polarisation=True,units_out=units_out)
-	smoothnoisemap(directory+'planck2015/', outdirectory, resolution+'smoothed_PlanckR2fullbeam_70.4_1024_2015_mKCMBunits', 'LFI_SkyMap_070_2048_R2.01_full.fits',mapnumber=mapnumbers,numrealisations=numrealisations,fwhm=output_resolution[i],nside=output_nside,windowfunction=beamtf_p70,rescale=rescale,do_intensity=True,do_polarisation=True,units_out=units_out)
+	# smoothnoisemap(directory+'planck2015/', outdirectory, resolution+'smoothed_PlanckR2fullbeam_28.4_1024_2015_mKCMBunits', 'LFI_SkyMap_030_1024_R2.01_full.fits',mapnumber=mapnumbers,numrealisations=numrealisations,fwhm=output_resolution[i],nside=output_nside[output_nside<=1024],windowfunction=beamtf_p30,rescale=rescale,do_intensity=True,do_polarisation=True,units_out=units_out)
+	# smoothnoisemap(directory+'planck2015/', outdirectory, resolution+'smoothed_PlanckR2fullbeam_44.1_1024_2015_mKCMBunits', 'LFI_SkyMap_044_1024_R2.01_full.fits',mapnumber=mapnumbers,numrealisations=numrealisations,fwhm=output_resolution[i],nside=output_nside[output_nside<=1024],windowfunction=beamtf_p44,rescale=rescale,do_intensity=True,do_polarisation=True,units_out=units_out)
+	# smoothnoisemap(directory+'planck2015/', outdirectory, resolution+'smoothed_PlanckR2fullbeam_70.4_1024_2015_mKCMBunits', 'LFI_SkyMap_070_2048_R2.01_full.fits',mapnumber=mapnumbers,numrealisations=numrealisations,fwhm=output_resolution[i],nside=output_nside,windowfunction=beamtf_p70,rescale=rescale,do_intensity=True,do_polarisation=True,units_out=units_out)
 
 	# LFI, with bandpass subtraction
 	# Note that the signal maps are smoothed - assuming the variance maps aren't!
-	smoothnoisemap(directory+'planck2015/', outdirectory, resolution+'smoothed_PlanckR2fullbeambpcorr_28.4_1024_2015_mKCMBunits', 'LFI_SkyMap_030-BPassCorrected_0256_R2.01_full.fits',mapnumber=mapnumbers,numrealisations=numrealisations,fwhm=output_resolution[i],nside=output_nside[output_nside<=256],windowfunction=beamtf_p30,rescale=rescale,do_intensity=True,do_polarisation=True,units_out=units_out)
-	smoothnoisemap(directory+'planck2015/', outdirectory, resolution+'smoothed_PlanckR2fullbeambpcorr_44.1_1024_2015_mKCMBunits', 'LFI_SkyMap_044-BPassCorrected_0256_R2.01_full.fits',mapnumber=mapnumbers,numrealisations=numrealisations,fwhm=output_resolution[i],nside=output_nside[output_nside<=256],windowfunction=beamtf_p44,rescale=rescale,do_intensity=True,do_polarisation=True,units_out=units_out)
-	smoothnoisemap(directory+'planck2015/', outdirectory, resolution+'smoothed_PlanckR2fullbeambpcorr_70.4_1024_2015_mKCMBunits', 'LFI_SkyMap_070-BPassCorrected_0256_R2.01_full.fits',mapnumber=mapnumbers,numrealisations=numrealisations,fwhm=output_resolution[i],nside=output_nside[output_nside<=256],windowfunction=beamtf_p70,rescale=rescale,do_intensity=True,do_polarisation=True,units_out=units_out)
+	smoothnoisemap(directory+'planck2015/', outdirectory, resolution+'smoothed_PlanckR2fullbeambpcorr_28.4_1024_2015_mKCMBunits', 'LFI_SkyMap_030-BPassCorrected_0256_R2.01_full.fits',mapnumber=mapnumbers_bpcorrect,numrealisations=numrealisations,fwhm=output_resolution[i],nside=output_nside[output_nside<=256],windowfunction=beamtf_p30,rescale=rescale,do_intensity=True,do_polarisation=True,units_out=units_out)
+	smoothnoisemap(directory+'planck2015/', outdirectory, resolution+'smoothed_PlanckR2fullbeambpcorr_44.1_1024_2015_mKCMBunits', 'LFI_SkyMap_044-BPassCorrected_0256_R2.01_full.fits',mapnumber=mapnumbers_bpcorrect,numrealisations=numrealisations,fwhm=output_resolution[i],nside=output_nside[output_nside<=256],windowfunction=beamtf_p44,rescale=rescale,do_intensity=True,do_polarisation=True,units_out=units_out)
+	smoothnoisemap(directory+'planck2015/', outdirectory, resolution+'smoothed_PlanckR2fullbeambpcorr_70.4_1024_2015_mKCMBunits', 'LFI_SkyMap_070-BPassCorrected_0256_R2.01_full.fits',mapnumber=mapnumbers_bpcorrect,numrealisations=numrealisations,fwhm=output_resolution[i],nside=output_nside[output_nside<=256],windowfunction=beamtf_p70,rescale=rescale,do_intensity=True,do_polarisation=True,units_out=units_out)
 
 	# HFI with polarisation
 	smoothnoisemap(directory+'planck2015/', outdirectory, resolution+'smoothed_PlanckR2fullbeam_100_1024_2015_mKCMBunits', 'HFI_SkyMap_100_2048_R2.02_full.fits',mapnumber=mapnumbers,numrealisations=numrealisations,fwhm=output_resolution[i],nside=output_nside,windowfunction=beamtf_p100,rescale=rescale,do_intensity=True,do_polarisation=True,units_out=units_out)

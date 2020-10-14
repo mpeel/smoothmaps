@@ -14,6 +14,7 @@
 # Mike Peel    05 Oct 2020    v0.8 Fix for polarisation noise maps (use var not sigma in cov)
 # Mike Peel    07 Oct 2020    v0.8a Implement a check of QU against QQ and UU to avoid bad pixels
 # Mike Peel    14 Oct 2020    v0.8b Fix an issue with RING/NEST formating
+# NB: Known bug, the rescale factor does not seem to work!
 
 import numpy as np
 import numba

@@ -68,13 +68,13 @@ os.makedirs(outdirectory, exist_ok=True)
 for nside in output_nside:
 	if nside <= 512:
 		namestrings = ['22.8_512_2013','33.0_512_2013','40.7_512_2013','60.7_512_2013','93.5_512_2013']
-		for namestr in namestrings:
+		for i in range(0,len(namestrings)):
 			try:
-				docombine(outdirectory+str(nside)+'_60.0smoothed_wmap9beamNoise_'+namestr+'_mKCMBunits.fits',\
-					mapdir+str(nside)+'_60.0smoothed_wmap9beam_'+namestr+'_mKCMBunits.fits',\
-					noisedir+'60.0smoothed_wmap9beam_'+namestr+'_mKCMBunits_variance_'+str(nside)+'.fits',\
-					noisedir+'60.0smoothed_wmap9beam_'+namestr+'_mKCMBunits_variance_Q_'+str(nside)+'.fits',\
-					noisedir+'60.0smoothed_wmap9beam_'+namestr+'_mKCMBunits_variance_U_'+str(nside)+'.fits',comment=comment)
+				docombine(outdirectory+str(nside)+'_60.0smoothed_wmap9beamNoise_'+namestrings[i]+'_mKCMBunits.fits',\
+					mapdir+str(nside)+'_60.0smoothed_wmap9beam_'+namestrings[i]+'_mKCMBunits.fits',\
+					noisedir+'60.0smoothed_wmap9beam_'+namestrings[i]+'_mKCMBunits_variance_'+str(nside)+'.fits',\
+					noisedir+'60.0smoothed_wmap9beam_'+namestrings[i]+'_mKCMBunits_variance_Q_'+str(nside)+'.fits',\
+					noisedir+'60.0smoothed_wmap9beam_'+namestrings[i]+'_mKCMBunits_variance_U_'+str(nside)+'.fits',comment=comment)
 			except:
 				continue
 
@@ -87,26 +87,26 @@ os.makedirs(outdirectory, exist_ok=True)
 for nside in output_nside:
 	# Standard maps
 	namestrings = ['28.4_1024_2015','44.1_1024_2015','70.4_2048_2015','100_2048_2015','143_2048_2015','217_2048_2015','353_2048_2015']
-	namestrings = ['28.4_1024_2015','44.1_1024_2015','70.4_1024_2015','100_2048_2015','143_2048_2015','217_2048_2015','353_2048_2015']
-	for namestr in namestrings:
+	namestrings2 = ['28.4_1024_2015','44.1_1024_2015','70.4_1024_2015','100_2048_2015','143_2048_2015','217_2048_2015','353_2048_2015']
+	for i in range(0,len(namestrings)):
 		try:
-			docombine(outdirectory+str(nside)+'_60.0smoothed_PlanckR2fullbeamNoise_'+namestr+'_mKCMBunits.fits',\
-				mapdir+str(nside)+'_60.0smoothed_PlanckR2fullbeam_'+namestr+'_mKCMBunits.fits',\
-				noisedir+'60.0smoothed_PlanckR2fullbeam_'+namestr2+'_mKCMBunits_variance_'+str(nside)+'.fits',\
-				noisedir+'60.0smoothed_PlanckR2fullbeam_'+namestr2+'_mKCMBunits_variance_Q_'+str(nside)+'.fits',\
-				noisedir+'60.0smoothed_PlanckR2fullbeam_'+namestr2+'_mKCMBunits_variance_U_'+str(nside)+'.fits',comment=comment)
+			docombine(outdirectory+str(nside)+'_60.0smoothed_PlanckR2fullbeamNoise_'+namestrings[i]+'_mKCMBunits.fits',\
+				mapdir+str(nside)+'_60.0smoothed_PlanckR2fullbeam_'+namestrings[i]+'_mKCMBunits.fits',\
+				noisedir+'60.0smoothed_PlanckR2fullbeam_'+namestrings2[i]+'_mKCMBunits_variance_'+str(nside)+'.fits',\
+				noisedir+'60.0smoothed_PlanckR2fullbeam_'+namestrings2[i]+'_mKCMBunits_variance_Q_'+str(nside)+'.fits',\
+				noisedir+'60.0smoothed_PlanckR2fullbeam_'+namestrings2[i]+'_mKCMBunits_variance_U_'+str(nside)+'.fits',comment=comment)
 		except:
 			continue
 	# Bandpass subtracted maps
 	namestrings = ['28.4_256_2015','44.1_256_2015','70.4_256_2015']
 	namestrings2 = ['28.4_1024_2015','44.1_1024_2015','70.4_1024_2015']
-	for namestr in namestrings:
+	for i in range(0,len(namestrings)):
 		try:
-			docombine(outdirectory+str(nside)+'_60.0smoothed_PlanckR2fullbeambpcorrNoise_'+namestr+'_mKCMBunits.fits',\
-				mapdir+str(nside)+'_60.0smoothed_PlanckR2fullbeambpcorr_'+namestr+'_mKCMBunits.fits',\
-				noisedir+'60.0smoothed_PlanckR2fullbeambpcorr_'+namestr2+'_mKCMBunits_variance_'+str(nside)+'.fits',\
-				noisedir+'60.0smoothed_PlanckR2fullbeambpcorr_'+namestr2+'_mKCMBunits_variance_Q_'+str(nside)+'.fits',\
-				noisedir+'60.0smoothed_PlanckR2fullbeambpcorr_'+namestr2+'_mKCMBunits_variance_U_'+str(nside)+'.fits',comment=comment)
+			docombine(outdirectory+str(nside)+'_60.0smoothed_PlanckR2fullbeambpcorrNoise_'+namestrings[i]+'_mKCMBunits.fits',\
+				mapdir+str(nside)+'_60.0smoothed_PlanckR2fullbeambpcorr_'+namestrings[i]+'_mKCMBunits.fits',\
+				noisedir+'60.0smoothed_PlanckR2fullbeambpcorr_'+namestrings2[i]+'_mKCMBunits_variance_'+str(nside)+'.fits',\
+				noisedir+'60.0smoothed_PlanckR2fullbeambpcorr_'+namestrings2[i]+'_mKCMBunits_variance_Q_'+str(nside)+'.fits',\
+				noisedir+'60.0smoothed_PlanckR2fullbeambpcorr_'+namestrings2[i]+'_mKCMBunits_variance_U_'+str(nside)+'.fits',comment=comment)
 		except:
 			continue
 
@@ -118,36 +118,36 @@ os.makedirs(outdirectory, exist_ok=True)
 for nside in output_nside:
 	# Standard maps
 	namestrings = ['28.4_1024_2018','44.1_1024_2018','70.4_1024_2018','100_2048_2018','143_2048_2018','217_2048_2018','353_2048_2018']
-	for namestr in namestrings:
+	for i in range(0,len(namestrings)):
 		try:
-			docombine(outdirectory+str(nside)+'_60.0smoothed_PlanckR3fullbeamNoise_'+namestr+'_mKCMBunits.fits',\
-				mapdir+str(nside)+'_60.0smoothed_PlanckR3fullbeam_'+namestr+'_mKCMBunits.fits',\
-				noisedir+'60.0smoothed_PlanckR3fullbeam_'+namestr+'_mKCMBunits_variance_'+str(nside)+'.fits',\
-				noisedir+'60.0smoothed_PlanckR3fullbeam_'+namestr+'_mKCMBunits_variance_Q_'+str(nside)+'.fits',\
-				noisedir+'60.0smoothed_PlanckR3fullbeam_'+namestr+'_mKCMBunits_variance_U_'+str(nside)+'.fits',comment=comment)
+			docombine(outdirectory+str(nside)+'_60.0smoothed_PlanckR3fullbeamNoise_'+namestrings[i]+'_mKCMBunits.fits',\
+				mapdir+str(nside)+'_60.0smoothed_PlanckR3fullbeam_'+namestrings[i]+'_mKCMBunits.fits',\
+				noisedir+'60.0smoothed_PlanckR3fullbeam_'+namestrings[i]+'_mKCMBunits_variance_'+str(nside)+'.fits',\
+				noisedir+'60.0smoothed_PlanckR3fullbeam_'+namestrings[i]+'_mKCMBunits_variance_Q_'+str(nside)+'.fits',\
+				noisedir+'60.0smoothed_PlanckR3fullbeam_'+namestrings[i]+'_mKCMBunits_variance_U_'+str(nside)+'.fits',comment=comment)
 		except:
 			continue
 	# Bandpass unsubtracted maps
 	namestrings = ['28.4_1024_2018','44.1_1024_2018','70.4_1024_2018']
-	for namestr in namestrings:
+	for i in range(0,len(namestrings)):
 		try:
-			docombine(outdirectory+str(nside)+'_60.0smoothed_PlanckR3fullbeamnobpNoise_'+namestr+'_mKCMBunits.fits',\
-				mapdir+str(nside)+'_60.0smoothed_PlanckR3fullbeamnobp_'+namestr+'_mKCMBunits.fits',\
-				noisedir+'60.0smoothed_PlanckR3fullbeamnobp_'+namestr+'_mKCMBunits_variance_'+str(nside)+'.fits',\
-				noisedir+'60.0smoothed_PlanckR3fullbeamnobp_'+namestr+'_mKCMBunits_variance_Q_'+str(nside)+'.fits',\
-				noisedir+'60.0smoothed_PlanckR3fullbeamnobp_'+namestr+'_mKCMBunits_variance_U_'+str(nside)+'.fits',comment=comment)
+			docombine(outdirectory+str(nside)+'_60.0smoothed_PlanckR3fullbeamnobpNoise_'+namestrings[i]+'_mKCMBunits.fits',\
+				mapdir+str(nside)+'_60.0smoothed_PlanckR3fullbeamnobp_'+namestrings[i]+'_mKCMBunits.fits',\
+				noisedir+'60.0smoothed_PlanckR3fullbeamnobp_'+namestrings[i]+'_mKCMBunits_variance_'+str(nside)+'.fits',\
+				noisedir+'60.0smoothed_PlanckR3fullbeamnobp_'+namestrings[i]+'_mKCMBunits_variance_Q_'+str(nside)+'.fits',\
+				noisedir+'60.0smoothed_PlanckR3fullbeamnobp_'+namestrings[i]+'_mKCMBunits_variance_U_'+str(nside)+'.fits',comment=comment)
 		except:
 			continue
 	# deconvolved maps
 	namestrings = ['dec40_28.4_1024_2018','dec30_44.1_1024_2018','dec20_70.4_1024_2018']
 	namestrings2 = ['28.4_1024_2018','44.1_1024_2018','70.4_1024_2018']
-	for namestr in namestrings:
+	for i in range(0,len(namestrings)):
 		try:
-			docombine(outdirectory+str(nside)+'_60.0smoothed_PlanckR3decNoise_'+namestr+'_mKCMBunits.fits',\
-				mapdir+str(nside)+'_60.0smoothed_PlanckR3'+namestr+'_mKCMBunits.fits',\
-				noisedir+'60.0smoothed_PlanckR3fullbeam_'+namestr2+'_mKCMBunits_variance_'+str(nside)+'.fits',\
-				noisedir+'60.0smoothed_PlanckR3fullbeam_'+namestr2+'_mKCMBunits_variance_Q_'+str(nside)+'.fits',\
-				noisedir+'60.0smoothed_PlanckR3fullbeam_'+namestr2+'_mKCMBunits_variance_U_'+str(nside)+'.fits',comment=comment)
+			docombine(outdirectory+str(nside)+'_60.0smoothed_PlanckR3decNoise_'+namestrings[i]+'_mKCMBunits.fits',\
+				mapdir+str(nside)+'_60.0smoothed_PlanckR3'+namestrings[i]+'_mKCMBunits.fits',\
+				noisedir+'60.0smoothed_PlanckR3fullbeam_'+namestrings2[i]+'_mKCMBunits_variance_'+str(nside)+'.fits',\
+				noisedir+'60.0smoothed_PlanckR3fullbeam_'+namestrings2[i]+'_mKCMBunits_variance_Q_'+str(nside)+'.fits',\
+				noisedir+'60.0smoothed_PlanckR3fullbeam_'+namestrings2[i]+'_mKCMBunits_variance_U_'+str(nside)+'.fits',comment=comment)
 		except:
 			continue
 
@@ -161,24 +161,24 @@ os.makedirs(outdirectory, exist_ok=True)
 for nside in output_nside:
 	# Standard maps
 	namestrings = ['28.4_1024_2020','44.1_1024_2020','70.4_1024_2020','100_2048_2020','143_2048_2020','217_2048_2020','353_2048_2020']
-	for namestr in namestrings:
+	for i in range(0,len(namestrings)):
 		try:
-			docombine(outdirectory+str(nside)+'_60.0smoothed_PlanckR4fullbeamNoise_'+namestr+'_mKCMBunits.fits',\
-				mapdir+str(nside)+'_60.0smoothed_PlanckR4fullbeam_'+namestr+'_mKCMBunits.fits',\
-				noisedir+'60.0smoothed_PlanckR4fullbeam_'+namestr+'_mKCMBunits_variance_'+str(nside)+'.fits',\
-				noisedir+'60.0smoothed_PlanckR4fullbeam_'+namestr+'_mKCMBunits_variance_Q_'+str(nside)+'.fits',\
-				noisedir+'60.0smoothed_PlanckR4fullbeam_'+namestr+'_mKCMBunits_variance_U_'+str(nside)+'.fits',comment=comment)
+			docombine(outdirectory+str(nside)+'_60.0smoothed_PlanckR4fullbeamNoise_'+namestrings[i]+'_mKCMBunits.fits',\
+				mapdir+str(nside)+'_60.0smoothed_PlanckR4fullbeam_'+namestrings[i]+'_mKCMBunits.fits',\
+				noisedir+'60.0smoothed_PlanckR4fullbeam_'+namestrings[i]+'_mKCMBunits_variance_'+str(nside)+'.fits',\
+				noisedir+'60.0smoothed_PlanckR4fullbeam_'+namestrings[i]+'_mKCMBunits_variance_Q_'+str(nside)+'.fits',\
+				noisedir+'60.0smoothed_PlanckR4fullbeam_'+namestrings[i]+'_mKCMBunits_variance_U_'+str(nside)+'.fits',comment=comment)
 		except:
 			continue
 	# Dipole subtracted maps - using the same noise realisations
 	namestrings = ['28.4_1024_2020','44.1_1024_2020','70.4_1024_2020','100_2048_2020','143_2048_2020','217_2048_2020','353_2048_2020']
-	for namestr in namestrings:
+	for i in range(0,len(namestrings)):
 		try:
-			docombine(outdirectory+str(nside)+'_60.0smoothed_PlanckR4fullbeamnodpNoise_'+namestr+'_mKCMBunits.fits',\
-				mapdir+str(nside)+'_60.0smoothed_PlanckR4fullbeamnodp_'+namestr+'_mKCMBunits.fits',\
-				noisedir+'60.0smoothed_PlanckR4fullbeam_'+namestr+'_mKCMBunits_variance_'+str(nside)+'.fits',\
-				noisedir+'60.0smoothed_PlanckR4fullbeam_'+namestr+'_mKCMBunits_variance_Q_'+str(nside)+'.fits',\
-				noisedir+'60.0smoothed_PlanckR4fullbeam_'+namestr+'_mKCMBunits_variance_U_'+str(nside)+'.fits',comment=comment)
+			docombine(outdirectory+str(nside)+'_60.0smoothed_PlanckR4fullbeamnodpNoise_'+namestrings[i]+'_mKCMBunits.fits',\
+				mapdir+str(nside)+'_60.0smoothed_PlanckR4fullbeamnodp_'+namestrings[i]+'_mKCMBunits.fits',\
+				noisedir+'60.0smoothed_PlanckR4fullbeam_'+namestrings[i]+'_mKCMBunits_variance_'+str(nside)+'.fits',\
+				noisedir+'60.0smoothed_PlanckR4fullbeam_'+namestrings[i]+'_mKCMBunits_variance_Q_'+str(nside)+'.fits',\
+				noisedir+'60.0smoothed_PlanckR4fullbeam_'+namestrings[i]+'_mKCMBunits_variance_U_'+str(nside)+'.fits',comment=comment)
 		except:
 			continue
 

@@ -13,6 +13,7 @@
 # Mike Peel    28 Sep 2020    v0.7 Correctly convert the WMAP Nobs maps into variance maps
 # Mike Peel    05 Oct 2020    v0.8 Fix for polarisation noise maps (use var not sigma in cov)
 # Mike Peel    07 Oct 2020    v0.8a Implement a check of QU against QQ and UU to avoid bad pixels
+# Mike Peel    14 Oct 2020    v0.8b Fix an issue with RING/NEST formating
 
 import numpy as np
 import numba
@@ -63,21 +64,23 @@ def smoothnoisemap(indir, outdir, runname, inputmap, mapnumber=[2], fwhm=0.0, nu
 
 	# Read in the input map
 	print(indir+'/'+inputmap)
-	inputfits = fits.open(indir+"/"+inputmap)
-	cols = inputfits[hdu].columns
-	col_names = cols.names
-	nmaps = len(cols)
 	maps = []
 	if usehealpixfits:
 		maps = hp.read_map(indir+inputmap,field=None)
 	else:
+		inputfits = fits.open(indir+"/"+inputmap)
+		cols = inputfits[hdu].columns
+		col_names = cols.names
+		nmaps = len(cols)
 		for i in range(0,nmaps):
 			maps.append(inputfits[hdu].data.field(i))
+		# Check to see whether we have nested data, and switch to ring if that is the case.
+		if (inputfits[hdu].header['ORDERING'] == 'NESTED'):
+			maps = hp.reorder(maps,n2r=True)
+
+
 	nside_in = hp.get_nside(maps)
 
-	# Check to see whether we have nested data, and switch to ring if that is the case.
-	if (inputfits[hdu].header['ORDERING'] == 'NESTED'):
-		maps = hp.reorder(maps,n2r=True)
 
 	for mapnum in mapnumber:
 		maps[mapnum][maps[mapnum]<-1e10] = hp.UNSEEN

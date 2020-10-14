@@ -83,7 +83,7 @@ mapdir = directory+'planck2015_tqu_v1.4/'
 noisedir = directory+'planck2015_tqu_noise_v0.8/'
 outdirectory = directory+"planck2015_tqu_v1.4_noise_v0.8/"
 os.makedirs(outdirectory, exist_ok=True)
-rescale=1000.0
+rescale=1000.0**2
 for nside in output_nside:
 	# Standard maps
 	namestrings = ['28.4_1024_2015','44.1_1024_2015','70.4_2048_2015','100_2048_2015','143_2048_2015','217_2048_2015','353_2048_2015']

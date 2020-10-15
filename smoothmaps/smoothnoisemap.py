@@ -44,20 +44,20 @@ def precalc_C(QQ, UU, QU):
 	QU[check] = 0.99*UU[check]
 	check = (QQ == 0)
 	print('Number of cases where QQ is 0: ' + str(np.sum(check)))
-	QQ[check] = np.min(QQ)
+	QQ[check] = np.min(QQ[QQ!=0.0])
 	check = (UU == 0)
 	print('Number of cases where UU is 0: ' + str(np.sum(check)))
-	UU[check] = np.min(UU)
+	UU[check] = np.min(UU[UU!=0.0])
 	B = np.asarray([[QQ,QU],[QU,UU]]).T
 	# print(B)
 	# This is test code for finding the covariance array that has a problem
-	# for arr in B:
-	# 	try:
-	# 		test = np.linalg.cholesky(arr)
-	# 	except:
-	# 		print(arr)
-	# 		print(np.linalg.eigvalsh(arr))
-	# 		print(np.linalg.cholesky(arr))
+	for arr in B:
+		try:
+			test = np.linalg.cholesky(arr)
+		except:
+			print(arr)
+			print(np.linalg.eigvalsh(arr))
+			print(np.linalg.cholesky(arr))
 	return np.linalg.cholesky(B)
 
 def noiserealisation_QU(C):

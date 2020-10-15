@@ -14,6 +14,7 @@
 # Mike Peel    05 Oct 2020    v0.8 Fix for polarisation noise maps (use var not sigma in cov)
 # Mike Peel    07 Oct 2020    v0.8a Implement a check of QU against QQ and UU to avoid bad pixels
 # Mike Peel    14 Oct 2020    v0.8b Fix an issue with RING/NEST formating
+# Mike Peel    15 Oct 2020    v0.8c Fix an issue with QQ or UU being equal to 0
 # NB: Known bug, the rescale factor does not seem to work!
 
 import numpy as np
@@ -41,13 +42,22 @@ def precalc_C(QQ, UU, QU):
 	check = (np.abs(QU) > UU)
 	print('Number of cases where QU is greater than UU: ' + str(np.sum(check)))
 	QU[check] = 0.99*UU[check]
+	check = (QQ == 0)
+	print('Number of cases where QQ is 0: ' + str(np.sum(check)))
+	QQ[check] = np.min(QQ)
+	check = (UU == 0)
+	print('Number of cases where UU is 0: ' + str(np.sum(check)))
+	UU[check] = np.min(UU)
 	B = np.asarray([[QQ,QU],[QU,UU]]).T
 	# print(B)
 	# This is test code for finding the covariance array that has a problem
 	# for arr in B:
-	# 	print(arr)
-	# 	print(np.linalg.eigvalsh(arr))
-	# 	print(np.linalg.cholesky(arr))
+	# 	try:
+	# 		test = np.linalg.cholesky(arr)
+	# 	except:
+	# 		print(arr)
+	# 		print(np.linalg.eigvalsh(arr))
+	# 		print(np.linalg.cholesky(arr))
 	return np.linalg.cholesky(B)
 
 def noiserealisation_QU(C):

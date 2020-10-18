@@ -323,7 +323,7 @@ def smoothnoisemap(indir, outdir, runname, inputmap, mapnumber=[2], fwhm=0.0, nu
 			returnmap_Q.append(np.zeros(hp.nside2npix(output_nside)))
 			returnmap_U.append(np.zeros(hp.nside2npix(output_nside)))
 		hp.write_map(outdir+"/"+runname+"_varmap_QQ.fits",noisemap[1],overwrite=True)
-		hp.write_map(outdir+"/"+runname+"_varemap_UU.fits",noisemap[2],overwrite=True)
+		hp.write_map(outdir+"/"+runname+"_varmap_UU.fits",noisemap[2],overwrite=True)
 		hp.write_map(outdir+"/"+runname+"_varmap_QU.fits",noisemap[3],overwrite=True)
 
 		# Prepare the array

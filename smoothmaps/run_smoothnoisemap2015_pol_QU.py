@@ -57,6 +57,7 @@ for i in range(0,numres):
 
 	# LFI, with bandpass subtraction
 	# Note that the signal maps are smoothed - assuming the variance maps aren't!
+	# ... can't assume that, the variance maps are also at 1°!
 	smoothnoisemap(directory+'planck2015/', outdirectory, resolution+'smoothed_PlanckR2fullbeambpcorr_28.4_1024_2015_mKCMBunits', 'LFI_SkyMap_030-BPassCorrected_0256_R2.01_full.fits',mapnumber=mapnumbers_bpcorrect,numrealisations=numrealisations,fwhm=output_resolution[i],nside=output_nside[output_nside<=256],windowfunction=beamtf_p30,rescale=rescale,do_intensity=True,do_polarisation=True,units_out=units_out)
 	smoothnoisemap(directory+'planck2015/', outdirectory, resolution+'smoothed_PlanckR2fullbeambpcorr_44.1_1024_2015_mKCMBunits', 'LFI_SkyMap_044-BPassCorrected_0256_R2.01_full.fits',mapnumber=mapnumbers_bpcorrect,numrealisations=numrealisations,fwhm=output_resolution[i],nside=output_nside[output_nside<=256],windowfunction=beamtf_p44,rescale=rescale,do_intensity=True,do_polarisation=True,units_out=units_out)
 	smoothnoisemap(directory+'planck2015/', outdirectory, resolution+'smoothed_PlanckR2fullbeambpcorr_70.4_1024_2015_mKCMBunits', 'LFI_SkyMap_070-BPassCorrected_0256_R2.01_full.fits',mapnumber=mapnumbers_bpcorrect,numrealisations=numrealisations,fwhm=output_resolution[i],nside=output_nside[output_nside<=256],windowfunction=beamtf_p70,rescale=rescale,do_intensity=True,do_polarisation=True,units_out=units_out)

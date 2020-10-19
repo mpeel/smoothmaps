@@ -33,9 +33,9 @@ def docombine(outfile, iqu_file, II_file, QQ_file, UU_file,rescale=1.0,comment='
 		uu,huu = hp.read_map(UU_file.replace('60.0','60.00'),field=None,h=True)
 
 	cols = []
-	cols.append(fits.Column(name='I', format='E', array=iqu[0]))
-	cols.append(fits.Column(name='Q', format='E', array=iqu[1]))
-	cols.append(fits.Column(name='U', format='E', array=iqu[2]))
+	cols.append(fits.Column(name='I', format='E', array=np.asarray(iqu[0])))
+	cols.append(fits.Column(name='Q', format='E', array=np.asarray(iqu[1])))
+	cols.append(fits.Column(name='U', format='E', array=np.asarray(iqu[2])))
 	cols.append(fits.Column(name='II_cov', format='E', array=np.asarray(ii)*rescale))
 	cols.append(fits.Column(name='QQ_cov', format='E', array=np.asarray(qq)*rescale))
 	cols.append(fits.Column(name='UU_cov', format='E', array=np.asarray(uu)*rescale))
@@ -118,7 +118,7 @@ os.makedirs(outdirectory, exist_ok=True)
 for nside in output_nside:
 	# Standard maps
 	namestrings = ['28.4_1024_2018','44.1_1024_2018','70.4_1024_2018','100_2048_2018','143_2048_2018','217_2048_2018','353_2048_2018']
-	namestrings2 = ['28.4_1024_2018','44.1_1024_2018','70.4_1024_2018','100_1024_2018','143_1024_2018','217_1024_2018','353_1024_2018']
+	namestrings2 = ['28.4_1024_2018','44.1_1024_2018','70.4_1024_2018','100_1024_2018','143_1024_2018','217_2048_2018','353_2048_2018']
 	for i in range(0,len(namestrings)):
 		try:
 			docombine(outdirectory+str(nside)+'_60.0smoothed_PlanckR3fullbeamNoise_'+namestrings[i]+'_mKCMBunits.fits',\

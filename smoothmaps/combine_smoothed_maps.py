@@ -12,6 +12,7 @@ def get_header_val(hdr,search):
 	return ''
 
 def docombine(outfile, iqu_file, II_file, QQ_file, UU_file,rescale=1.0,comment=''):
+	print(outfile)
 	if os.path.isfile(outfile):
 		print("You already have a file with the output name " + outfile + "! Not going to overwrite it. Move it, or set a new output filename, and try again!")
 		return
@@ -20,18 +21,23 @@ def docombine(outfile, iqu_file, II_file, QQ_file, UU_file,rescale=1.0,comment='
 	except:
 		iqu,h = hp.read_map(iqu_file.replace('60.0','60.00'),field=None,h=True)
 	try:
-		ii,hii = hp.read_map(II_file,field=None,h=True)
+		ii,hii = hp.read_map(II_file,h=True)
 	except:
-		ii,hii = hp.read_map(II_file.replace('60.0','60.00'),field=None,h=True)
+		ii,hii = hp.read_map(II_file.replace('60.0','60.00'),h=True)
 	try:
 		qq,hqq = hp.read_map(QQ_file,field=None,h=True)
 	except:
-		qq,hqq = hp.read_map(QQ_file.replace('60.0','60.00'),field=None,h=True)
+		qq,hqq = hp.read_map(QQ_file.replace('60.0','60.00'),h=True)
 	try:
-		uu,huu = hp.read_map(UU_file,field=None,h=True)
+		uu,huu = hp.read_map(UU_file,h=True)
 	except:
-		uu,huu = hp.read_map(UU_file.replace('60.0','60.00'),field=None,h=True)
-
+		uu,huu = hp.read_map(UU_file.replace('60.0','60.00'),h=True)
+	print(np.shape(iqu[0]))
+	print(np.shape(iqu[1]))
+	print(np.shape(iqu[2]))
+	print(np.shape(ii))
+	print(np.shape(qq))
+	print(np.shape(uu))
 	cols = []
 	cols.append(fits.Column(name='I', format='E', array=np.asarray(iqu[0])))
 	cols.append(fits.Column(name='Q', format='E', array=np.asarray(iqu[1])))

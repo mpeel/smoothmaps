@@ -51,7 +51,7 @@ def docombine(outfile, iqu_file, II_file, QQ_file, UU_file,rescale=1.0,comment='
 	bin_hdu.header['POLCONV']='COSMO'
 	bin_hdu.header['PIXTYPE']='HEALPIX'
 	bin_hdu.header['COMMENT']=comment
-	bin_hdu.header['NSIDE'] = get_header_val(h,'NSIDE')
+	bin_hdu.header['NSIDE'] = get_header_val(hii,'NSIDE')
 	bin_hdu.header['TUNIT1'] = get_header_val(h,'TUNIT1')
 	bin_hdu.header['TUNIT2'] = get_header_val(h,'TUNIT2')
 	bin_hdu.header['TUNIT3'] = get_header_val(h,'TUNIT3')

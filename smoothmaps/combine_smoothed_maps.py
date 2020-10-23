@@ -124,7 +124,7 @@ os.makedirs(outdirectory, exist_ok=True)
 for nside in output_nside:
 	# Standard maps
 	namestrings = ['28.4_1024_2018','44.1_1024_2018','70.4_1024_2018','100_2048_2018','143_2048_2018','217_2048_2018','353_2048_2018']
-	namestrings2 = ['28.4_1024_2018','44.1_1024_2018','70.4_1024_2018','100_1024_2018','143_1024_2018','217_2048_2018','353_2048_2018']
+	namestrings2 = ['28.4_1024_2018','44.1_1024_2018','70.4_1024_2018','100_1024_2018','143_1024_2018','217_1024_2018','353_1024_2018']
 	for i in range(0,len(namestrings)):
 		try:
 			docombine(outdirectory+str(nside)+'_60.0smoothed_PlanckR3fullbeamNoise_'+namestrings[i]+'_mKCMBunits.fits',\

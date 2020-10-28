@@ -130,9 +130,9 @@ for nside in output_nside:
 	namestrings2 = ['545_1024_2015','44.1_1024_2015']
 	for i in range(0,len(namestrings)):
 		# try:
-		docombine(outdirectory+str(nside)+'_60.0smoothed_PlanckR2fullbeambpcorrNoise_'+namestrings[i]+'_mKCMBunits.fits',\
-			mapdir+str(nside)+'_60.0smoothed_PlanckR2fullbeambpcorr_'+namestrings[i]+'_mKCMBunits.fits',\
-			noisedir+'60.0smoothed_PlanckR2fullbeambpcorr_'+namestrings2[i]+'_mKCMBunits_variance_'+str(nside)+'.fits',comment=comment,rescale=rescale)
+		docombine(outdirectory+str(nside)+'_60.0smoothed_PlanckR2fullbeamNoise_'+namestrings[i]+'_MJySrunits.fits',\
+			mapdir+str(nside)+'_60.0smoothed_PlanckR2fullbeam_'+namestrings[i]+'_MJySrunits.fits',\
+			noisedir+'60.0smoothed_PlanckR2fullbeam_'+namestrings2[i]+'_MJySrunits_variance_'+str(nside)+'.fits',comment=comment,rescale=rescale)
 		# except:
 		# 	continue
 
@@ -158,12 +158,12 @@ for nside in output_nside:
 	namestrings = ['545_2048_2018','857_2048_2018']
 	namestrings2 = ['545_1024_2018','857_1024_2018']
 	for i in range(0,len(namestrings)):
-		try:
-			docombine(outdirectory+str(nside)+'_60.0smoothed_PlanckR3fullbeamNoise_'+namestrings[i]+'_mKCMBunits.fits',\
-				mapdir+str(nside)+'_60.0smoothed_PlanckR3fullbeam_'+namestrings[i]+'_mKCMBunits.fits',\
-				noisedir+'60.0smoothed_PlanckR3fullbeam_'+namestrings2[i]+'_mKCMBunits_variance_'+str(nside)+'.fits',comment=comment,rescale=rescale)
-		except:
-			continue
+		# try:
+		docombine(outdirectory+str(nside)+'_60.0smoothed_PlanckR3fullbeamNoise_'+namestrings[i]+'_MJySrunits.fits',\
+			mapdir+str(nside)+'_60.0smoothed_PlanckR3fullbeam_'+namestrings[i]+'_MJySrunits.fits',\
+			noisedir+'60.0smoothed_PlanckR3fullbeam_'+namestrings2[i]+'_MJySrunits_variance_'+str(nside)+'.fits',comment=comment,rescale=rescale)
+		# except:
+		# 	continue
 	# Bandpass unsubtracted maps
 	namestrings = ['28.4_1024_2018','44.1_1024_2018','70.4_1024_2018']
 	for i in range(0,len(namestrings)):
@@ -221,10 +221,10 @@ for nside in output_nside:
 	# Intensity only maps
 	namestrings = ['545_2048_2020','857_2048_2020']
 	for i in range(0,len(namestrings)):
-		try:
-			docombine(outdirectory+str(nside)+'_60.0smoothed_PlanckR4fullbeamNoise_'+namestrings[i]+'_mKCMBunits.fits',\
-				mapdir+str(nside)+'_60.0smoothed_PlanckR4fullbeam_'+namestrings[i]+'_mKCMBunits.fits',\
-				noisedir+'60.0smoothed_PlanckR4fullbeam_'+namestrings[i]+'_mKCMBunits_variance_'+str(nside)+'.fits',comment=comment,rescale=rescale)
-		except:
-			continue
+		# try:
+		docombine(outdirectory+str(nside)+'_60.0smoothed_PlanckR4fullbeamNoise_'+namestrings[i]+'_MJySrunits.fits',\
+			mapdir+str(nside)+'_60.0smoothed_PlanckR4fullbeam_'+namestrings[i]+'_MJySrunits.fits',\
+			noisedir+'60.0smoothed_PlanckR4fullbeam_'+namestrings[i]+'_MJySrunits_variance_'+str(nside)+'.fits',comment=comment,rescale=rescale)
+		# except:
+		# 	continue
 

@@ -129,12 +129,12 @@ for nside in output_nside:
 	namestrings = ['545_2048_2015','857_2048_2015']
 	namestrings2 = ['545_1024_2015','44.1_1024_2015']
 	for i in range(0,len(namestrings)):
-		try:
-			docombine(outdirectory+str(nside)+'_60.0smoothed_PlanckR2fullbeambpcorrNoise_'+namestrings[i]+'_mKCMBunits.fits',\
-				mapdir+str(nside)+'_60.0smoothed_PlanckR2fullbeambpcorr_'+namestrings[i]+'_mKCMBunits.fits',\
-				noisedir+'60.0smoothed_PlanckR2fullbeambpcorr_'+namestrings2[i]+'_mKCMBunits_variance_'+str(nside)+'.fits',comment=comment,rescale=rescale)
-		except:
-			continue
+		# try:
+		docombine(outdirectory+str(nside)+'_60.0smoothed_PlanckR2fullbeambpcorrNoise_'+namestrings[i]+'_mKCMBunits.fits',\
+			mapdir+str(nside)+'_60.0smoothed_PlanckR2fullbeambpcorr_'+namestrings[i]+'_mKCMBunits.fits',\
+			noisedir+'60.0smoothed_PlanckR2fullbeambpcorr_'+namestrings2[i]+'_mKCMBunits_variance_'+str(nside)+'.fits',comment=comment,rescale=rescale)
+		# except:
+		# 	continue
 
 # Planck 2018
 mapdir = directory+'planck2018_tqu_v1.4/'

@@ -127,7 +127,7 @@ for nside in output_nside:
 
 	# I only maps
 	namestrings = ['545_2048_2015','857_2048_2015']
-	namestrings2 = ['545_1024_2015','44.1_1024_2015']
+	namestrings2 = ['545_1024_2015','857_1024_2015']
 	for i in range(0,len(namestrings)):
 		# try:
 		docombine(outdirectory+str(nside)+'_60.0smoothed_PlanckR2fullbeamNoise_'+namestrings[i]+'_MJySrunits.fits',\

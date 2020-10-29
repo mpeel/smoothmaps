@@ -65,7 +65,7 @@ def noiserealisation_QU(C):
 	Q,U = np.einsum('nij,nj->ni', C, vals).T
 	return Q, U
 
-def smoothnoisemap(indir, outdir, runname, inputmap, mapnumber=[2], fwhm=0.0, numrealisations=10, sigma_0 = 0.0,sigma_P=0.0, nside=[512], windowfunction = [], rescale=1.0,usehealpixfits=False,taper=False,lmin_taper=350,lmax_taper=600,taper_gauss=False,taper_gauss_sigma=0.0,normalise=True,hdu=1, use_covariance=False, do_intensity=True, do_polarisation=False, units_out='mK'):
+def smoothnoisemap(indir, outdir, runname, inputmap, mapnumber=[2], fwhm=0.0, numrealisations=10, sigma_0 = 0.0,sigma_P=0.0, nside=[512], windowfunction = [], rescale=1.0,usehealpixfits=False,taper=False,lmin_taper=350,lmax_taper=600,taper_gauss=False,taper_gauss_sigma=0.0,normalise=True,hdu=1, use_covariance=False, do_intensity=True, do_polarisation=False, units_out='mK',do_smoothing=True):
 	ver = "0.8"
 
 	if (os.path.isfile(indir+"/"+runname+"_actualvariance.fits")):
@@ -243,10 +243,11 @@ def smoothnoisemap(indir, outdir, runname, inputmap, mapnumber=[2], fwhm=0.0, nu
 				print(i)
 			# Generate the noise realisation
 			newmap = noiserealisation(noisemap[0], numpixels_orig)
-			# smooth it
-			alms = hp.map2alm(newmap)#,lmax=4*nside_in)
-			alms = hp.almxfl(alms, conv_windowfunction)
-			newmap = hp.alm2map(alms, nside_in)#,lmax=4*nside_in)
+			if do_smoothing:
+				# smooth it
+				alms = hp.map2alm(newmap)#,lmax=4*nside_in)
+				alms = hp.almxfl(alms, conv_windowfunction)
+				newmap = hp.alm2map(alms, nside_in)#,lmax=4*nside_in)
 			for j in range(0,num_nside):
 				newmap_udgrade = hp.ud_grade(newmap, nside[j], power=0)
 				returnmap[j][:] = returnmap[j][:] + np.square(newmap_udgrade)
@@ -335,13 +336,14 @@ def smoothnoisemap(indir, outdir, runname, inputmap, mapnumber=[2], fwhm=0.0, nu
 				print(i)
 			# Generate the noise realisation
 			newmap_Q, newmap_U = noiserealisation_QU(C)
-			# smooth it
-			alms = hp.map2alm(newmap_Q)#,lmax=4*nside_in)
-			alms = hp.almxfl(alms, conv_windowfunction)
-			newmap_Q = hp.alm2map(alms, nside_in)#,lmax=4*nside_in)
-			alms = hp.map2alm(newmap_U)#,lmax=4*nside_in)
-			alms = hp.almxfl(alms, conv_windowfunction)
-			newmap_U = hp.alm2map(alms, nside_in)#,lmax=4*nside_in)
+			if do_smoothing:
+				# smooth it
+				alms = hp.map2alm(newmap_Q)#,lmax=4*nside_in)
+				alms = hp.almxfl(alms, conv_windowfunction)
+				newmap_Q = hp.alm2map(alms, nside_in)#,lmax=4*nside_in)
+				alms = hp.map2alm(newmap_U)#,lmax=4*nside_in)
+				alms = hp.almxfl(alms, conv_windowfunction)
+				newmap_U = hp.alm2map(alms, nside_in)#,lmax=4*nside_in)
 			for j in range(0,num_nside):
 				newmap_Q_udgrade = hp.ud_grade(newmap_Q, nside[j], power=0)
 				newmap_U_udgrade = hp.ud_grade(newmap_U, nside[j], power=0)

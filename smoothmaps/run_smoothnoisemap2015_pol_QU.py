@@ -28,9 +28,9 @@ mapnumbers_bpcorrect = [3,4,5,6] # Because the bp-corrected ones are different
 rescale = 1000.0 # Convert from K to mK - this is applied to the noise map
 units_out = 'mK' # Must match rescale!
 numres = len(output_resolution)
-directory = '/Users/mpeel/Documents/maps/'
+# directory = '/Users/mpeel/Documents/maps/'
 # directory = '/scratch1/mpeel/maps/'
-# directory = '/share/nas_cbassarc/mpeel/'
+directory = '/share/nas_cbassarc/mpeel/'
 outdirectory = directory+"planck2015_tqu_noise_v0.8/"
 os.makedirs(outdirectory, exist_ok=True)
 

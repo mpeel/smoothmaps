@@ -28,9 +28,9 @@ mapnumbers_bpcorrect = [3,4,5,6] # Because the bp-corrected ones are different
 rescale = 1000.0 # Convert from K to mK - this is applied to the noise map
 units_out = 'mK' # Must match rescale!
 numres = len(output_resolution)
-# directory = '/Users/mpeel/Documents/maps/'
+directory = '/Users/mpeel/Documents/maps/'
 # directory = '/scratch1/mpeel/maps/'
-directory = '/share/nas_cbassarc/mpeel/'
+# directory = '/share/nas_cbassarc/mpeel/'
 outdirectory = directory+"planck2015_tqu_noise_v0.8/"
 os.makedirs(outdirectory, exist_ok=True)
 
@@ -73,7 +73,6 @@ for i in range(0,numres):
 	# smoothnoisemap(directory+'planck2015/', outdirectory, resolution+'smoothed_PlanckR2fullbeam_857_1024_2015_MJySrunits', 'HFI_SkyMap_857_2048_R2.02_full.fits',mapnumber=[2],numrealisations=numrealisations,fwhm=output_resolution[i],nside=output_nside,windowfunction=beamtf_p857,do_intensity=True,do_polarisation=False,units_out='MJySr')
 
 	# The bandpass correction variances - already at 1°, but we want to get ud_graded versions
-	mapnumbers = [4, 5, 6, 7] # II,QQ,UU,QU
-	smoothnoisemap(directory+'planck2015/', outdirectory, resolution+'smoothed_PlanckR2bpasscorrection_30_MJySrunits', 'LFI_CorrMap_030-BPassCorr_0256_R2.01_full.fits',mapnumber=mapnumbers,numrealisations=numrealisations,fwhm=output_resolution[i],nside=output_nside,windowfunction=beamtf_p30,do_intensity=False,do_polarisation=True,units_out=units_out,do_smoothing=False,usehealpixfits=True)
-	smoothnoisemap(directory+'planck2015/', outdirectory, resolution+'smoothed_PlanckR2bpasscorrection_44_MJySrunits', 'LFI_CorrMap_044-BPassCorr_0256_R2.01_full.fits',mapnumber=mapnumbers,numrealisations=numrealisations,fwhm=output_resolution[i],nside=output_nside,windowfunction=beamtf_p44,do_intensity=False,do_polarisation=True,units_out=units_out,do_smoothing=False,usehealpixfits=True)
-	smoothnoisemap(directory+'planck2015/', outdirectory, resolution+'smoothed_PlanckR2bpasscorrection_70_MJySrunits', 'LFI_CorrMap_070-BPassCorr_0256_R2.01_full.fits',mapnumber=mapnumbers,numrealisations=numrealisations,fwhm=output_resolution[i],nside=output_nside,windowfunction=beamtf_p70,do_intensity=False,do_polarisation=True,units_out=units_out,do_smoothing=False,usehealpixfits=True)
+	smoothnoisemap(directory+'planck2015/', outdirectory, resolution+'smoothed_PlanckR2bpasscorrection_30_MJySrunits', 'LFI_CorrMap_030-BPassCorr_0256_R2.01_full.fits',mapnumber=mapnumbers_bpcorrect,numrealisations=numrealisations,fwhm=output_resolution[i],nside=output_nside,windowfunction=beamtf_p30,do_intensity=False,do_polarisation=True,units_out=units_out,do_smoothing=False,usehealpixfits=True)
+	smoothnoisemap(directory+'planck2015/', outdirectory, resolution+'smoothed_PlanckR2bpasscorrection_44_MJySrunits', 'LFI_CorrMap_044-BPassCorr_0256_R2.01_full.fits',mapnumber=mapnumbers_bpcorrect,numrealisations=numrealisations,fwhm=output_resolution[i],nside=output_nside,windowfunction=beamtf_p44,do_intensity=False,do_polarisation=True,units_out=units_out,do_smoothing=False,usehealpixfits=True)
+	smoothnoisemap(directory+'planck2015/', outdirectory, resolution+'smoothed_PlanckR2bpasscorrection_70_MJySrunits', 'LFI_CorrMap_070-BPassCorr_0256_R2.01_full.fits',mapnumber=mapnumbers_bpcorrect,numrealisations=numrealisations,fwhm=output_resolution[i],nside=output_nside,windowfunction=beamtf_p70,do_intensity=False,do_polarisation=True,units_out=units_out,do_smoothing=False,usehealpixfits=True)

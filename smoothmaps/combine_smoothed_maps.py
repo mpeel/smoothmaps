@@ -129,15 +129,15 @@ for nside in output_nside:
 	namestrings2 = ['28.4_1024_2015','44.1_1024_2015','70.4_1024_2015']
 	namestrings3 = ['30', '44', '70']
 	for i in range(0,len(namestrings)):
-		try:
-			docombine(outdirectory+str(nside)+'_60.0smoothed_PlanckR2fullbeambpcorrNoise_'+namestrings[i]+'_mKCMBunits.fits',\
-				mapdir+str(nside)+'_60.0smoothed_PlanckR2fullbeambpcorr_'+namestrings[i]+'_mKCMBunits.fits',\
-				noisedir+'60.0smoothed_PlanckR2fullbeam_'+namestrings2[i]+'_mKCMBunits_variance_'+str(nside)+'.fits',\
-				noisedir+'60.0smoothed_PlanckR2fullbeam_'+namestrings2[i]+'_mKCMBunits_variance_Q_'+str(nside)+'.fits',\
-				noisedir+'60.0smoothed_PlanckR2fullbeam_'+namestrings2[i]+'_mKCMBunits_variance_U_'+str(nside)+'.fits',comment=comment,rescale=rescale,	QQ_add = noisedir+'60.0smoothed_PlanckR2bpasscorrection_'+namestrings3[i]+'_mKCMBunits_variance_Q_'+str(nside)+'.fits',	UU_add = noisedir+'60.0smoothed_PlanckR2bpasscorrection_'+namestrings3[i]+'_mKCMBunits_variance_U_'+str(nside)+'.fits',add_rescale=1e6)
+		# try:
+		docombine(outdirectory+str(nside)+'_60.0smoothed_PlanckR2fullbeambpcorrNoise_'+namestrings[i]+'_mKCMBunits.fits',\
+			mapdir+str(nside)+'_60.0smoothed_PlanckR2fullbeambpcorr_'+namestrings[i]+'_mKCMBunits.fits',\
+			noisedir+'60.0smoothed_PlanckR2fullbeam_'+namestrings2[i]+'_mKCMBunits_variance_'+str(nside)+'.fits',\
+			noisedir+'60.0smoothed_PlanckR2fullbeam_'+namestrings2[i]+'_mKCMBunits_variance_Q_'+str(nside)+'.fits',\
+			noisedir+'60.0smoothed_PlanckR2fullbeam_'+namestrings2[i]+'_mKCMBunits_variance_U_'+str(nside)+'.fits',comment=comment,rescale=rescale,	QQ_add = noisedir+'60.0smoothed_PlanckR2bpasscorrection_'+namestrings3[i]+'_mKCMBunits_variance_Q_'+str(nside)+'.fits',	UU_add = noisedir+'60.0smoothed_PlanckR2bpasscorrection_'+namestrings3[i]+'_mKCMBunits_variance_U_'+str(nside)+'.fits',add_rescale=1e6)
 			
-		except:
-			continue
+		# except:
+		# 	continue
 
 	# I only maps
 	namestrings = ['545_2048_2015','857_2048_2015']
@@ -238,7 +238,7 @@ for nside in output_nside:
 		# try:
 		docombine(outdirectory+str(nside)+'_60.0smoothed_PlanckR4fullbeamNoise_'+namestrings[i]+'_MJySrunits.fits',\
 			mapdir+str(nside)+'_60.0smoothed_PlanckR4fullbeam_'+namestrings[i]+'_MJySrunits.fits',\
-			noisedir+'60.0smoothed_PlanckR4fullbeam_'+namestrings[i]+'_MJySrunits_variance_'+str(nside)+'.fits',comment=comment,rescale=rescale)
+			noisedir+'60.0smoothed_PlanckR3fullbeam_'+namestrings[i]+'_MJySrunits_variance_'+str(nside)+'.fits',comment=comment,rescale=rescale)
 		# except:
 		# 	continue
 

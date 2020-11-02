@@ -3,8 +3,7 @@ from astrocode.colourcorrections.fastcc import *
 import os
 
 # General settings
-# nside = 512
-nside = 64
+nside = 256
 indexes = [-3.0]
 
 # Settings for this run file
@@ -22,9 +21,10 @@ freqs = [17,19,11,13,17,19]
 normfreq = 28.4
 # planckver = '2015'
 # planckver = '2015nobp'
-planckver = '2018'
-# planckver = '2018dec'
-#planckver = '2020'
+# planckver = '2018'
+# planckver = '2018nobp'
+planckver = '2018dec'
+# planckver = '2020'
 only_wmap = False
 only_planck = False
 version='tqu_v1.4_noise_v0.8'
@@ -43,19 +43,22 @@ for index in indexes:
 		if planckver == '2015':
 			outdirectory = indirectory+'weighted_wmap_planck_'+version+'/'
 			prefix='wmap9_planck2015_'+version
-			nside = 256
 			maps = ['planck2015_'+version+'/'+str(nside)+'_60.0smoothed_PlanckR2fullbeambpcorrNoise_28.4_256_2015_mKCMBunits.fits','planck2015_'+version+'/'+str(nside)+'_60.0smoothed_PlanckR2fullbeambpcorrNoise_44.1_256_2015_mKCMBunits.fits','wmap9_'+version+'/'+str(nside)+'_60.0smoothed_wmap9beamNoise_22.8_512_2013_mKCMBunits.fits','wmap9_'+version+'/'+str(nside)+'_60.0smoothed_wmap9beamNoise_33.0_512_2013_mKCMBunits.fits','wmap9_'+version+'/'+str(nside)+'_60.0smoothed_wmap9beamNoise_40.7_512_2013_mKCMBunits.fits']
 			varianceindex=[[3,4,5], [3,4,5], [3,4,5], [3,4,5], [3,4,5]]
 		elif planckver == '2015nobp':
 			outdirectory = indirectory+'weighted_wmap_planck_'+version+'/'
 			prefix='wmap9_planck2015nobp_'+version
-			nside = 256
 			maps = ['planck2015_'+version+'/'+str(nside)+'_60.0smoothed_PlanckR2fullbeamNoise_28.4_1024_2015_mKCMBunits.fits','planck2015_'+version+'/'+str(nside)+'_60.0smoothed_PlanckR2fullbeamNoise_44.1_1024_2015_mKCMBunits.fits','wmap9_'+version+'/'+str(nside)+'_60.0smoothed_wmap9beamNoise_22.8_512_2013_mKCMBunits.fits','wmap9_'+version+'/'+str(nside)+'_60.0smoothed_wmap9beamNoise_33.0_512_2013_mKCMBunits.fits','wmap9_'+version+'/'+str(nside)+'_60.0smoothed_wmap9beamNoise_40.7_512_2013_mKCMBunits.fits']
 			varianceindex=[[3,4,5], [3,4,5], [3,4,5], [3,4,5], [3,4,5]]
 		elif planckver == '2018':
 			outdirectory = indirectory+'weighted_wmap_planck_'+version+'/'
 			prefix='wmap9_planck2018_'+version
 			maps = ['planck2018_'+version+'/'+str(nside)+'_60.0smoothed_PlanckR3fullbeamNoise_28.4_1024_2018_mKCMBunits.fits','planck2018_'+version+'/'+str(nside)+'_60.0smoothed_PlanckR3fullbeamNoise_44.1_1024_2018_mKCMBunits.fits','wmap9_'+version+'/'+str(nside)+'_60.0smoothed_wmap9beamNoise_22.8_512_2013_mKCMBunits.fits','wmap9_'+version+'/'+str(nside)+'_60.0smoothed_wmap9beamNoise_33.0_512_2013_mKCMBunits.fits','wmap9_'+version+'/'+str(nside)+'_60.0smoothed_wmap9beamNoise_40.7_512_2013_mKCMBunits.fits']
+			varianceindex=[[3,4,5], [3,4,5], [3,4,5], [3,4,5], [3,4,5]]
+		elif planckver == '2018nobp':
+			outdirectory = indirectory+'weighted_wmap_planck_'+version+'/'
+			prefix='wmap9_planck2018nobp_'+version
+			maps = ['planck2018_'+version+'/'+str(nside)+'_60.0smoothed_PlanckR3fullbeamnobpNoise_28.4_1024_2018_mKCMBunits.fits','planck2018_'+version+'/'+str(nside)+'_60.0smoothed_PlanckR3fullbeamnobpNoise_44.1_1024_2018_mKCMBunits.fits','wmap9_'+version+'/'+str(nside)+'_60.0smoothed_wmap9beamNoise_22.8_512_2013_mKCMBunits.fits','wmap9_'+version+'/'+str(nside)+'_60.0smoothed_wmap9beamNoise_33.0_512_2013_mKCMBunits.fits','wmap9_'+version+'/'+str(nside)+'_60.0smoothed_wmap9beamNoise_40.7_512_2013_mKCMBunits.fits']
 			varianceindex=[[3,4,5], [3,4,5], [3,4,5], [3,4,5], [3,4,5]]
 		elif planckver == '2018dec':
 			outdirectory = indirectory+'weighted_wmap_planck_'+version+'/'

@@ -90,7 +90,7 @@ comment = "Smoothed using Mike Peel's smoothmap.py v1.4 and smoothnoisemap.py v0
 # Planck 2020
 mapdir = directory+'planck2020_tqu_v1.4/'
 noisedir = directory+'planck2020_tqu_noise_v0.8/'
-outdirectory = directory+"planck2020_tqu_v1.4_noise_v0.8/"
+outdirectory = directory+"planck2020_tqu_v1.4_noise_v0.8_20arcmin/"
 os.makedirs(outdirectory, exist_ok=True)
 for nside in output_nside:
 	# Standard maps

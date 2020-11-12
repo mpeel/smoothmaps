@@ -92,6 +92,7 @@ mapdir = directory+'planck2020_tqu_v1.4/'
 noisedir = directory+'planck2020_tqu_noise_v0.8/'
 outdirectory = directory+"planck2020_tqu_v1.4_noise_v0.8_20arcmin/"
 os.makedirs(outdirectory, exist_ok=True)
+rescale=1000.0**2
 for nside in output_nside:
 	# Standard maps
 	namestrings = ['100_2048_2020','143_2048_2020','217_2048_2020','353_2048_2020']

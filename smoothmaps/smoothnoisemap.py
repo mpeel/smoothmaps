@@ -15,6 +15,7 @@
 # Mike Peel    07 Oct 2020    v0.8a Implement a check of QU against QQ and UU to avoid bad pixels
 # Mike Peel    14 Oct 2020    v0.8b Fix an issue with RING/NEST formating
 # Mike Peel    15 Oct 2020    v0.8c Fix an issue with QQ or UU being equal to 0
+# Mike Peel    03 Dec 2020    v0.9 Add QU to the output
 # NB: Known bug, the rescale factor does not seem to work!
 
 import numpy as np
@@ -66,7 +67,7 @@ def noiserealisation_QU(C):
 	return Q, U
 
 def smoothnoisemap(indir, outdir, runname, inputmap, mapnumber=[2], fwhm=0.0, numrealisations=10, sigma_0 = 0.0,sigma_P=0.0, nside=[512], windowfunction = [], rescale=1.0,usehealpixfits=False,taper=False,lmin_taper=350,lmax_taper=600,taper_gauss=False,taper_gauss_sigma=0.0,normalise=True,hdu=1, use_covariance=False, do_intensity=True, do_polarisation=False, units_out='mK',do_smoothing=True):
-	ver = "0.8"
+	ver = "0.9"
 
 	if (os.path.isfile(indir+"/"+runname+"_actualvariance.fits")):
 		print("You already have a file with the output name " + indir+"/"+runname+"_actualvariance.fits" + "! Not going to overwrite it. Move it, or set a new output filename, and try again!")
@@ -320,9 +321,11 @@ def smoothnoisemap(indir, outdir, runname, inputmap, mapnumber=[2], fwhm=0.0, nu
 		# ... and now for polarisation
 		returnmap_Q = []
 		returnmap_U = []
+		returnmap_QU = []
 		for output_nside in nside:
 			returnmap_Q.append(np.zeros(hp.nside2npix(output_nside)))
 			returnmap_U.append(np.zeros(hp.nside2npix(output_nside)))
+			returnmap_QU.append(np.zeros(hp.nside2npix(output_nside)))
 		hp.write_map(outdir+"/"+runname+"_varmap_QQ.fits",noisemap[1],overwrite=True)
 		hp.write_map(outdir+"/"+runname+"_varmap_UU.fits",noisemap[2],overwrite=True)
 		hp.write_map(outdir+"/"+runname+"_varmap_QU.fits",noisemap[3],overwrite=True)
@@ -349,10 +352,12 @@ def smoothnoisemap(indir, outdir, runname, inputmap, mapnumber=[2], fwhm=0.0, nu
 				newmap_U_udgrade = hp.ud_grade(newmap_U, nside[j], power=0)
 				returnmap_Q[j][:] = returnmap_Q[j][:] + np.square(newmap_Q_udgrade)
 				returnmap_U[j][:] = returnmap_U[j][:] + np.square(newmap_U_udgrade)
+				returnmap_QU[j][:] = returnmap_QU[j][:] + newmap_Q_udgrade*newmap_U_udgrade
 
 		for j in range(0,num_nside):
 			returnmap_Q[j] = returnmap_Q[j]/(numrealisations-1)
 			returnmap_U[j] = returnmap_U[j]/(numrealisations-1)
+			returnmap_QU[j] = returnmap_QU[j]/(numrealisations-1)
 			# returnmap[j][map_before == hp.UNSEEN] = hp.UNSEEN
 			
 			# All done - now just need to write it to disk.
@@ -382,6 +387,19 @@ def smoothnoisemap(indir, outdir, runname, inputmap, mapnumber=[2], fwhm=0.0, nu
 			bin_hdu.header['TUNIT1'] = '('+units_out+")^2"
 			bin_hdu.header['COMMENT']="Smoothed variance map calculated by Mike Peel's smoothnoisemap version "+ver +"."
 			bin_hdu.writeto(outdir+"/"+runname+"_variance_U_"+str(nside[j])+".fits",overwrite=True)
+			cols = []
+			cols.append(fits.Column(name='QU_cov', format='E', array=returnmap_QU[j]))
+			cols = fits.ColDefs(cols)
+			bin_hdu = fits.BinTableHDU.from_columns(cols)
+			bin_hdu.header['ORDERING']='RING'
+			bin_hdu.header['POLCONV']='COSMO'
+			bin_hdu.header['PIXTYPE']='HEALPIX'
+			bin_hdu.header['NSIDE']=nside[j]
+			bin_hdu.header['NSIM']=numrealisations
+			bin_hdu.header['TTYPE1'] = 'QU'
+			bin_hdu.header['TUNIT1'] = '('+units_out+")^2"
+			bin_hdu.header['COMMENT']="Smoothed variance map calculated by Mike Peel's smoothnoisemap version "+ver +"."
+			bin_hdu.writeto(outdir+"/"+runname+"_variance_QU_"+str(nside[j])+".fits",overwrite=True)
 
 			# Also do an Nobs map for a consistency check.
 			nobs_map = conv_nobs_variance_map(returnmap_Q[j], sigma_0)

@@ -5,7 +5,7 @@ import os
 # General settings
 nsides = [8, 16, 32, 64, 128, 256]
 indexes = [-2.9, -2.95, -3.0, -3.05, -3.1]
-
+indexes = [-3.15, -3.2]
 # Settings for this run file
 doing_quijote = False
 

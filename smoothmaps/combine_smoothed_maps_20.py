@@ -33,12 +33,17 @@ def docombine(outfile, iqu_file, II_file, QQ_file='', UU_file='',rescale=1.0,com
 			uu,huu = hp.read_map(UU_file,h=True)
 		except:
 			uu,huu = hp.read_map(UU_file.replace('20.0','20.00'),h=True)
+		try:
+			qu,hqu = hp.read_map(QU_file,h=True)
+		except:
+			qu,hqu = hp.read_map(QU_file.replace('20.0','20.00'),h=True)
 		print(np.shape(iqu[0]))
 		print(np.shape(iqu[1]))
 		print(np.shape(iqu[2]))
 		print(np.shape(ii))
 		print(np.shape(qq))
 		print(np.shape(uu))
+		print(np.shape(qu))
 		if QQ_add != '':
 			try:
 				qq_add,hqq_add = hp.read_map(QQ_add,field=None,h=True)
@@ -58,6 +63,7 @@ def docombine(outfile, iqu_file, II_file, QQ_file='', UU_file='',rescale=1.0,com
 		cols.append(fits.Column(name='U', format='E', array=np.asarray(iqu[2])))
 		cols.append(fits.Column(name='II_cov', format='E', array=np.asarray(ii)*rescale))
 		cols.append(fits.Column(name='QQ_cov', format='E', array=np.asarray(qq)*rescale))
+		cols.append(fits.Column(name='QU_cov', format='E', array=np.asarray(qu)*rescale))
 		cols.append(fits.Column(name='UU_cov', format='E', array=np.asarray(uu)*rescale))
 	else:
 		cols.append(fits.Column(name='I', format='E', array=np.asarray(iqu[0])))
@@ -76,7 +82,8 @@ def docombine(outfile, iqu_file, II_file, QQ_file='', UU_file='',rescale=1.0,com
 		bin_hdu.header['TUNIT3'] = get_header_val(h,'TUNIT3')
 		bin_hdu.header['TUNIT4'] = get_header_val(hii,'TUNIT1')
 		bin_hdu.header['TUNIT5'] = get_header_val(hqq,'TUNIT1')
-		bin_hdu.header['TUNIT6'] = get_header_val(huu,'TUNIT1')
+		bin_hdu.header['TUNIT6'] = get_header_val(hqu,'TUNIT1')
+		bin_hdu.header['TUNIT7'] = get_header_val(huu,'TUNIT1')
 	else:
 		bin_hdu.header['TUNIT2'] = get_header_val(hii,'TUNIT1')
 	bin_hdu.writeto(outfile)
@@ -85,12 +92,12 @@ def docombine(outfile, iqu_file, II_file, QQ_file='', UU_file='',rescale=1.0,com
 # directory = '/scratch1/mpeel/maps/'
 directory = '/share/nas_cbassarc/mpeel/'
 output_nside = [2048, 1024, 512, 256, 128, 64, 32, 16, 8]
-comment = "Smoothed using Mike Peel's smoothmap.py v1.4 and smoothnoisemap.py v0.8"
+comment = "Smoothed using Mike Peel's smoothmap.py v1.4 and smoothnoisemap.py v0.9"
 
 # Planck 2020
 mapdir = directory+'planck2020_tqu_v1.4/'
-noisedir = directory+'planck2020_tqu_noise_v0.8/'
-outdirectory = directory+"planck2020_tqu_v1.4_noise_v0.8_20arcmin/"
+noisedir = directory+'planck2020_tqu_noise_v0.9/'
+outdirectory = directory+"planck2020_tqu_v1.4_noise_v0.9_20arcmin/"
 os.makedirs(outdirectory, exist_ok=True)
 rescale=1000.0**2
 for nside in output_nside:
@@ -102,7 +109,8 @@ for nside in output_nside:
 				mapdir+str(nside)+'_20.0smoothed_PlanckR4fullbeam_'+namestrings[i]+'_mKCMBunits.fits',\
 				noisedir+'20.0smoothed_PlanckR4fullbeam_'+namestrings[i]+'_mKCMBunits_variance_'+str(nside)+'.fits',\
 				noisedir+'20.0smoothed_PlanckR4fullbeam_'+namestrings[i]+'_mKCMBunits_variance_Q_'+str(nside)+'.fits',\
-				noisedir+'20.0smoothed_PlanckR4fullbeam_'+namestrings[i]+'_mKCMBunits_variance_U_'+str(nside)+'.fits',comment=comment,rescale=rescale)
+				noisedir+'20.0smoothed_PlanckR4fullbeam_'+namestrings[i]+'_mKCMBunits_variance_U_'+str(nside)+'.fits',\
+				noisedir+'20.0smoothed_PlanckR4fullbeam_'+namestrings[i]+'_mKCMBunits_variance_QU_'+str(nside)+'.fits',comment=comment,rescale=rescale)
 		except:
 			continue
 	# Dipole subtracted maps - using the same noise realisations
@@ -113,16 +121,17 @@ for nside in output_nside:
 				mapdir+str(nside)+'_20.0smoothed_PlanckR4fullbeamnodp_'+namestrings[i]+'_mKCMBunits.fits',\
 				noisedir+'20.0smoothed_PlanckR4fullbeam_'+namestrings[i]+'_mKCMBunits_variance_'+str(nside)+'.fits',\
 				noisedir+'20.0smoothed_PlanckR4fullbeam_'+namestrings[i]+'_mKCMBunits_variance_Q_'+str(nside)+'.fits',\
-				noisedir+'20.0smoothed_PlanckR4fullbeam_'+namestrings[i]+'_mKCMBunits_variance_U_'+str(nside)+'.fits',comment=comment,rescale=rescale)
+				noisedir+'20.0smoothed_PlanckR4fullbeam_'+namestrings[i]+'_mKCMBunits_variance_U_'+str(nside)+'.fits',\
+				noisedir+'20.0smoothed_PlanckR4fullbeam_'+namestrings[i]+'_mKCMBunits_variance_QU_'+str(nside)+'.fits',comment=comment,rescale=rescale)
 		except:
 			continue
 	# Intensity only maps
 	namestrings = ['545_2048_2020','857_2048_2020']
 	for i in range(0,len(namestrings)):
-		# try:
-		docombine(outdirectory+str(nside)+'_20.0smoothed_PlanckR4fullbeamNoise_'+namestrings[i]+'_MJySrunits.fits',\
-			mapdir+str(nside)+'_20.0smoothed_PlanckR4fullbeam_'+namestrings[i]+'_MJySrunits.fits',\
-			noisedir+'20.0smoothed_PlanckR3fullbeam_'+namestrings[i]+'_MJySrunits_variance_'+str(nside)+'.fits',comment=comment,rescale=rescale)
-		# except:
-		# 	continue
+		try:
+			docombine(outdirectory+str(nside)+'_20.0smoothed_PlanckR4fullbeamNoise_'+namestrings[i]+'_MJySrunits.fits',\
+				mapdir+str(nside)+'_20.0smoothed_PlanckR4fullbeam_'+namestrings[i]+'_MJySrunits.fits',\
+				noisedir+'20.0smoothed_PlanckR3fullbeam_'+namestrings[i]+'_MJySrunits_variance_'+str(nside)+'.fits',comment=comment,rescale=rescale)
+		except:
+			continue
 

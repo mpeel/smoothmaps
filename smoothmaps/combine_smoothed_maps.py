@@ -63,7 +63,7 @@ def docombine(outfile, iqu_file, II_file, QQ_file='', UU_file='',QU_file='',resc
 		cols.append(fits.Column(name='U', format='E', array=np.asarray(iqu[2])))
 		cols.append(fits.Column(name='II_cov', format='E', array=np.asarray(ii)*rescale))
 		cols.append(fits.Column(name='QQ_cov', format='E', array=np.asarray(qq)*rescale))
-		cols.append(fits.Column(name='QU_cov', format='E', array=np.asarray(uu)*rescale))
+		cols.append(fits.Column(name='QU_cov', format='E', array=np.asarray(qu)*rescale))
 		cols.append(fits.Column(name='UU_cov', format='E', array=np.asarray(uu)*rescale))
 	else:
 		cols.append(fits.Column(name='I', format='E', array=np.asarray(iqu[0])))

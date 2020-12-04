@@ -11,7 +11,7 @@ def get_header_val(hdr,search):
 			return hdr[i][1]
 	return ''
 
-def docombine(outfile, iqu_file, II_file, QQ_file='', UU_file='',rescale=1.0,comment='', QQ_add='', UU_add='',add_rescale=1.0):
+def docombine(outfile, iqu_file, II_file, QQ_file='', UU_file='',QU_file='',rescale=1.0,comment='', QQ_add='', UU_add='', QU_add='',add_rescale=1.0):
 	print(outfile)
 	if os.path.isfile(outfile):
 		print("You already have a file with the output name " + outfile + "! Not going to overwrite it. Move it, or set a new output filename, and try again!")
@@ -33,12 +33,17 @@ def docombine(outfile, iqu_file, II_file, QQ_file='', UU_file='',rescale=1.0,com
 			uu,huu = hp.read_map(UU_file,h=True)
 		except:
 			uu,huu = hp.read_map(UU_file.replace('60.0','60.00'),h=True)
+		try:
+			qu,hqu = hp.read_map(QU_file,h=True)
+		except:
+			qu,hqu = hp.read_map(QU_file.replace('60.0','60.00'),h=True)
 		print(np.shape(iqu[0]))
 		print(np.shape(iqu[1]))
 		print(np.shape(iqu[2]))
 		print(np.shape(ii))
 		print(np.shape(qq))
 		print(np.shape(uu))
+		print(np.shape(qu))
 		if QQ_add != '':
 			try:
 				qq_add,hqq_add = hp.read_map(QQ_add,field=None,h=True)
@@ -58,6 +63,7 @@ def docombine(outfile, iqu_file, II_file, QQ_file='', UU_file='',rescale=1.0,com
 		cols.append(fits.Column(name='U', format='E', array=np.asarray(iqu[2])))
 		cols.append(fits.Column(name='II_cov', format='E', array=np.asarray(ii)*rescale))
 		cols.append(fits.Column(name='QQ_cov', format='E', array=np.asarray(qq)*rescale))
+		cols.append(fits.Column(name='QU_cov', format='E', array=np.asarray(uu)*rescale))
 		cols.append(fits.Column(name='UU_cov', format='E', array=np.asarray(uu)*rescale))
 	else:
 		cols.append(fits.Column(name='I', format='E', array=np.asarray(iqu[0])))
@@ -76,7 +82,8 @@ def docombine(outfile, iqu_file, II_file, QQ_file='', UU_file='',rescale=1.0,com
 		bin_hdu.header['TUNIT3'] = get_header_val(h,'TUNIT3')
 		bin_hdu.header['TUNIT4'] = get_header_val(hii,'TUNIT1')
 		bin_hdu.header['TUNIT5'] = get_header_val(hqq,'TUNIT1')
-		bin_hdu.header['TUNIT6'] = get_header_val(huu,'TUNIT1')
+		bin_hdu.header['TUNIT6'] = get_header_val(hqu,'TUNIT1')
+		bin_hdu.header['TUNIT7'] = get_header_val(huu,'TUNIT1')
 	else:
 		bin_hdu.header['TUNIT2'] = get_header_val(hii,'TUNIT1')
 	bin_hdu.writeto(outfile)
@@ -85,11 +92,11 @@ def docombine(outfile, iqu_file, II_file, QQ_file='', UU_file='',rescale=1.0,com
 # directory = '/scratch1/mpeel/maps/'
 directory = '/share/nas_cbassarc/mpeel/'
 output_nside = [2048, 1024, 512, 256, 128, 64, 32, 16, 8]
-comment = "Smoothed using Mike Peel's smoothmap.py v1.4 and smoothnoisemap.py v0.8"
+comment = "Smoothed using Mike Peel's smoothmap.py v1.4 and smoothnoisemap.py v0.9"
 # WMAP9
 mapdir = directory+'wmap9_tqu_v1.4/'
-noisedir = directory+'wmap9_tqu_noise_v0.8/'
-outdirectory = directory+"wmap9_tqu_v1.4_noise_v0.8/"
+noisedir = directory+'wmap9_tqu_noise_v0.9/'
+outdirectory = directory+"wmap9_tqu_v1.4_noise_v0.9/"
 os.makedirs(outdirectory, exist_ok=True)
 
 for nside in output_nside:
@@ -101,14 +108,15 @@ for nside in output_nside:
 					mapdir+str(nside)+'_60.0smoothed_wmap9beam_'+namestrings[i]+'_mKCMBunits.fits',\
 					noisedir+'60.0smoothed_wmap9beam_'+namestrings[i]+'_mKCMBunits_variance_'+str(nside)+'.fits',\
 					noisedir+'60.0smoothed_wmap9beam_'+namestrings[i]+'_mKCMBunits_variance_Q_'+str(nside)+'.fits',\
-					noisedir+'60.0smoothed_wmap9beam_'+namestrings[i]+'_mKCMBunits_variance_U_'+str(nside)+'.fits',comment=comment)
+					noisedir+'60.0smoothed_wmap9beam_'+namestrings[i]+'_mKCMBunits_variance_U_'+str(nside)+'.fits',\
+					noisedir+'60.0smoothed_wmap9beam_'+namestrings[i]+'_mKCMBunits_variance_QU_'+str(nside)+'.fits',comment=comment)
 			except:
 				continue
 
 # Planck 2015
 mapdir = directory+'planck2015_tqu_v1.4/'
-noisedir = directory+'planck2015_tqu_noise_v0.8/'
-outdirectory = directory+"planck2015_tqu_v1.4_noise_v0.8/"
+noisedir = directory+'planck2015_tqu_noise_v0.9/'
+outdirectory = directory+"planck2015_tqu_v1.4_noise_v0.9/"
 os.makedirs(outdirectory, exist_ok=True)
 rescale=1000.0**2
 for nside in output_nside:
@@ -121,7 +129,8 @@ for nside in output_nside:
 				mapdir+str(nside)+'_60.0smoothed_PlanckR2fullbeam_'+namestrings[i]+'_mKCMBunits.fits',\
 				noisedir+'60.0smoothed_PlanckR2fullbeam_'+namestrings2[i]+'_mKCMBunits_variance_'+str(nside)+'.fits',\
 				noisedir+'60.0smoothed_PlanckR2fullbeam_'+namestrings2[i]+'_mKCMBunits_variance_Q_'+str(nside)+'.fits',\
-				noisedir+'60.0smoothed_PlanckR2fullbeam_'+namestrings2[i]+'_mKCMBunits_variance_U_'+str(nside)+'.fits',comment=comment,rescale=rescale)
+				noisedir+'60.0smoothed_PlanckR2fullbeam_'+namestrings2[i]+'_mKCMBunits_variance_U_'+str(nside)+'.fits',\
+				noisedir+'60.0smoothed_PlanckR2fullbeam_'+namestrings2[i]+'_mKCMBunits_variance_QU_'+str(nside)+'.fits',comment=comment,rescale=rescale)
 		except:
 			continue
 	# Bandpass subtracted maps
@@ -135,7 +144,8 @@ for nside in output_nside:
 					mapdir+str(nside)+'_60.0smoothed_PlanckR2fullbeambpcorr_'+namestrings[i]+'_mKCMBunits.fits',\
 					noisedir+'60.0smoothed_PlanckR2fullbeam_'+namestrings2[i]+'_mKCMBunits_variance_'+str(nside)+'.fits',\
 					noisedir+'60.0smoothed_PlanckR2fullbeam_'+namestrings2[i]+'_mKCMBunits_variance_Q_'+str(nside)+'.fits',\
-					noisedir+'60.0smoothed_PlanckR2fullbeam_'+namestrings2[i]+'_mKCMBunits_variance_U_'+str(nside)+'.fits',comment=comment,rescale=rescale,	QQ_add = noisedir+'60.0smoothed_PlanckR2bpasscorrection_'+namestrings3[i]+'_mKCMBunits_variance_Q_'+str(nside)+'.fits',	UU_add = noisedir+'60.0smoothed_PlanckR2bpasscorrection_'+namestrings3[i]+'_mKCMBunits_variance_U_'+str(nside)+'.fits')
+					noisedir+'60.0smoothed_PlanckR2fullbeam_'+namestrings2[i]+'_mKCMBunits_variance_U_'+str(nside)+'.fits',\
+					noisedir+'60.0smoothed_PlanckR2fullbeam_'+namestrings2[i]+'_mKCMBunits_variance_QU_'+str(nside)+'.fits',comment=comment,rescale=rescale,	QQ_add = noisedir+'60.0smoothed_PlanckR2bpasscorrection_'+namestrings3[i]+'_mKCMBunits_variance_Q_'+str(nside)+'.fits',	UU_add = noisedir+'60.0smoothed_PlanckR2bpasscorrection_'+namestrings3[i]+'_mKCMBunits_variance_U_'+str(nside)+'.fits')
 			except:
 				continue
 
@@ -152,8 +162,8 @@ for nside in output_nside:
 
 # Planck 2018
 mapdir = directory+'planck2018_tqu_v1.4/'
-noisedir = directory+'planck2018_tqu_noise_v0.8/'
-outdirectory = directory+"planck2018_tqu_v1.4_noise_v0.8/"
+noisedir = directory+'planck2018_tqu_noise_v0.9/'
+outdirectory = directory+"planck2018_tqu_v1.4_noise_v0.9/"
 os.makedirs(outdirectory, exist_ok=True)
 for nside in output_nside:
 	# Standard maps
@@ -165,7 +175,8 @@ for nside in output_nside:
 				mapdir+str(nside)+'_60.0smoothed_PlanckR3fullbeam_'+namestrings[i]+'_mKCMBunits.fits',\
 				noisedir+'60.0smoothed_PlanckR3fullbeam_'+namestrings2[i]+'_mKCMBunits_variance_'+str(nside)+'.fits',\
 				noisedir+'60.0smoothed_PlanckR3fullbeam_'+namestrings2[i]+'_mKCMBunits_variance_Q_'+str(nside)+'.fits',\
-				noisedir+'60.0smoothed_PlanckR3fullbeam_'+namestrings2[i]+'_mKCMBunits_variance_U_'+str(nside)+'.fits',comment=comment,rescale=rescale)
+				noisedir+'60.0smoothed_PlanckR3fullbeam_'+namestrings2[i]+'_mKCMBunits_variance_U_'+str(nside)+'.fits',\
+				noisedir+'60.0smoothed_PlanckR3fullbeam_'+namestrings2[i]+'_mKCMBunits_variance_QU_'+str(nside)+'.fits',comment=comment,rescale=rescale)
 		except:
 			continue
 	# Intensity only maps
@@ -186,7 +197,8 @@ for nside in output_nside:
 				mapdir+str(nside)+'_60.0smoothed_PlanckR3fullbeamnobp_'+namestrings[i]+'_mKCMBunits.fits',\
 				noisedir+'60.0smoothed_PlanckR3fullbeamnobp_'+namestrings[i]+'_mKCMBunits_variance_'+str(nside)+'.fits',\
 				noisedir+'60.0smoothed_PlanckR3fullbeamnobp_'+namestrings[i]+'_mKCMBunits_variance_Q_'+str(nside)+'.fits',\
-				noisedir+'60.0smoothed_PlanckR3fullbeamnobp_'+namestrings[i]+'_mKCMBunits_variance_U_'+str(nside)+'.fits',comment=comment,rescale=rescale)
+				noisedir+'60.0smoothed_PlanckR3fullbeamnobp_'+namestrings[i]+'_mKCMBunits_variance_U_'+str(nside)+'.fits',\
+				noisedir+'60.0smoothed_PlanckR3fullbeamnobp_'+namestrings[i]+'_mKCMBunits_variance_QU_'+str(nside)+'.fits',comment=comment,rescale=rescale)
 		except:
 			continue
 	# deconvolved maps
@@ -198,7 +210,8 @@ for nside in output_nside:
 				mapdir+str(nside)+'_60.0smoothed_PlanckR3'+namestrings[i]+'_mKCMBunits.fits',\
 				noisedir+'60.0smoothed_PlanckR3fullbeam_'+namestrings2[i]+'_mKCMBunits_variance_'+str(nside)+'.fits',\
 				noisedir+'60.0smoothed_PlanckR3fullbeam_'+namestrings2[i]+'_mKCMBunits_variance_Q_'+str(nside)+'.fits',\
-				noisedir+'60.0smoothed_PlanckR3fullbeam_'+namestrings2[i]+'_mKCMBunits_variance_U_'+str(nside)+'.fits',comment=comment,rescale=rescale)
+				noisedir+'60.0smoothed_PlanckR3fullbeam_'+namestrings2[i]+'_mKCMBunits_variance_U_'+str(nside)+'.fits',\
+				noisedir+'60.0smoothed_PlanckR3fullbeam_'+namestrings2[i]+'_mKCMBunits_variance_QU_'+str(nside)+'.fits',comment=comment,rescale=rescale)
 		except:
 			continue
 
@@ -206,8 +219,8 @@ for nside in output_nside:
 
 # Planck 2020
 mapdir = directory+'planck2020_tqu_v1.4/'
-noisedir = directory+'planck2020_tqu_noise_v0.8/'
-outdirectory = directory+"planck2020_tqu_v1.4_noise_v0.8/"
+noisedir = directory+'planck2020_tqu_noise_v0.9/'
+outdirectory = directory+"planck2020_tqu_v1.4_noise_v0.9/"
 os.makedirs(outdirectory, exist_ok=True)
 for nside in output_nside:
 	# Standard maps
@@ -218,7 +231,8 @@ for nside in output_nside:
 				mapdir+str(nside)+'_60.0smoothed_PlanckR4fullbeam_'+namestrings[i]+'_mKCMBunits.fits',\
 				noisedir+'60.0smoothed_PlanckR4fullbeam_'+namestrings[i]+'_mKCMBunits_variance_'+str(nside)+'.fits',\
 				noisedir+'60.0smoothed_PlanckR4fullbeam_'+namestrings[i]+'_mKCMBunits_variance_Q_'+str(nside)+'.fits',\
-				noisedir+'60.0smoothed_PlanckR4fullbeam_'+namestrings[i]+'_mKCMBunits_variance_U_'+str(nside)+'.fits',comment=comment,rescale=rescale)
+				noisedir+'60.0smoothed_PlanckR4fullbeam_'+namestrings[i]+'_mKCMBunits_variance_U_'+str(nside)+'.fits',\
+				noisedir+'60.0smoothed_PlanckR4fullbeam_'+namestrings[i]+'_mKCMBunits_variance_QU_'+str(nside)+'.fits',comment=comment,rescale=rescale)
 		except:
 			continue
 	# Dipole subtracted maps - using the same noise realisations
@@ -229,7 +243,8 @@ for nside in output_nside:
 				mapdir+str(nside)+'_60.0smoothed_PlanckR4fullbeamnodp_'+namestrings[i]+'_mKCMBunits.fits',\
 				noisedir+'60.0smoothed_PlanckR4fullbeam_'+namestrings[i]+'_mKCMBunits_variance_'+str(nside)+'.fits',\
 				noisedir+'60.0smoothed_PlanckR4fullbeam_'+namestrings[i]+'_mKCMBunits_variance_Q_'+str(nside)+'.fits',\
-				noisedir+'60.0smoothed_PlanckR4fullbeam_'+namestrings[i]+'_mKCMBunits_variance_U_'+str(nside)+'.fits',comment=comment,rescale=rescale)
+				noisedir+'60.0smoothed_PlanckR4fullbeam_'+namestrings[i]+'_mKCMBunits_variance_U_'+str(nside)+'.fits',\
+				noisedir+'60.0smoothed_PlanckR4fullbeam_'+namestrings[i]+'_mKCMBunits_variance_QU_'+str(nside)+'.fits',comment=comment,rescale=rescale)
 		except:
 			continue
 	# Intensity only maps

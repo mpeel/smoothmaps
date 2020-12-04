@@ -12,5 +12,5 @@ cd /home/mpeel/git/astrocode/smoothmaps/
 echo "Running job in"
 echo `pwd`
 
-python combine_smoothed_maps_20.py
-# python combine_smoothed_maps.py
+# python combine_smoothed_maps_20.py
+python combine_smoothed_maps.py

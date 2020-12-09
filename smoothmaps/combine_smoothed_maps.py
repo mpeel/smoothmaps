@@ -139,15 +139,15 @@ for nside in output_nside:
 	namestrings3 = ['30', '44', '70']
 	if nside <= 256:
 		for i in range(0,len(namestrings)):
-			try:
-				docombine(outdirectory+str(nside)+'_60.0smoothed_PlanckR2fullbeambpcorrNoise_'+namestrings[i]+'_mKCMBunits.fits',\
-					mapdir+str(nside)+'_60.0smoothed_PlanckR2fullbeambpcorr_'+namestrings[i]+'_mKCMBunits.fits',\
-					noisedir+'60.0smoothed_PlanckR2fullbeam_'+namestrings2[i]+'_mKCMBunits_variance_'+str(nside)+'.fits',\
-					noisedir+'60.0smoothed_PlanckR2fullbeam_'+namestrings2[i]+'_mKCMBunits_variance_Q_'+str(nside)+'.fits',\
-					noisedir+'60.0smoothed_PlanckR2fullbeam_'+namestrings2[i]+'_mKCMBunits_variance_U_'+str(nside)+'.fits',\
-					noisedir+'60.0smoothed_PlanckR2fullbeam_'+namestrings2[i]+'_mKCMBunits_variance_QU_'+str(nside)+'.fits',comment=comment,rescale=rescale,	QQ_add = outdirectory+'60.0smoothed_PlanckR2bpasscorrection_'+namestrings3[i]+'_mKCMBunits_variance_Q_'+str(nside)+'.fits',	UU_add = outdirectory+'60.0smoothed_PlanckR2bpasscorrection_'+namestrings3[i]+'_mKCMBunits_variance_U_'+str(nside)+'.fits')
-			except:
-				continue
+			# try:
+			docombine(outdirectory+str(nside)+'_60.0smoothed_PlanckR2fullbeambpcorrNoise_'+namestrings[i]+'_mKCMBunits.fits',\
+				mapdir+str(nside)+'_60.0smoothed_PlanckR2fullbeambpcorr_'+namestrings[i]+'_mKCMBunits.fits',\
+				noisedir+'60.0smoothed_PlanckR2fullbeam_'+namestrings2[i]+'_mKCMBunits_variance_'+str(nside)+'.fits',\
+				noisedir+'60.0smoothed_PlanckR2fullbeam_'+namestrings2[i]+'_mKCMBunits_variance_Q_'+str(nside)+'.fits',\
+				noisedir+'60.0smoothed_PlanckR2fullbeam_'+namestrings2[i]+'_mKCMBunits_variance_U_'+str(nside)+'.fits',\
+				noisedir+'60.0smoothed_PlanckR2fullbeam_'+namestrings2[i]+'_mKCMBunits_variance_QU_'+str(nside)+'.fits',comment=comment,rescale=rescale,	QQ_add = outdirectory+'60.0smoothed_PlanckR2bpasscorrection_'+namestrings3[i]+'_mKCMBunits_variance_Q_'+str(nside)+'.fits',	UU_add = outdirectory+'60.0smoothed_PlanckR2bpasscorrection_'+namestrings3[i]+'_mKCMBunits_variance_U_'+str(nside)+'.fits')
+			# except:
+			# 	continue
 
 	# I only maps
 	namestrings = ['545_2048_2015','857_2048_2015']

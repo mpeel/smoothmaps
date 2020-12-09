@@ -4,8 +4,7 @@ import os
 
 # General settings
 nsides = [8, 16, 32, 64, 128, 256]
-indexes = [-2.9, -2.95, -3.0, -3.05, -3.1]
-indexes = [-3.15, -3.2]
+indexes = [-2.9, -2.95, -3.0, -3.05, -3.1,-3.15, -3.2]
 # Settings for this run file
 doing_quijote = False
 
@@ -28,7 +27,7 @@ normfreq = 28.4
 planckvers = ['2015','2015nobp','2018','2018nobp','2020']
 only_wmap = False
 only_planck = False
-version='tqu_v1.4_noise_v0.8'
+version='tqu_v1.4_noise_v0.9'
 
 for planckver in planckvers:
 	for nside in nsides:
@@ -42,7 +41,8 @@ for planckver in planckvers:
 				freqs = [28.4, 44.1, 22.8, 33.0, 40.7]
 				rescale_amp = np.ones(len(freqs))
 
-				indirectory = '/Users/mpeel/Documents/maps/'
+				# indirectory = '/Users/mpeel/Documents/maps/'
+				indirectory = '/share/nas_cbassarc/mpeel/'
 				if planckver == '2015':
 					outdirectory = indirectory+'weighted_wmap_planck_'+version+'/'
 					prefix=str(nside)+'_60.0smoothed_wmap9_planck2015_'+version+'_'+str(index)

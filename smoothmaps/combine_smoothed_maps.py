@@ -143,16 +143,16 @@ for nside in output_nside:
 	# Standard maps
 	namestrings = ['28.4_1024_2015','44.1_1024_2015','70.4_2048_2015','100_2048_2015','143_2048_2015','217_2048_2015','353_2048_2015']
 	namestrings2 = ['28.4_1024_2015','44.1_1024_2015','70.4_1024_2015','100_1024_2015','143_1024_2015','217_1024_2015','353_1024_2015']
-	# for i in range(0,len(namestrings)):
-	# 	try:
-	# 		docombine(outdirectory+str(nside)+'_60.0smoothed_PlanckR2fullbeamNoise_'+namestrings[i]+'_mKCMBunits.fits',\
-	# 			mapdir+str(nside)+'_60.0smoothed_PlanckR2fullbeam_'+namestrings[i]+'_mKCMBunits.fits',\
-	# 			noisedir+'60.0smoothed_PlanckR2fullbeam_'+namestrings2[i]+'_mKCMBunits_variance_'+str(nside)+'.fits',\
-	# 			noisedir+'60.0smoothed_PlanckR2fullbeam_'+namestrings2[i]+'_mKCMBunits_variance_Q_'+str(nside)+'.fits',\
-	# 			noisedir+'60.0smoothed_PlanckR2fullbeam_'+namestrings2[i]+'_mKCMBunits_variance_U_'+str(nside)+'.fits',\
-	# 			noisedir+'60.0smoothed_PlanckR2fullbeam_'+namestrings2[i]+'_mKCMBunits_variance_QU_'+str(nside)+'.fits',comment=comment,rescale=rescale)
-	# 	except:
-	# 		continue
+	for i in range(0,len(namestrings)):
+		try:
+			docombine(outdirectory+str(nside)+'_60.0smoothed_PlanckR2fullbeamNoise_'+namestrings[i]+'_mKCMBunits.fits',\
+				mapdir+str(nside)+'_60.0smoothed_PlanckR2fullbeam_'+namestrings[i]+'_mKCMBunits.fits',\
+				noisedir+'60.0smoothed_PlanckR2fullbeam_'+namestrings2[i]+'_mKCMBunits_variance_'+str(nside)+'.fits',\
+				noisedir+'60.0smoothed_PlanckR2fullbeam_'+namestrings2[i]+'_mKCMBunits_variance_Q_'+str(nside)+'.fits',\
+				noisedir+'60.0smoothed_PlanckR2fullbeam_'+namestrings2[i]+'_mKCMBunits_variance_U_'+str(nside)+'.fits',\
+				noisedir+'60.0smoothed_PlanckR2fullbeam_'+namestrings2[i]+'_mKCMBunits_variance_QU_'+str(nside)+'.fits',comment=comment,rescale=rescale)
+		except:
+			continue
 	# Bandpass subtracted maps
 	namestrings = ['28.4_256_2015','44.1_256_2015','70.4_256_2015']
 	namestrings2 = ['28.4_1024_2015','44.1_1024_2015','70.4_1024_2015']

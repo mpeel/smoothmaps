@@ -22,7 +22,7 @@ def get_hfi_beam(FITSfile):
 # Settings
 output_resolution = [60.0,20.0]#,120.0,240.0]
 output_nside = np.asarray([2048, 1024, 512, 256, 128, 64, 32, 16, 8])
-numrealisations = 1000
+numrealisations = 10000
 mapnumbers = [4, 7, 9, 8] # II,QQ,UU,QU
 rescale = 1000.0 # Convert from K to mK - this is applied to the noise map
 units_out = 'mK' # Must match rescale!
@@ -30,7 +30,7 @@ numres = len(output_resolution)
 # directory = '/Users/mpeel/Documents/maps/'
 # directory = '/scratch1/mpeel/maps/'
 directory = '/share/nas_cbassarc/mpeel/'
-outdirectory = directory+"planck2020_tqu_noise_v0.9/"
+outdirectory = directory+"planck2020_tqu_noise_v0.9_10k/"
 os.makedirs(outdirectory, exist_ok=True)
 
 # Read in the beams
@@ -54,11 +54,11 @@ for i in range(0,numres):
 		smoothnoisemap(directory+'planck2020/', outdirectory, resolution+'smoothed_PlanckR4fullbeam_70.4_1024_2020_mKCMBunits', 'LFI_SkyMap_070_1024_R4.00_full.fits',mapnumber=mapnumbers,numrealisations=numrealisations,fwhm=output_resolution[i],nside=output_nside[output_nside<=1024],windowfunction=beamtf_p70,rescale=rescale,do_intensity=True,do_polarisation=True,units_out=units_out,usehealpixfits=True)
 
 	# HFI with polarisation
-	smoothnoisemap(directory+'planck2020/', outdirectory, resolution+'smoothed_PlanckR4fullbeam_100_2048_2020_mKCMBunits', 'HFI_SkyMap_100_2048_R4.00_full.fits',mapnumber=mapnumbers,numrealisations=numrealisations,fwhm=output_resolution[i],nside=output_nside,windowfunction=beamtf_p100,rescale=rescale,do_intensity=True,do_polarisation=True,units_out=units_out,usehealpixfits=True)
-	smoothnoisemap(directory+'planck2020/', outdirectory, resolution+'smoothed_PlanckR4fullbeam_143_2048_2020_mKCMBunits', 'HFI_SkyMap_143_2048_R4.00_full.fits',mapnumber=mapnumbers,numrealisations=numrealisations,fwhm=output_resolution[i],nside=output_nside,windowfunction=beamtf_p143,rescale=rescale,do_intensity=True,do_polarisation=True,units_out=units_out,usehealpixfits=True)
-	smoothnoisemap(directory+'planck2020/', outdirectory, resolution+'smoothed_PlanckR4fullbeam_217_2048_2020_mKCMBunits', 'HFI_SkyMap_217_2048_R4.00_full.fits',mapnumber=mapnumbers,numrealisations=numrealisations,fwhm=output_resolution[i],nside=output_nside,windowfunction=beamtf_p217,rescale=rescale,do_intensity=True,do_polarisation=True,units_out=units_out,usehealpixfits=True)
-	smoothnoisemap(directory+'planck2020/', outdirectory, resolution+'smoothed_PlanckR4fullbeam_353_2048_2020_mKCMBunits', 'HFI_SkyMap_353_2048_R4.00_full.fits',mapnumber=mapnumbers,numrealisations=numrealisations,fwhm=output_resolution[i],nside=output_nside,windowfunction=beamtf_p353,rescale=rescale,do_intensity=True,do_polarisation=True,units_out=units_out,usehealpixfits=True)
+	# smoothnoisemap(directory+'planck2020/', outdirectory, resolution+'smoothed_PlanckR4fullbeam_100_2048_2020_mKCMBunits', 'HFI_SkyMap_100_2048_R4.00_full.fits',mapnumber=mapnumbers,numrealisations=numrealisations,fwhm=output_resolution[i],nside=output_nside,windowfunction=beamtf_p100,rescale=rescale,do_intensity=True,do_polarisation=True,units_out=units_out,usehealpixfits=True)
+	# smoothnoisemap(directory+'planck2020/', outdirectory, resolution+'smoothed_PlanckR4fullbeam_143_2048_2020_mKCMBunits', 'HFI_SkyMap_143_2048_R4.00_full.fits',mapnumber=mapnumbers,numrealisations=numrealisations,fwhm=output_resolution[i],nside=output_nside,windowfunction=beamtf_p143,rescale=rescale,do_intensity=True,do_polarisation=True,units_out=units_out,usehealpixfits=True)
+	# smoothnoisemap(directory+'planck2020/', outdirectory, resolution+'smoothed_PlanckR4fullbeam_217_2048_2020_mKCMBunits', 'HFI_SkyMap_217_2048_R4.00_full.fits',mapnumber=mapnumbers,numrealisations=numrealisations,fwhm=output_resolution[i],nside=output_nside,windowfunction=beamtf_p217,rescale=rescale,do_intensity=True,do_polarisation=True,units_out=units_out,usehealpixfits=True)
+	# smoothnoisemap(directory+'planck2020/', outdirectory, resolution+'smoothed_PlanckR4fullbeam_353_2048_2020_mKCMBunits', 'HFI_SkyMap_353_2048_R4.00_full.fits',mapnumber=mapnumbers,numrealisations=numrealisations,fwhm=output_resolution[i],nside=output_nside,windowfunction=beamtf_p353,rescale=rescale,do_intensity=True,do_polarisation=True,units_out=units_out,usehealpixfits=True)
 
 	# Intensity only for 545 and 857GHz
-	smoothnoisemap(directory+'planck2020/', outdirectory, resolution+'smoothed_PlanckR3fullbeam_545_2048_2020_MJySrunits', 'HFI_SkyMap_545_2048_R4.00_full.fits',mapnumber=[2],numrealisations=numrealisations,fwhm=output_resolution[i],nside=output_nside,windowfunction=beamtf_p545,do_intensity=True,do_polarisation=False,units_out='MJySr',usehealpixfits=True)
-	smoothnoisemap(directory+'planck2020/', outdirectory, resolution+'smoothed_PlanckR3fullbeam_857_2048_2020_MJySrunits', 'HFI_SkyMap_857_2048_R4.00_full.fits',mapnumber=[2],numrealisations=numrealisations,fwhm=output_resolution[i],nside=output_nside,windowfunction=beamtf_p857,do_intensity=True,do_polarisation=False,units_out='MJySr',usehealpixfits=True)
+	# smoothnoisemap(directory+'planck2020/', outdirectory, resolution+'smoothed_PlanckR3fullbeam_545_2048_2020_MJySrunits', 'HFI_SkyMap_545_2048_R4.00_full.fits',mapnumber=[2],numrealisations=numrealisations,fwhm=output_resolution[i],nside=output_nside,windowfunction=beamtf_p545,do_intensity=True,do_polarisation=False,units_out='MJySr',usehealpixfits=True)
+	# smoothnoisemap(directory+'planck2020/', outdirectory, resolution+'smoothed_PlanckR3fullbeam_857_2048_2020_MJySrunits', 'HFI_SkyMap_857_2048_R4.00_full.fits',mapnumber=[2],numrealisations=numrealisations,fwhm=output_resolution[i],nside=output_nside,windowfunction=beamtf_p857,do_intensity=True,do_polarisation=False,units_out='MJySr',usehealpixfits=True)

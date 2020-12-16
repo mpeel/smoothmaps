@@ -113,6 +113,26 @@ for nside in output_nside:
 			except:
 				continue
 
+# WMAP9
+mapdir = directory+'wmap9_tqu_v1.4/'
+noisedir = directory+'wmap9_tqu_noise_v0.9_10k/'
+outdirectory = directory+"wmap9_tqu_v1.4_noise_v0.9_10k/"
+os.makedirs(outdirectory, exist_ok=True)
+
+for nside in output_nside:
+	if nside <= 512:
+		namestrings = ['22.8_512_2013','33.0_512_2013','40.7_512_2013','60.7_512_2013','93.5_512_2013']
+		for i in range(0,len(namestrings)):
+			try:
+				docombine(outdirectory+str(nside)+'_60.0smoothed_wmap9beamNoise_'+namestrings[i]+'_mKCMBunits.fits',\
+					mapdir+str(nside)+'_60.0smoothed_wmap9beam_'+namestrings[i]+'_mKCMBunits.fits',\
+					noisedir+'60.0smoothed_wmap9beam_'+namestrings[i]+'_mKCMBunits_variance_'+str(nside)+'.fits',\
+					noisedir+'60.0smoothed_wmap9beam_'+namestrings[i]+'_mKCMBunits_variance_Q_'+str(nside)+'.fits',\
+					noisedir+'60.0smoothed_wmap9beam_'+namestrings[i]+'_mKCMBunits_variance_U_'+str(nside)+'.fits',\
+					noisedir+'60.0smoothed_wmap9beam_'+namestrings[i]+'_mKCMBunits_variance_QU_'+str(nside)+'.fits',comment=comment)
+			except:
+				continue
+
 # Planck 2015
 mapdir = directory+'planck2015_tqu_v1.4/'
 noisedir = directory+'planck2015_tqu_noise_v0.9/'

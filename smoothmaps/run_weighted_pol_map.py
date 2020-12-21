@@ -25,9 +25,13 @@ normfreq = 28.4
 # planckver = '2018dec'
 # planckver = '2020'
 planckvers = ['2015','2015nobp','2018','2018nobp','2020']
+# planckvers = ['2020']
 only_wmap = False
 only_planck = False
 version='tqu_v1.4_noise_v0.9'
+version_wmap = version + "_10k"
+doqu = True
+minplots = True
 
 for planckver in planckvers:
 	for nside in nsides:
@@ -46,33 +50,33 @@ for planckver in planckvers:
 				if planckver == '2015':
 					outdirectory = indirectory+'weighted_wmap_planck_'+version+'/'
 					prefix=str(nside)+'_60.0smoothed_wmap9_planck2015_'+version+'_'+str(index)
-					maps = ['planck2015_'+version+'/'+str(nside)+'_60.0smoothed_PlanckR2fullbeambpcorrNoise_28.4_256_2015_mKCMBunits.fits','planck2015_'+version+'/'+str(nside)+'_60.0smoothed_PlanckR2fullbeambpcorrNoise_44.1_256_2015_mKCMBunits.fits','wmap9_'+version+'/'+str(nside)+'_60.0smoothed_wmap9beamNoise_22.8_512_2013_mKCMBunits.fits','wmap9_'+version+'/'+str(nside)+'_60.0smoothed_wmap9beamNoise_33.0_512_2013_mKCMBunits.fits','wmap9_'+version+'/'+str(nside)+'_60.0smoothed_wmap9beamNoise_40.7_512_2013_mKCMBunits.fits']
-					varianceindex=[[3,4,5], [3,4,5], [3,4,5], [3,4,5], [3,4,5]]
+					maps = ['planck2015_'+version+'/'+str(nside)+'_60.0smoothed_PlanckR2fullbeambpcorrNoise_28.4_256_2015_mKCMBunits.fits','planck2015_'+version+'/'+str(nside)+'_60.0smoothed_PlanckR2fullbeambpcorrNoise_44.1_256_2015_mKCMBunits.fits','wmap9_'+version_wmap+'/'+str(nside)+'_60.0smoothed_wmap9beamNoise_22.8_512_2013_mKCMBunits.fits','wmap9_'+version_wmap+'/'+str(nside)+'_60.0smoothed_wmap9beamNoise_33.0_512_2013_mKCMBunits.fits','wmap9_'+version_wmap+'/'+str(nside)+'_60.0smoothed_wmap9beamNoise_40.7_512_2013_mKCMBunits.fits']
+					varianceindex=[[3,4,6,5], [3,4,6,5], [3,4,6,5], [3,4,6,5], [3,4,6,5]]
 				elif planckver == '2015nobp':
 					outdirectory = indirectory+'weighted_wmap_planck_'+version+'/'
 					prefix=str(nside)+'_60.0smoothed_wmap9_planck2015nobp_'+version+'_'+str(index)
-					maps = ['planck2015_'+version+'/'+str(nside)+'_60.0smoothed_PlanckR2fullbeamNoise_28.4_1024_2015_mKCMBunits.fits','planck2015_'+version+'/'+str(nside)+'_60.0smoothed_PlanckR2fullbeamNoise_44.1_1024_2015_mKCMBunits.fits','wmap9_'+version+'/'+str(nside)+'_60.0smoothed_wmap9beamNoise_22.8_512_2013_mKCMBunits.fits','wmap9_'+version+'/'+str(nside)+'_60.0smoothed_wmap9beamNoise_33.0_512_2013_mKCMBunits.fits','wmap9_'+version+'/'+str(nside)+'_60.0smoothed_wmap9beamNoise_40.7_512_2013_mKCMBunits.fits']
-					varianceindex=[[3,4,5], [3,4,5], [3,4,5], [3,4,5], [3,4,5]]
+					maps = ['planck2015_'+version+'/'+str(nside)+'_60.0smoothed_PlanckR2fullbeamNoise_28.4_1024_2015_mKCMBunits.fits','planck2015_'+version+'/'+str(nside)+'_60.0smoothed_PlanckR2fullbeamNoise_44.1_1024_2015_mKCMBunits.fits','wmap9_'+version_wmap+'/'+str(nside)+'_60.0smoothed_wmap9beamNoise_22.8_512_2013_mKCMBunits.fits','wmap9_'+version_wmap+'/'+str(nside)+'_60.0smoothed_wmap9beamNoise_33.0_512_2013_mKCMBunits.fits','wmap9_'+version_wmap+'/'+str(nside)+'_60.0smoothed_wmap9beamNoise_40.7_512_2013_mKCMBunits.fits']
+					varianceindex=[[3,4,6,5], [3,4,6,5], [3,4,6,5], [3,4,6,5], [3,4,6,5]]
 				elif planckver == '2018':
 					outdirectory = indirectory+'weighted_wmap_planck_'+version+'/'
 					prefix=str(nside)+'_60.0smoothed_wmap9_planck2018_'+version+'_'+str(index)
-					maps = ['planck2018_'+version+'/'+str(nside)+'_60.0smoothed_PlanckR3fullbeamNoise_28.4_1024_2018_mKCMBunits.fits','planck2018_'+version+'/'+str(nside)+'_60.0smoothed_PlanckR3fullbeamNoise_44.1_1024_2018_mKCMBunits.fits','wmap9_'+version+'/'+str(nside)+'_60.0smoothed_wmap9beamNoise_22.8_512_2013_mKCMBunits.fits','wmap9_'+version+'/'+str(nside)+'_60.0smoothed_wmap9beamNoise_33.0_512_2013_mKCMBunits.fits','wmap9_'+version+'/'+str(nside)+'_60.0smoothed_wmap9beamNoise_40.7_512_2013_mKCMBunits.fits']
-					varianceindex=[[3,4,5], [3,4,5], [3,4,5], [3,4,5], [3,4,5]]
+					maps = ['planck2018_'+version+'/'+str(nside)+'_60.0smoothed_PlanckR3fullbeamNoise_28.4_1024_2018_mKCMBunits.fits','planck2018_'+version+'/'+str(nside)+'_60.0smoothed_PlanckR3fullbeamNoise_44.1_1024_2018_mKCMBunits.fits','wmap9_'+version_wmap+'/'+str(nside)+'_60.0smoothed_wmap9beamNoise_22.8_512_2013_mKCMBunits.fits','wmap9_'+version_wmap+'/'+str(nside)+'_60.0smoothed_wmap9beamNoise_33.0_512_2013_mKCMBunits.fits','wmap9_'+version_wmap+'/'+str(nside)+'_60.0smoothed_wmap9beamNoise_40.7_512_2013_mKCMBunits.fits']
+					varianceindex=[[3,4,6,5], [3,4,6,5], [3,4,6,5], [3,4,6,5], [3,4,6,5]]
 				elif planckver == '2018nobp':
 					outdirectory = indirectory+'weighted_wmap_planck_'+version+'/'
 					prefix=str(nside)+'_60.0smoothed_wmap9_planck2018nobp_'+version+'_'+str(index)
-					maps = ['planck2018_'+version+'/'+str(nside)+'_60.0smoothed_PlanckR3fullbeamnobpNoise_28.4_1024_2018_mKCMBunits.fits','planck2018_'+version+'/'+str(nside)+'_60.0smoothed_PlanckR3fullbeamnobpNoise_44.1_1024_2018_mKCMBunits.fits','wmap9_'+version+'/'+str(nside)+'_60.0smoothed_wmap9beamNoise_22.8_512_2013_mKCMBunits.fits','wmap9_'+version+'/'+str(nside)+'_60.0smoothed_wmap9beamNoise_33.0_512_2013_mKCMBunits.fits','wmap9_'+version+'/'+str(nside)+'_60.0smoothed_wmap9beamNoise_40.7_512_2013_mKCMBunits.fits']
-					varianceindex=[[3,4,5], [3,4,5], [3,4,5], [3,4,5], [3,4,5]]
+					maps = ['planck2018_'+version+'/'+str(nside)+'_60.0smoothed_PlanckR3fullbeamnobpNoise_28.4_1024_2018_mKCMBunits.fits','planck2018_'+version+'/'+str(nside)+'_60.0smoothed_PlanckR3fullbeamnobpNoise_44.1_1024_2018_mKCMBunits.fits','wmap9_'+version_wmap+'/'+str(nside)+'_60.0smoothed_wmap9beamNoise_22.8_512_2013_mKCMBunits.fits','wmap9_'+version_wmap+'/'+str(nside)+'_60.0smoothed_wmap9beamNoise_33.0_512_2013_mKCMBunits.fits','wmap9_'+version_wmap+'/'+str(nside)+'_60.0smoothed_wmap9beamNoise_40.7_512_2013_mKCMBunits.fits']
+					varianceindex=[[3,4,6,5], [3,4,6,5], [3,4,6,5], [3,4,6,5], [3,4,6,5]]
 				elif planckver == '2018dec':
 					outdirectory = indirectory+'weighted_wmap_planck_'+version+'/'
 					prefix=str(nside)+'_60.0smoothed_wmap9_planck2018dec_'+version+'_'+str(index)
-					maps = ['planck2018_'+version+'/'+str(nside)+'_60.0smoothed_PlanckR3decNoise_dec20_70.4_1024_2018_mKCMBunits.fits','planck2018_'+version+'/'+str(nside)+'_60.0smoothed_PlanckR3decNoise_dec30_44.1_1024_2018_mKCMBunits.fits','wmap9_'+version+'/'+str(nside)+'_60.0smoothed_wmap9beamNoise_22.8_512_2013_mKCMBunits.fits','wmap9_'+version+'/'+str(nside)+'_60.0smoothed_wmap9beamNoise_33.0_512_2013_mKCMBunits.fits','wmap9_'+version+'/'+str(nside)+'_60.0smoothed_wmap9beamNoise_40.7_512_2013_mKCMBunits.fits']
-					varianceindex=[[3,4,5], [3,4,5], [3,4,5], [3,4,5], [3,4,5]]
+					maps = ['planck2018_'+version+'/'+str(nside)+'_60.0smoothed_PlanckR3decNoise_dec20_70.4_1024_2018_mKCMBunits.fits','planck2018_'+version+'/'+str(nside)+'_60.0smoothed_PlanckR3decNoise_dec30_44.1_1024_2018_mKCMBunits.fits','wmap9_'+version_wmap+'/'+str(nside)+'_60.0smoothed_wmap9beamNoise_22.8_512_2013_mKCMBunits.fits','wmap9_'+version_wmap+'/'+str(nside)+'_60.0smoothed_wmap9beamNoise_33.0_512_2013_mKCMBunits.fits','wmap9_'+version_wmap+'/'+str(nside)+'_60.0smoothed_wmap9beamNoise_40.7_512_2013_mKCMBunits.fits']
+					varianceindex=[[3,4,6,5], [3,4,6,5], [3,4,6,5], [3,4,6,5], [3,4,6,5]]
 				elif planckver == '2020':
 					outdirectory = indirectory+'weighted_wmap_planck_'+version+'/'
 					prefix=str(nside)+'_60.0smoothed_wmap9_planck2020_'+version+'_'+str(index)
-					maps = ['planck2020_'+version+'/'+str(nside)+'_60.0smoothed_PlanckR4fullbeamnodpNoise_28.4_1024_2020_mKCMBunits.fits','planck2020_'+version+'/'+str(nside)+'_60.0smoothed_PlanckR4fullbeamnodpNoise_44.1_1024_2020_mKCMBunits.fits','wmap9_'+version+'/'+str(nside)+'_60.0smoothed_wmap9beamNoise_22.8_512_2013_mKCMBunits.fits','wmap9_'+version+'/'+str(nside)+'_60.0smoothed_wmap9beamNoise_33.0_512_2013_mKCMBunits.fits','wmap9_'+version+'/'+str(nside)+'_60.0smoothed_wmap9beamNoise_40.7_512_2013_mKCMBunits.fits']
-					varianceindex=[[3,4,5], [3,4,5], [3,4,5], [3,4,5], [3,4,5]]
+					maps = ['planck2020_'+version+'/'+str(nside)+'_60.0smoothed_PlanckR4fullbeamnodpNoise_28.4_1024_2020_mKCMBunits.fits','planck2020_'+version+'/'+str(nside)+'_60.0smoothed_PlanckR4fullbeamnodpNoise_44.1_1024_2020_mKCMBunits.fits','wmap9_'+version_wmap+'/'+str(nside)+'_60.0smoothed_wmap9beamNoise_22.8_512_2013_mKCMBunits.fits','wmap9_'+version_wmap+'/'+str(nside)+'_60.0smoothed_wmap9beamNoise_33.0_512_2013_mKCMBunits.fits','wmap9_'+version_wmap+'/'+str(nside)+'_60.0smoothed_wmap9beamNoise_40.7_512_2013_mKCMBunits.fits']
+					varianceindex=[[3,4,6,5], [3,4,6,5], [3,4,6,5], [3,4,6,5], [3,4,6,5]]
 
 				rescale_variance = rescale_amp.copy()
 
@@ -123,7 +127,7 @@ for planckver in planckvers:
 					rescale_amp[0] *= fastcc('K',index+2.0)
 					rescale_amp[1] *= fastcc('Ka',index+2.0)
 					rescale_amp[2] *= fastcc('Q',index+2.0)
-					varianceindex=[[3,4,5], [3,4,5], [3,4,5]]
+					varianceindex=[[3,4,6,5], [3,4,6,5], [3,4,6,5]]
 
 				if only_planck:
 					maps = maps[0:2]
@@ -204,4 +208,4 @@ for planckver in planckvers:
 			os.makedirs(outdirectory, exist_ok=True)
 			# ... and run the weighted map!
 			print(maps)
-			weighted_pol_map(nside=nside,indirectory=indirectory,outdirectory=outdirectory,date=date,prefix=prefix,index=index,freqs=freqs,maps=maps,maps_half1=maps_half1,maps_half2=maps_half2,use_halfrings=use_halfrings,use_weights=use_weights,use_reweight_by_rms=use_reweight_by_rms,use_reweight_by_rms_method=use_reweight_by_rms_method,use_planck=use_planck,use_cbass=use_cbass,normfreq=normfreq,rescale_amp=rescale_amp,rescale_variance=rescale_variance,apply_extra_mask=apply_extra_mask,extra_mask=extra_mask,varianceindex=varianceindex,threshold=0.1,separate_variance_maps=separate_variance_maps)
+			weighted_pol_map(nside=nside,indirectory=indirectory,outdirectory=outdirectory,date=date,prefix=prefix,index=index,freqs=freqs,maps=maps,maps_half1=maps_half1,maps_half2=maps_half2,use_halfrings=use_halfrings,use_weights=use_weights,use_reweight_by_rms=use_reweight_by_rms,use_reweight_by_rms_method=use_reweight_by_rms_method,use_planck=use_planck,use_cbass=use_cbass,normfreq=normfreq,rescale_amp=rescale_amp,rescale_variance=rescale_variance,apply_extra_mask=apply_extra_mask,extra_mask=extra_mask,varianceindex=varianceindex,threshold=0.1,separate_variance_maps=separate_variance_maps,doqu=doqu,minplots=minplots)

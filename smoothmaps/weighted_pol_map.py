@@ -460,7 +460,8 @@ def weighted_pol_map(nside=512,indirectory='',outdirectory='',date='',prefix='',
 		print(np.shape(weight))
 		# for l in range(0,len(combine[0])):
 		# 	combine[l] = combine[l] @ np.linalg.inv(weight[l])
-		combine = combine @ np.linalg.inv(weight)
+		inv_W = np.linalg.inv(weight)
+		combine = combine @ inv_W
 		print(combine)
 		print(np.shape(combine))
 		print(np.max(combine))
@@ -468,9 +469,9 @@ def weighted_pol_map(nside=512,indirectory='',outdirectory='',date='',prefix='',
 		combine_q = combine[:,0,0]
 		combine_u = combine[:,1,1]
 		combine_qu = combine[:,0,1]
-		weight_q = weight[:,0,0]
-		weight_u = weight[:,1,1]
-		weight_qu = weight[:,0,1]
+		weight_q = 1.0/inv_W[:,0,0]
+		weight_u = 1.0/inv_W[:,1,1]
+		weight_qu = 1.0/inv_W[:,0,1]
 	else:
 		combine_q /= weight_q
 		combine_u /= weight_u

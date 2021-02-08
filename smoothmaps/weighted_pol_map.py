@@ -110,13 +110,17 @@ def weighted_pol_map(nside=512,indirectory='',outdirectory='',date='',prefix='',
 
 	nummaps = len(maps)
 	commonmask = np.ones(npix)
-	combine_q = np.zeros(npix)
-	combine_u = np.zeros(npix)
-	weight_q = np.zeros(npix)
-	weight_u = np.zeros(npix)
 	if doqu:
-		combine_qu = np.zeros(npix)
-		weight_qu = np.zeros(npix)
+		combine = np.asarray([[np.zeros(npix), np.zeros(npix)],[np.zeros(npix), np.zeros(npix)]]).T
+		weight = np.asarray([[np.zeros(npix), np.zeros(npix)],[np.zeros(npix), np.zeros(npix)]]).T
+	else:
+		combine_q = np.zeros(npix)
+		combine_u = np.zeros(npix)
+		weight_q = np.zeros(npix)
+		weight_u = np.zeros(npix)
+	# if doqu:
+	# 	combine_qu = np.zeros(npix)
+	# 	weight_qu = np.zeros(npix)
 
 	rescale_vals = np.zeros((3,nummaps))
 	for i in range(0,nummaps):
@@ -342,7 +346,7 @@ def weighted_pol_map(nside=512,indirectory='',outdirectory='',date='',prefix='',
 			plt.close()
 			plt.clf()
 			if doqu:
-				hp.mollview(var_qu*rescale_variance[i],min=umin*(normfreq/freqs[i])**index,max=umax*(normfreq/freqs[i])**index)#,norm='hist')
+				hp.mollview(var_qu*rescale_variance[i],min=-umin*(normfreq/freqs[i])**index,max=umax*(normfreq/freqs[i])**index)#,norm='hist')
 				plt.savefig(outdirectory+maps[i].split('/')[-1]+'_QU_var_rescale.pdf')
 				plt.close()
 				plt.clf()
@@ -430,26 +434,47 @@ def weighted_pol_map(nside=512,indirectory='',outdirectory='',date='',prefix='',
 		print('Mean S/N:' + str(np.mean(snmap[commonmask==1])))
 		# exit()
 
-		if i == 0:
-			combine_q = (mapdata[1].copy()*rescale_amp[i]*(normfreq/freqs[i])**index)/(var_q*rescale_variance[i])
-			combine_u = (mapdata[2].copy()*rescale_amp[i]*(normfreq/freqs[i])**index)/(var_u*rescale_variance[i])
-			weight_q = 1.0/(var_q.copy()*rescale_variance[i])
-			weight_u = 1.0/(var_u.copy()*rescale_variance[i])
-			if doqu:
-				weight_qu = 1.0/(var_qu.copy()*rescale_variance[i])
+		if doqu:
+			W = np.linalg.inv(np.asarray([[var_q*rescale_variance[i],var_qu*rescale_variance[i]],[var_qu*rescale_variance[i],var_u*rescale_variance[i]]]).T)
+			D = np.asarray([[mapdata[1]*rescale_amp[i]*(normfreq/freqs[i])**index,np.zeros(len(mapdata[1]))],[np.zeros(len(mapdata[1])),mapdata[2]*rescale_amp[i]*(normfreq/freqs[i])**index]]).T
+			combine = combine + D @ W
+			weight = weight + W
 		else:
-			combine_q = combine_q+(mapdata[1]*rescale_amp[i]*(normfreq/freqs[i])**index)/(var_q*rescale_variance[i])
-			combine_u = combine_u+(mapdata[2]*rescale_amp[i]*(normfreq/freqs[i])**index)/(var_u*rescale_variance[i])
-			weight_q = weight_q+1.0/(var_q*rescale_variance[i])
-			weight_u = weight_u+1.0/(var_u*rescale_variance[i])
-			if doqu:
-				weight_qu = weight_qu+1.0/(var_qu*rescale_variance[i])
+			if i == 0:
+				combine_q = (mapdata[1].copy()*rescale_amp[i]*(normfreq/freqs[i])**index)/(var_q*rescale_variance[i])
+				combine_u = (mapdata[2].copy()*rescale_amp[i]*(normfreq/freqs[i])**index)/(var_u*rescale_variance[i])
+				weight_q = 1.0/(var_q.copy()*rescale_variance[i])
+				weight_u = 1.0/(var_u.copy()*rescale_variance[i])
+			else:
+				combine_q = combine_q+(mapdata[1]*rescale_amp[i]*(normfreq/freqs[i])**index)/(var_q*rescale_variance[i])
+				combine_u = combine_u+(mapdata[2]*rescale_amp[i]*(normfreq/freqs[i])**index)/(var_u*rescale_variance[i])
+				weight_q = weight_q+1.0/(var_q*rescale_variance[i])
+				weight_u = weight_u+1.0/(var_u*rescale_variance[i])
+	
 
-	combine_q /= weight_q
-	combine_u /= weight_u
 	if doqu:
-		combine_qu /= weight_qu
-
+		print(combine)
+		print(np.max(combine))
+		print(np.shape(combine))
+		print(weight)
+		print(np.shape(weight))
+		# for l in range(0,len(combine[0])):
+		# 	combine[l] = combine[l] @ np.linalg.inv(weight[l])
+		combine = combine @ np.linalg.inv(weight)
+		print(combine)
+		print(np.shape(combine))
+		print(np.max(combine))
+		# exit()
+		combine_q = combine[:,0,0]
+		combine_u = combine[:,1,1]
+		combine_qu = combine[:,0,1]
+		weight_q = weight[:,0,0]
+		weight_u = weight[:,1,1]
+		weight_qu = weight[:,0,1]
+	else:
+		combine_q /= weight_q
+		combine_u /= weight_u
+	
 	if not minplots:
 		hp.write_map(outdirectory+prefix+'_commonmask.fits',commonmask,overwrite=True)
 		hp.mollview(commonmask)
@@ -461,6 +486,10 @@ def weighted_pol_map(nside=512,indirectory='',outdirectory='',date='',prefix='',
 		hp.write_map(outdirectory+prefix+'_combine_q_unc.fits',(1.0/weight_q)*commonmask,overwrite=True)
 		hp.mollview(combine_q*commonmask,min=-threshold,max=threshold)
 		plt.savefig(outdirectory+prefix+'_combine_q.pdf')
+		plt.close()
+		plt.clf()
+		hp.mollview(combine_qu*commonmask,min=-threshold,max=threshold)
+		plt.savefig(outdirectory+prefix+'_combine_qu.pdf')
 		plt.close()
 		plt.clf()
 
@@ -487,6 +516,8 @@ def weighted_pol_map(nside=512,indirectory='',outdirectory='',date='',prefix='',
 	cols = []
 	cols.append(fits.Column(name='P', format='E', array=np.asarray(np.sqrt(combine_q**2+combine_u**2))))
 	cols.append(fits.Column(name='Q', format='E', array=np.asarray(combine_q)))
+	if doqu:
+		cols.append(fits.Column(name='QU', format='E', array=np.asarray(combine_qu)))
 	cols.append(fits.Column(name='U', format='E', array=np.asarray(combine_u)))
 	cols.append(fits.Column(name='QQ_cov', format='E', array=np.asarray(1.0/weight_q)))
 	if doqu:
@@ -506,13 +537,18 @@ def weighted_pol_map(nside=512,indirectory='',outdirectory='',date='',prefix='',
 	bin_hdu.header['TUNIT1'] = 'mK_CMB'
 	bin_hdu.header['TUNIT2'] = 'mK_CMB'
 	bin_hdu.header['TUNIT3'] = 'mK_CMB'
-	bin_hdu.header['TUNIT4'] = '(mK_CMB)^2'
-	bin_hdu.header['TUNIT5'] = '(mK_CMB)^2'
-	bin_hdu.header['TUNIT6'] = '(mK_CMB)^2'
 	if doqu:
+		bin_hdu.header['TUNIT4'] = 'mK_CMB'
+		bin_hdu.header['TUNIT5'] = '(mK_CMB)^2'
+		bin_hdu.header['TUNIT6'] = '(mK_CMB)^2'
 		bin_hdu.header['TUNIT7'] = '(mK_CMB)^2'
+		bin_hdu.header['TUNIT8'] = '(mK_CMB)^2'
+	else:
+		bin_hdu.header['TUNIT4'] = '(mK_CMB)^2'
+		bin_hdu.header['TUNIT5'] = '(mK_CMB)^2'
+		bin_hdu.header['TUNIT6'] = '(mK_CMB)^2'
 	# Write out the file
-	bin_hdu.writeto(outdirectory+prefix+'_combine.fits')
+	bin_hdu.writeto(outdirectory+prefix+'_combine.fits',overwrite=True)
 
 	# hp.write_map(outdirectory+prefix+'_combine.fits',[np.sqrt(combine_q**2+combine_u**2),combine_q,combine_u,1.0/weight_q,1.0/weight_u],overwrite=True)
 

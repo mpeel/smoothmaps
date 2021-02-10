@@ -507,18 +507,18 @@ def weighted_pol_map(nside=512,indirectory='',outdirectory='',date='',prefix='',
 		plt.close()
 		plt.clf()
 
-	hp.write_map(outdirectory+prefix+'_combine_P_nomask.fits',np.sqrt(combine_q**2+combine_u**2),overwrite=True)
-	hp.mollview(np.sqrt(combine_q**2+combine_u**2),min=0,max=np.sqrt(threshold**2+threshold**2),cmap=plt.get_cmap('jet'))
-	plt.savefig(outdirectory+prefix+'_combine_P_nomask.pdf')
-	plt.close()
-	plt.clf()
+		hp.write_map(outdirectory+prefix+'_combine_P_nomask.fits',np.sqrt(combine_q**2+combine_u**2),overwrite=True)
+		hp.mollview(np.sqrt(combine_q**2+combine_u**2),min=0,max=np.sqrt(threshold**2+threshold**2),cmap=plt.get_cmap('jet'))
+		plt.savefig(outdirectory+prefix+'_combine_P_nomask.pdf')
+		plt.close()
+		plt.clf()
 
 
 	cols = []
 	cols.append(fits.Column(name='P', format='E', array=np.asarray(np.sqrt(combine_q**2+combine_u**2))))
 	cols.append(fits.Column(name='Q', format='E', array=np.asarray(combine_q)))
-	if doqu:
-		cols.append(fits.Column(name='QU', format='E', array=np.asarray(combine_qu)))
+	# if doqu:
+	# 	cols.append(fits.Column(name='QU', format='E', array=np.asarray(combine_qu)))
 	cols.append(fits.Column(name='U', format='E', array=np.asarray(combine_u)))
 	cols.append(fits.Column(name='QQ_cov', format='E', array=np.asarray(1.0/weight_q)))
 	if doqu:
@@ -539,15 +539,12 @@ def weighted_pol_map(nside=512,indirectory='',outdirectory='',date='',prefix='',
 	bin_hdu.header['TUNIT2'] = 'mK_CMB'
 	bin_hdu.header['TUNIT3'] = 'mK_CMB'
 	if doqu:
-		bin_hdu.header['TUNIT4'] = 'mK_CMB'
-		bin_hdu.header['TUNIT5'] = '(mK_CMB)^2'
-		bin_hdu.header['TUNIT6'] = '(mK_CMB)^2'
-		bin_hdu.header['TUNIT7'] = '(mK_CMB)^2'
-		bin_hdu.header['TUNIT8'] = '(mK_CMB)^2'
-	else:
 		bin_hdu.header['TUNIT4'] = '(mK_CMB)^2'
 		bin_hdu.header['TUNIT5'] = '(mK_CMB)^2'
 		bin_hdu.header['TUNIT6'] = '(mK_CMB)^2'
+	else:
+		bin_hdu.header['TUNIT4'] = '(mK_CMB)^2'
+		bin_hdu.header['TUNIT5'] = '(mK_CMB)^2'
 	# Write out the file
 	bin_hdu.writeto(outdirectory+prefix+'_combine.fits',overwrite=True)
 

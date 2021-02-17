@@ -31,6 +31,7 @@ only_planck = False
 folder = 'weighted_wmap_planck_qu'
 version='tqu_v1.4_noise_v0.9'
 version_wmap = version + "_10k"
+version_p18 = version + "_10k"
 version_p20 = version + "_10k"
 doqu = True
 minplots = True
@@ -62,7 +63,7 @@ for planckver in planckvers:
 				elif planckver == '2018':
 					outdirectory = indirectory+folder+'_'+version+'/'
 					prefix=str(nside)+'_60.0smoothed_wmap9_planck2018_'+version+'_'+str(index)
-					maps = ['planck2018_'+version+'/'+str(nside)+'_60.0smoothed_PlanckR3fullbeamNoise_28.4_1024_2018_mKCMBunits.fits','planck2018_'+version+'/'+str(nside)+'_60.0smoothed_PlanckR3fullbeamNoise_44.1_1024_2018_mKCMBunits.fits','wmap9_'+version_wmap+'/'+str(nside)+'_60.0smoothed_wmap9beamNoise_22.8_512_2013_mKCMBunits.fits','wmap9_'+version_wmap+'/'+str(nside)+'_60.0smoothed_wmap9beamNoise_33.0_512_2013_mKCMBunits.fits','wmap9_'+version_wmap+'/'+str(nside)+'_60.0smoothed_wmap9beamNoise_40.7_512_2013_mKCMBunits.fits']
+					maps = ['planck2018_'+version_p18+'/'+str(nside)+'_60.0smoothed_PlanckR3fullbeamNoise_28.4_1024_2018_mKCMBunits.fits','planck2018_'+version_p18+'/'+str(nside)+'_60.0smoothed_PlanckR3fullbeamNoise_44.1_1024_2018_mKCMBunits.fits','wmap9_'+version_wmap+'/'+str(nside)+'_60.0smoothed_wmap9beamNoise_22.8_512_2013_mKCMBunits.fits','wmap9_'+version_wmap+'/'+str(nside)+'_60.0smoothed_wmap9beamNoise_33.0_512_2013_mKCMBunits.fits','wmap9_'+version_wmap+'/'+str(nside)+'_60.0smoothed_wmap9beamNoise_40.7_512_2013_mKCMBunits.fits']
 					varianceindex=[[3,4,6,5], [3,4,6,5], [3,4,6,5], [3,4,6,5], [3,4,6,5]]
 				elif planckver == '2018nobp':
 					outdirectory = indirectory+folder+'_'+version+'/'

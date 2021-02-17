@@ -235,6 +235,26 @@ for nside in output_nside:
 		except:
 			continue
 
+mapdir = directory+'planck2018_tqu_v1.4/'
+noisedir = directory+'planck2018_tqu_noise_v0.9_10k/'
+outdirectory = directory+"planck2018_tqu_v1.4_noise_v0.9_10k/"
+os.makedirs(outdirectory, exist_ok=True)
+for nside in output_nside:
+	# Planck 2018 10k
+	# Standard maps
+	namestrings = ['28.4_1024_2018','44.1_1024_2018']
+	namestrings2 = ['28.4_1024_2018','44.1_1024_2018']
+	for i in range(0,len(namestrings)):
+		try:
+			docombine(outdirectory+str(nside)+'_60.0smoothed_PlanckR3fullbeamNoise_'+namestrings[i]+'_mKCMBunits.fits',\
+				mapdir+str(nside)+'_60.0smoothed_PlanckR3fullbeam_'+namestrings[i]+'_mKCMBunits.fits',\
+				noisedir+'60.0smoothed_PlanckR3fullbeam_'+namestrings2[i]+'_mKCMBunits_variance_'+str(nside)+'.fits',\
+				noisedir+'60.0smoothed_PlanckR3fullbeam_'+namestrings2[i]+'_mKCMBunits_variance_Q_'+str(nside)+'.fits',\
+				noisedir+'60.0smoothed_PlanckR3fullbeam_'+namestrings2[i]+'_mKCMBunits_variance_U_'+str(nside)+'.fits',\
+				noisedir+'60.0smoothed_PlanckR3fullbeam_'+namestrings2[i]+'_mKCMBunits_variance_QU_'+str(nside)+'.fits',comment=comment,rescale=rescale)
+		except:
+			continue
+
 
 
 # Planck 2020

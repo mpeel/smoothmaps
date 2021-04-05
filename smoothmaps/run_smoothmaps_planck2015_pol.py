@@ -23,7 +23,7 @@ smoothvariance = False
 # directory = '/Users/mpeel/Documents/maps/'
 # directory = '/scratch1/mpeel/maps/'
 directory = '/share/nas_cbassarc/mpeel/'
-outdirectory = directory+"planck2015_tqu_v1.4/"
+outdirectory = directory+"planck2015_tqu_v1.5/"
 os.makedirs(outdirectory, exist_ok=True)
 
 beamtf_p30 = get_beam(directory+'planck2015/LFI_RIMO_R2.50.fits',28)
@@ -46,22 +46,22 @@ for i in range(0,numnside):
 	for j in range(0,numsubtract):
 		# NB: These are 1° smoothed already!!
 		if output_nside[i] <= 256:
-			smoothmap(directory+'planck2015/',outdirectory,'LFI_SkyMap_030-BPassCorrected_0256_R2.01_full.fits',str(output_nside[i])+'_'+str(output_resolution)+'smoothed_PlanckR2fullbeambpcorr'+subtractmaps_name[j]+'_28.4_256_2015_mKCMBunits.fits', np.sqrt(output_resolution**2-(60.0)**2),nside_out=output_nside[i],units_out='mKCMB',subtractmap=subtractmaps[j],smoothvariance=smoothvariance)
+			smoothmap(directory+'planck2015/',outdirectory,'LFI_SkyMap_030-BPassCorrected_0256_R2.01_full.fits',str(output_nside[i])+'_'+str(output_resolution)+'smoothed_PlanckR2fullbeambpcorr'+subtractmaps_name[j]+'_28.4_256_2015_mKCMBunits.fits', np.sqrt(output_resolution**2-(60.0)**2),nside_out=output_nside[i],units_out='mKCMB',subtractmap=subtractmaps[j],smoothvariance=smoothvariance,do_pol_combined=True)
 
-			smoothmap(directory+'planck2015/',outdirectory,'LFI_SkyMap_044-BPassCorrected_0256_R2.01_full.fits',str(output_nside[i])+'_'+str(output_resolution)+'smoothed_PlanckR2fullbeambpcorr'+subtractmaps_name[j]+'_44.1_256_2015_mKCMBunits.fits', np.sqrt(output_resolution**2-(60.0)**2),nside_out=output_nside[i],units_out='mKCMB',subtractmap=subtractmaps[j],smoothvariance=smoothvariance)
-			smoothmap(directory+'planck2015/',outdirectory,'LFI_SkyMap_070-BPassCorrected_0256_R2.01_full.fits',str(output_nside[i])+'_'+str(output_resolution)+'smoothed_PlanckR2fullbeambpcorr'+subtractmaps_name[j]+'_70.4_256_2015_mKCMBunits.fits', np.sqrt(output_resolution**2-(60.0)**2),nside_out=output_nside[i],units_out='mKCMB',subtractmap=subtractmaps[j],smoothvariance=smoothvariance)
+			smoothmap(directory+'planck2015/',outdirectory,'LFI_SkyMap_044-BPassCorrected_0256_R2.01_full.fits',str(output_nside[i])+'_'+str(output_resolution)+'smoothed_PlanckR2fullbeambpcorr'+subtractmaps_name[j]+'_44.1_256_2015_mKCMBunits.fits', np.sqrt(output_resolution**2-(60.0)**2),nside_out=output_nside[i],units_out='mKCMB',subtractmap=subtractmaps[j],smoothvariance=smoothvariance,do_pol_combined=True)
+			smoothmap(directory+'planck2015/',outdirectory,'LFI_SkyMap_070-BPassCorrected_0256_R2.01_full.fits',str(output_nside[i])+'_'+str(output_resolution)+'smoothed_PlanckR2fullbeambpcorr'+subtractmaps_name[j]+'_70.4_256_2015_mKCMBunits.fits', np.sqrt(output_resolution**2-(60.0)**2),nside_out=output_nside[i],units_out='mKCMB',subtractmap=subtractmaps[j],smoothvariance=smoothvariance,do_pol_combined=True)
 
 		if output_nside[i] <= 1024:
-			smoothmap(directory+'planck2015/',outdirectory,'LFI_SkyMap_030_1024_R2.01_full.fits',str(output_nside[i])+'_'+str(output_resolution)+'smoothed_PlanckR2fullbeam'+subtractmaps_name[j]+'_28.4_1024_2015_mKCMBunits.fits', output_resolution,nside_out=output_nside[i],windowfunction=beamtf_p30,units_out='mKCMB',subtractmap=subtractmaps[j],smoothvariance=smoothvariance)
+			smoothmap(directory+'planck2015/',outdirectory,'LFI_SkyMap_030_1024_R2.01_full.fits',str(output_nside[i])+'_'+str(output_resolution)+'smoothed_PlanckR2fullbeam'+subtractmaps_name[j]+'_28.4_1024_2015_mKCMBunits.fits', output_resolution,nside_out=output_nside[i],windowfunction=beamtf_p30,units_out='mKCMB',subtractmap=subtractmaps[j],smoothvariance=smoothvariance,do_pol_combined=True)
 
-			smoothmap(directory+'planck2015/',outdirectory,'LFI_SkyMap_044_1024_R2.01_full.fits',str(output_nside[i])+'_'+str(output_resolution)+'smoothed_PlanckR2fullbeam'+subtractmaps_name[j]+'_44.1_1024_2015_mKCMBunits.fits', output_resolution,nside_out=output_nside[i],windowfunction=beamtf_p44,units_out='mKCMB',subtractmap=subtractmaps[j],smoothvariance=smoothvariance)
+			smoothmap(directory+'planck2015/',outdirectory,'LFI_SkyMap_044_1024_R2.01_full.fits',str(output_nside[i])+'_'+str(output_resolution)+'smoothed_PlanckR2fullbeam'+subtractmaps_name[j]+'_44.1_1024_2015_mKCMBunits.fits', output_resolution,nside_out=output_nside[i],windowfunction=beamtf_p44,units_out='mKCMB',subtractmap=subtractmaps[j],smoothvariance=smoothvariance,do_pol_combined=True)
 		
-		smoothmap(directory+'planck2015/',outdirectory,'LFI_SkyMap_070_2048_R2.01_full.fits',str(output_nside[i])+'_'+str(output_resolution)+'smoothed_PlanckR2fullbeam'+subtractmaps_name[j]+'_70.4_2048_2015_mKCMBunits.fits', output_resolution,nside_out=output_nside[i],windowfunction=beamtf_p70,units_out='mKCMB',subtractmap=subtractmaps[j],smoothvariance=smoothvariance)
+		smoothmap(directory+'planck2015/',outdirectory,'LFI_SkyMap_070_2048_R2.01_full.fits',str(output_nside[i])+'_'+str(output_resolution)+'smoothed_PlanckR2fullbeam'+subtractmaps_name[j]+'_70.4_2048_2015_mKCMBunits.fits', output_resolution,nside_out=output_nside[i],windowfunction=beamtf_p70,units_out='mKCMB',subtractmap=subtractmaps[j],smoothvariance=smoothvariance,do_pol_combined=True)
 
-		smoothmap(directory+'planck2015/',outdirectory,'HFI_SkyMap_100_2048_R2.02_full.fits',str(output_nside[i])+'_60.00smoothed_PlanckR2fullbeam'+subtractmaps_name[j]+'_100_2048_2015_mKCMBunits.fits', output_resolution,nside_out=output_nside[i],windowfunction=beamtf_p100,units_out='mKCMB',subtractmap=subtractmaps[j],smoothvariance=smoothvariance)
-		smoothmap(directory+'planck2015/',outdirectory,'HFI_SkyMap_143_2048_R2.02_full.fits',str(output_nside[i])+'_60.00smoothed_PlanckR2fullbeam'+subtractmaps_name[j]+'_143_2048_2015_mKCMBunits.fits', output_resolution,nside_out=output_nside[i],windowfunction=beamtf_p143,units_out='mKCMB',subtractmap=subtractmaps[j],smoothvariance=smoothvariance)
-		smoothmap(directory+'planck2015/',outdirectory,'HFI_SkyMap_217_2048_R2.02_full.fits',str(output_nside[i])+'_60.00smoothed_PlanckR2fullbeam'+subtractmaps_name[j]+'_217_2048_2015_mKCMBunits.fits', output_resolution,nside_out=output_nside[i],windowfunction=beamtf_p217,units_out='mKCMB',subtractmap=subtractmaps[j],smoothvariance=smoothvariance)
-		smoothmap(directory+'planck2015/',outdirectory,'HFI_SkyMap_353_2048_R2.02_full.fits',str(output_nside[i])+'_60.00smoothed_PlanckR2fullbeam'+subtractmaps_name[j]+'_353_2048_2015_mKCMBunits.fits', output_resolution,nside_out=output_nside[i],windowfunction=beamtf_p353,units_out='mKCMB',subtractmap=subtractmaps[j],smoothvariance=smoothvariance)
+		smoothmap(directory+'planck2015/',outdirectory,'HFI_SkyMap_100_2048_R2.02_full.fits',str(output_nside[i])+'_60.00smoothed_PlanckR2fullbeam'+subtractmaps_name[j]+'_100_2048_2015_mKCMBunits.fits', output_resolution,nside_out=output_nside[i],windowfunction=beamtf_p100,units_out='mKCMB',subtractmap=subtractmaps[j],smoothvariance=smoothvariance,do_pol_combined=True)
+		smoothmap(directory+'planck2015/',outdirectory,'HFI_SkyMap_143_2048_R2.02_full.fits',str(output_nside[i])+'_60.00smoothed_PlanckR2fullbeam'+subtractmaps_name[j]+'_143_2048_2015_mKCMBunits.fits', output_resolution,nside_out=output_nside[i],windowfunction=beamtf_p143,units_out='mKCMB',subtractmap=subtractmaps[j],smoothvariance=smoothvariance,do_pol_combined=True)
+		smoothmap(directory+'planck2015/',outdirectory,'HFI_SkyMap_217_2048_R2.02_full.fits',str(output_nside[i])+'_60.00smoothed_PlanckR2fullbeam'+subtractmaps_name[j]+'_217_2048_2015_mKCMBunits.fits', output_resolution,nside_out=output_nside[i],windowfunction=beamtf_p217,units_out='mKCMB',subtractmap=subtractmaps[j],smoothvariance=smoothvariance,do_pol_combined=True)
+		smoothmap(directory+'planck2015/',outdirectory,'HFI_SkyMap_353_2048_R2.02_full.fits',str(output_nside[i])+'_60.00smoothed_PlanckR2fullbeam'+subtractmaps_name[j]+'_353_2048_2015_mKCMBunits.fits', output_resolution,nside_out=output_nside[i],windowfunction=beamtf_p353,units_out='mKCMB',subtractmap=subtractmaps[j],smoothvariance=smoothvariance,do_pol_combined=True)
 
 		# Only want these for the non-CMB subtracted sets.
 		if subtractmaps_name[j] == '':

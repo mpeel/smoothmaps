@@ -23,6 +23,8 @@
 # v1.4  Mike Peel   24 Jul 2020   Add an option to not smooth the variance maps (but save them in the output anyway)
 # v1.4a Mike Peel   27 Jul 2020   Tweak to only check for NESTED when not using usehealpixfits
 # v1.4b Mike Peel   07 Oct 2020   Tweak to use 'usehealpixfits' for 'subtractmap'
+# v1.4c Mike Peel   22 Mar 2020   Add option for precomputed window function smoothing
+# v1.5  Mike Peel   05 Apr 2021   Fix polarisation smoothing to be done simulatenously
 #
 # Requirements:
 # Numpy, healpy, matplotlib
@@ -47,8 +49,8 @@ def gaussfit(x, param):
 	return hp.gauss_beam(np.radians(param/60.0),300)
 
 
-def smoothmap(indir, outdir, inputfile, outputfile, fwhm_arcmin=-1, nside_out=0,maxnummaps=-1, frequency=100.0, units_in='',units_out='', windowfunction = [],nobs_out=False,variance_out=True, sigma_0 = -1, sigma_0_unit='', rescale=1.0, nosmooth=[], outputmaps=[],appendmap='',appendmapname='',appendmapunit='',subtractmap='',subtractmap_units='',usehealpixfits=False,taper=False,lmin_taper=350,lmax_taper=600, cap_one=False, cap_oneall=False,minmapvalue=0,maxmapvalue=0,minmaxmaps=[0],taper_gauss=False,taper_gauss_sigma=0.0,normalise=True,useunseen=False,smoothvariance=False):
-	ver = "1.4"
+def smoothmap(indir, outdir, inputfile, outputfile, fwhm_arcmin=-1, nside_out=0,maxnummaps=-1, frequency=100.0, units_in='',units_out='', windowfunction = [],windowfunction_pol = [],nobs_out=False,variance_out=True, sigma_0 = -1, sigma_0_unit='', rescale=1.0, nosmooth=[], outputmaps=[],appendmap='',appendmapname='',appendmapunit='',subtractmap='',subtractmap_units='',usehealpixfits=False,taper=False,lmin_taper=350,lmax_taper=600, cap_one=False, cap_oneall=False,minmapvalue=0,maxmapvalue=0,minmaxmaps=[0],taper_gauss=False,taper_gauss_sigma=0.0,normalise=True,useunseen=False,smoothvariance=False,use_precomputed_wf=False,do_pol_combined=False):
+	ver = "1.5"
 
 	if (os.path.isfile(outdir+outputfile)):
 		print("You already have a file with the output name " + outdir+outputfile + "! Not going to overwrite it. Move it, or set a new output filename, and try again!")
@@ -84,6 +86,10 @@ def smoothmap(indir, outdir, inputfile, outputfile, fwhm_arcmin=-1, nside_out=0,
 			maps = hp.reorder(maps,n2r=True)
 	newheader = inputfits[1].header.copy(strip=False)
 	inputfits.close()
+
+	if do_pol_combined and i < 3:
+		print('do_pol_combined is True, need polarisation maps.')
+		exit()
 
 	# Do some cleanup of the new header to avoid issues later
 	try:
@@ -122,8 +128,16 @@ def smoothmap(indir, outdir, inputfile, outputfile, fwhm_arcmin=-1, nside_out=0,
 	pix_area = hp.nside2pixarea(nside_out)
 
 	nside = hp.get_nside(maps)
-	if (fwhm_arcmin != -1):
-		conv_windowfunction = hp.gauss_beam(np.radians(fwhm_arcmin/60.0),3*nside)
+	if use_precomputed_wf:
+		print('Using precomputed window function')
+		conv_windowfunction = windowfunction
+		conv_windowfunction = np.pad(conv_windowfunction, (0, 3*nside - len(conv_windowfunction)), 'constant')
+		
+	elif (fwhm_arcmin != -1):
+		if do_pol_combined:
+			conv_windowfunction = hp.gauss_beam(np.radians(fwhm_arcmin/60.0),3*nside,pol=True)
+		else:
+			conv_windowfunction = hp.gauss_beam(np.radians(fwhm_arcmin/60.0),3*nside)
 		if (windowfunction != []):
 			window_len = len(conv_windowfunction)
 			beam_len = len(windowfunction)
@@ -137,11 +151,14 @@ def smoothmap(indir, outdir, inputfile, outputfile, fwhm_arcmin=-1, nside_out=0,
 
 			conv_windowfunction[windowfunction!=0] /= windowfunction[windowfunction!=0]
 			conv_windowfunction[windowfunction==0] = 0.0
+
 		# Normalise window function
 		if normalise:
-			conv_windowfunction /= conv_windowfunction[0]
-		
+			normval = conv_windowfunction[0]
+			conv_windowfunction /= normval
+
 		conv_windowfunction_before = conv_windowfunction.copy()
+		# The below is only applied to the intensity window function at the moment.
 		# If needed, apply a taper
 		if taper:
 			conv_windowfunction[lmin_taper:lmax_taper] = conv_windowfunction[lmin_taper:lmax_taper] * np.cos((np.pi/2.0)*((np.arange(lmin_taper,lmax_taper)-lmin_taper)/(lmax_taper-lmin_taper)))
@@ -237,64 +254,110 @@ def smoothmap(indir, outdir, inputfile, outputfile, fwhm_arcmin=-1, nside_out=0,
 	print("Smoothing the maps")
 	smoothed_map = maps
 	for i in range(0,nmaps):
+		if do_pol_combined and (i == 1 or i == 2):
+			continue
 		print('map ' + str(i))
 		print(len(maps[i]))
-		map_before = maps[i][:].copy()
-		if useunseen == True:
-			maps[i][~np.isfinite(maps[i][:])] = hp.UNSEEN
-			# See if we want to cut based on min/max map values
-			if minmapvalue != maxmapvalue:
-				if i in minmaxmaps:
-					maps[i][maps[i][:] < minmapvalue] = hp.UNSEEN
-					maps[i][maps[i][:] > maxmapvalue] = hp.UNSEEN
-		else:
-			maps[i][maps[i][:] == hp.UNSEEN] = 0.0
-			maps[i][~np.isfinite(maps[i][:])] = 0.0
-			# See if we want to cut based on min/max map values
-			if minmapvalue != maxmapvalue:
-				if i in minmaxmaps:
-					maps[i][maps[i][:] < minmapvalue] = 0.0
-					maps[i][maps[i][:] > maxmapvalue] = 0.0
-
-		# Check that we actually want to do smoothing, as opposed to udgrading. Also check to see if this is in the list of maps to not smooth
-		if fwhm_arcmin != -1 and (i not in nosmooth):
-			if 'N_OBS' in newheader['TTYPE'+str(i+1)]:
-				print('Column '+str(i)+' is an N_OBS map ('+newheader['TUNIT'+str(i+1)]+') - converting to variance map.')
-				print(np.sum(maps[i]))
-				print(np.median(maps[i]))
-				maps[i] = conv_nobs_variance_map(maps[i], sigma_0)
-				print(np.sum(maps[i]))
-				print(np.median(maps[i]))
-				if (nobs_out == False and no_sigma_0 == False):
-					# We don't want to convert back later.
-					print('test')
-					newheader['TTYPE'+str(i+1)] = 'II_cov'
-					newheader['TUNIT'+str(i+1)] = '('+sigma_0_unit+')^2'
-
-			# Calculate the alm's, multiply them by the window function, and convert back to the map
-			if ('cov' in newheader['TTYPE'+str(i+1)]) or ('N_OBS' in newheader['TTYPE'+str(i+1)]):
-				if smoothvariance != False:
-					print('Column '+str(i)+' is a covariance matrix ('+newheader['TUNIT'+str(i+1)]+') - smoothing appropriately.')
-					alms = hp.map2alm(maps[i])
-					alms = hp.almxfl(alms, conv_windowfunction_variance)
-					newmap = hp.alm2map(alms, nside,verbose=False)
+		if i == 0 and do_pol_combined:
+			print('Doing combined polarisation')
+			map_before = maps[i][:].copy()
+			print(np.shape(map_before))
+			for j in range(0,3):
+				if useunseen == True:
+					maps[i+j][~np.isfinite(maps[i+j][:])] = hp.UNSEEN
+					# See if we want to cut based on min/max map values
+					if minmapvalue != maxmapvalue:
+						if i in minmaxmaps:
+							maps[i+j][maps[i+j][:] < minmapvalue] = hp.UNSEEN
+							maps[i+j][maps[i+j][:] > maxmapvalue] = hp.UNSEEN
 				else:
-					newmap = maps[i].copy()
-			else:
-				alms = hp.map2alm(maps[i])
-				alms = hp.almxfl(alms, conv_windowfunction)
-				newmap = hp.alm2map(alms, nside,verbose=False)
-			smoothed_map[i] = newmap
-			print(np.sum(smoothed_map[i]))
-			print(np.median(smoothed_map[i]))
-			smoothed_map[i][map_before[:] == hp.UNSEEN] = hp.UNSEEN
+					maps[i+j][maps[i+j][:] == hp.UNSEEN] = 0.0
+					maps[i+j][~np.isfinite(maps[i+j][:])] = 0.0
+					# See if we want to cut based on min/max map values
+					if minmapvalue != maxmapvalue:
+						if i in minmaxmaps:
+							maps[i+j][maps[i+j][:] < minmapvalue] = 0.0
+							maps[i+j][maps[i+j][:] > maxmapvalue] = 0.0
 
-			if ('N_OBS' in newheader['TTYPE'+str(i+1)]) and (nobs_out or no_sigma_0):
-				print('You\'ve either asked for an N_OBS map to be returned, or not set sigma_0, so you will get an N_OBS map returned in your data!')
+			# Check that we actually want to do smoothing, as opposed to udgrading. Also check to see if this is in the list of maps to not smooth
+			if fwhm_arcmin != -1 and (i not in nosmooth):
+				# Calculate the alm's, multiply them by the window function, and convert back to the map
+				print('Smoothing...')
+				print(conv_windowfunction)
+				alms = hp.map2alm(maps[i:i+3],pol=True)
+				alms = hp.sphtfunc.smoothalm(alms, beam_window=conv_windowfunction,pol=True)
+				# alms[0] = hp.almxfl(alms[0], conv_windowfunction)
+				# alms[1] = hp.almxfl(alms[1], conv_windowfunction_pol)
+				# alms[2] = hp.almxfl(alms[2], conv_windowfunction_pol)
+				newmap = hp.alm2map(alms, nside,verbose=False,pol=True)
+				smoothed_map[i] = newmap[0]
+				smoothed_map[i+1] = newmap[1]
+				smoothed_map[i+2] = newmap[2]
 				print(np.sum(smoothed_map[i]))
-				smoothed_map[i] = conv_nobs_variance_map(smoothed_map[i], sigma_0)
+				print(np.median(smoothed_map[i]))
+				smoothed_map[i][map_before[:] == hp.UNSEEN] = hp.UNSEEN
+				smoothed_map[i+1][map_before[:] == hp.UNSEEN] = hp.UNSEEN
+				smoothed_map[i+2][map_before[:] == hp.UNSEEN] = hp.UNSEEN
+
+		else:
+			map_before = maps[i][:].copy()
+			if useunseen == True:
+				maps[i][~np.isfinite(maps[i][:])] = hp.UNSEEN
+				# See if we want to cut based on min/max map values
+				if minmapvalue != maxmapvalue:
+					if i in minmaxmaps:
+						maps[i][maps[i][:] < minmapvalue] = hp.UNSEEN
+						maps[i][maps[i][:] > maxmapvalue] = hp.UNSEEN
+			else:
+				maps[i][maps[i][:] == hp.UNSEEN] = 0.0
+				maps[i][~np.isfinite(maps[i][:])] = 0.0
+				# See if we want to cut based on min/max map values
+				if minmapvalue != maxmapvalue:
+					if i in minmaxmaps:
+						maps[i][maps[i][:] < minmapvalue] = 0.0
+						maps[i][maps[i][:] > maxmapvalue] = 0.0
+
+			# Check that we actually want to do smoothing, as opposed to udgrading. Also check to see if this is in the list of maps to not smooth
+			if fwhm_arcmin != -1 and (i not in nosmooth):
+				if 'N_OBS' in newheader['TTYPE'+str(i+1)]:
+					print('Column '+str(i)+' is an N_OBS map ('+newheader['TUNIT'+str(i+1)]+') - converting to variance map.')
+					print(np.sum(maps[i]))
+					print(np.median(maps[i]))
+					maps[i] = conv_nobs_variance_map(maps[i], sigma_0)
+					print(np.sum(maps[i]))
+					print(np.median(maps[i]))
+					if (nobs_out == False and no_sigma_0 == False):
+						# We don't want to convert back later.
+						print('test')
+						newheader['TTYPE'+str(i+1)] = 'II_cov'
+						newheader['TUNIT'+str(i+1)] = '('+sigma_0_unit+')^2'
+
+				# Calculate the alm's, multiply them by the window function, and convert back to the map
+				if ('cov' in newheader['TTYPE'+str(i+1)]) or ('N_OBS' in newheader['TTYPE'+str(i+1)]):
+					if smoothvariance != False:
+						print('Column '+str(i)+' is a covariance matrix ('+newheader['TUNIT'+str(i+1)]+') - smoothing appropriately.')
+						alms = hp.map2alm(maps[i])
+						alms = hp.almxfl(alms, conv_windowfunction_variance)
+						newmap = hp.alm2map(alms, nside,verbose=False)
+					else:
+						newmap = maps[i].copy()
+				else:
+					print('Smoothing...')
+					print(conv_windowfunction)
+					alms = hp.map2alm(maps[i])
+					alms = hp.almxfl(alms, conv_windowfunction)
+					newmap = hp.alm2map(alms, nside,verbose=False)
+				smoothed_map[i] = newmap
 				print(np.sum(smoothed_map[i]))
-				newheader['TTYPE'+str(i+1)] = 'N_OBS'
+				print(np.median(smoothed_map[i]))
+				smoothed_map[i][map_before[:] == hp.UNSEEN] = hp.UNSEEN
+
+				if ('N_OBS' in newheader['TTYPE'+str(i+1)]) and (nobs_out or no_sigma_0):
+					print('You\'ve either asked for an N_OBS map to be returned, or not set sigma_0, so you will get an N_OBS map returned in your data!')
+					print(np.sum(smoothed_map[i]))
+					smoothed_map[i] = conv_nobs_variance_map(smoothed_map[i], sigma_0)
+					print(np.sum(smoothed_map[i]))
+					newheader['TTYPE'+str(i+1)] = 'N_OBS'
 	maps = 0
 	newmap = 0
 

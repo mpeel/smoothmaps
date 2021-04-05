@@ -134,10 +134,10 @@ def smoothmap(indir, outdir, inputfile, outputfile, fwhm_arcmin=-1, nside_out=0,
 		conv_windowfunction = np.pad(conv_windowfunction, (0, 3*nside - len(conv_windowfunction)), 'constant')
 		
 	elif (fwhm_arcmin != -1):
-		if do_pol_combined:
-			conv_windowfunction = hp.gauss_beam(np.radians(fwhm_arcmin/60.0),3*nside,pol=True)
-		else:
-			conv_windowfunction = hp.gauss_beam(np.radians(fwhm_arcmin/60.0),3*nside)
+		# if do_pol_combined:
+		# 	conv_windowfunction = hp.gauss_beam(np.radians(fwhm_arcmin/60.0),3*nside,pol=True)
+		# else:
+		conv_windowfunction = hp.gauss_beam(np.radians(fwhm_arcmin/60.0),3*nside)
 		if (windowfunction != []):
 			window_len = len(conv_windowfunction)
 			beam_len = len(windowfunction)

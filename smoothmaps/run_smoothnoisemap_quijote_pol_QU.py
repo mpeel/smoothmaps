@@ -19,7 +19,7 @@ numres = len(output_resolution)
 # directory = '/Users/mpeel/Documents/maps/quijote_202103/reform/'
 # directory = '/scratch1/mpeel/maps/'
 directory = '/share/nas_cbassarc/mpeel/quijote_202103/'
-outdirectory = directory+"quijote_202103_tqu_noise_v1.0/"
+outdirectory = directory+"../quijote_202103_tqu_noise_v1.0/"
 os.makedirs(outdirectory, exist_ok=True)
 
 # Window functions

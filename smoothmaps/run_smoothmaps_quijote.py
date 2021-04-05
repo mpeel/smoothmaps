@@ -27,13 +27,18 @@ prefixes = ['mfi_mar2021','mfi_mar2021_daynight1','mfi_mar2021_daynight2','mfi_m
 
 for k in range(0,len(prefixes)):
 	for i in range(0,len(output_nside)):
-		smoothmap(directory,outdirectory,prefixes[k]+'_11.0_1.fits',str(output_nside[i])+'_'+str(output_resolution)+'smoothed_QUIJOTEMFI1_11.0_2021_mKCMBunits.fits', output_resolution,windowfunction=wfq[0][0],nside_out=output_nside[i],units_out='mKCMB',use_precomputed_wf=True,do_pol_combined=True,useunseen=True)
-		smoothmap(directory,outdirectory,prefixes[k]+'_13.0_1.fits',str(output_nside[i])+'_'+str(output_resolution)+'smoothed_QUIJOTEMFI1_13.0_2021_mKCMBunits.fits', output_resolution,windowfunction=wfq[0][1],nside_out=output_nside[i],units_out='mKCMB',use_precomputed_wf=True,do_pol_combined=True,useunseen=True)
-		smoothmap(directory,outdirectory,prefixes[k]+'_11.0_3.fits',str(output_nside[i])+'_'+str(output_resolution)+'smoothed_QUIJOTEMFI3_11.0_2021_mKCMBunits.fits', output_resolution,windowfunction=wfq[2][0],nside_out=output_nside[i],units_out='mKCMB',use_precomputed_wf=True,do_pol_combined=True,useunseen=True)
-		smoothmap(directory,outdirectory,prefixes[k]+'_13.0_3.fits',str(output_nside[i])+'_'+str(output_resolution)+'smoothed_QUIJOTEMFI3_13.0_2021_mKCMBunits.fits', output_resolution,windowfunction=wfq[2][1],nside_out=output_nside[i],units_out='mKCMB',use_precomputed_wf=True,do_pol_combined=True,useunseen=True)
-		smoothmap(directory,outdirectory,prefixes[k]+'_17.0_2.fits',str(output_nside[i])+'_'+str(output_resolution)+'smoothed_QUIJOTEMFI2_17.0_2021_mKCMBunits.fits', output_resolution,windowfunction=wfq[1][0],nside_out=output_nside[i],units_out='mKCMB',use_precomputed_wf=True,do_pol_combined=True,useunseen=True)
-		smoothmap(directory,outdirectory,prefixes[k]+'_19.0_2.fits',str(output_nside[i])+'_'+str(output_resolution)+'smoothed_QUIJOTEMFI2_19.0_2021_mKCMBunits.fits', output_resolution,windowfunction=wfq[1][1],nside_out=output_nside[i],units_out='mKCMB',use_precomputed_wf=True,do_pol_combined=True,useunseen=True)
-		smoothmap(directory,outdirectory,prefixes[k]+'_17.0_4.fits',str(output_nside[i])+'_'+str(output_resolution)+'smoothed_QUIJOTEMFI4_17.0_2021_mKCMBunits.fits', output_resolution,windowfunction=wfq[3][0],nside_out=output_nside[i],units_out='mKCMB',use_precomputed_wf=True,do_pol_combined=True,useunseen=True)
-		smoothmap(directory,outdirectory,prefixes[k]+'_19.0_4.fits',str(output_nside[i])+'_'+str(output_resolution)+'smoothed_QUIJOTEMFI4_19.0_2021_mKCMBunits.fits', output_resolution,windowfunction=wfq[3][1],nside_out=output_nside[i],units_out='mKCMB',use_precomputed_wf=True,do_pol_combined=True,useunseen=True)
+		ext = prefixes[k].split('_')
+		if len(ext) == 3:
+			ext = ext[-1]
+		else:
+			ext = ''
+		smoothmap(directory,outdirectory,prefixes[k]+'_11.0_1.fits',str(output_nside[i])+'_'+str(output_resolution)+'smoothed_QUIJOTEMFI1'+ext+'_11.0_2021_mKCMBunits.fits', output_resolution,windowfunction=wfq[0][0],nside_out=output_nside[i],units_out='mKCMB',use_precomputed_wf=True,do_pol_combined=True,useunseen=True)
+		smoothmap(directory,outdirectory,prefixes[k]+'_13.0_1.fits',str(output_nside[i])+'_'+str(output_resolution)+'smoothed_QUIJOTEMFI1'+ext+'_13.0_2021_mKCMBunits.fits', output_resolution,windowfunction=wfq[0][1],nside_out=output_nside[i],units_out='mKCMB',use_precomputed_wf=True,do_pol_combined=True,useunseen=True)
+		smoothmap(directory,outdirectory,prefixes[k]+'_11.0_3.fits',str(output_nside[i])+'_'+str(output_resolution)+'smoothed_QUIJOTEMFI3'+ext+'_11.0_2021_mKCMBunits.fits', output_resolution,windowfunction=wfq[2][0],nside_out=output_nside[i],units_out='mKCMB',use_precomputed_wf=True,do_pol_combined=True,useunseen=True)
+		smoothmap(directory,outdirectory,prefixes[k]+'_13.0_3.fits',str(output_nside[i])+'_'+str(output_resolution)+'smoothed_QUIJOTEMFI3'+ext+'_13.0_2021_mKCMBunits.fits', output_resolution,windowfunction=wfq[2][1],nside_out=output_nside[i],units_out='mKCMB',use_precomputed_wf=True,do_pol_combined=True,useunseen=True)
+		smoothmap(directory,outdirectory,prefixes[k]+'_17.0_2.fits',str(output_nside[i])+'_'+str(output_resolution)+'smoothed_QUIJOTEMFI2'+ext+'_17.0_2021_mKCMBunits.fits', output_resolution,windowfunction=wfq[1][0],nside_out=output_nside[i],units_out='mKCMB',use_precomputed_wf=True,do_pol_combined=True,useunseen=True)
+		smoothmap(directory,outdirectory,prefixes[k]+'_19.0_2.fits',str(output_nside[i])+'_'+str(output_resolution)+'smoothed_QUIJOTEMFI2'+ext+'_19.0_2021_mKCMBunits.fits', output_resolution,windowfunction=wfq[1][1],nside_out=output_nside[i],units_out='mKCMB',use_precomputed_wf=True,do_pol_combined=True,useunseen=True)
+		smoothmap(directory,outdirectory,prefixes[k]+'_17.0_4.fits',str(output_nside[i])+'_'+str(output_resolution)+'smoothed_QUIJOTEMFI4'+ext+'_17.0_2021_mKCMBunits.fits', output_resolution,windowfunction=wfq[3][0],nside_out=output_nside[i],units_out='mKCMB',use_precomputed_wf=True,do_pol_combined=True,useunseen=True)
+		smoothmap(directory,outdirectory,prefixes[k]+'_19.0_4.fits',str(output_nside[i])+'_'+str(output_resolution)+'smoothed_QUIJOTEMFI4'+ext+'_19.0_2021_mKCMBunits.fits', output_resolution,windowfunction=wfq[3][1],nside_out=output_nside[i],units_out='mKCMB',use_precomputed_wf=True,do_pol_combined=True,useunseen=True)
 
 # # EOF

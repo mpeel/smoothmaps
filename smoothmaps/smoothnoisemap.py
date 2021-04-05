@@ -95,10 +95,15 @@ def smoothnoisemap(indir, outdir, runname, inputmap, mapnumber=[2], fwhm=0.0, nu
 	nside_in = hp.get_nside(maps)
 
 
-	for mapnum in mapnumber:
-		maps[mapnum][maps[mapnum]<-1e10] = hp.UNSEEN
-		maps[mapnum][~np.isfinite(maps[mapnum])] = hp.UNSEEN
 	map_before = maps.copy()
+	for mapnum in mapnumber:
+		print(np.max(maps[mapnum]))
+		print(np.min(maps[mapnum]))
+		maps[mapnum][maps[mapnum] == hp.UNSEEN] = 0.0
+		maps[mapnum][maps[mapnum]<-1e10] = 0.0#hp.UNSEEN
+		maps[mapnum][~np.isfinite(maps[mapnum])] = 0.0#hp.UNSEEN
+		print(np.max(maps[mapnum]))
+		print(np.min(maps[mapnum]))
 
 	# If we have Nobs maps, we need to do some preprocessing
 	if sigma_0 != 0.0 and do_intensity:
@@ -276,10 +281,10 @@ def smoothnoisemap(indir, outdir, runname, inputmap, mapnumber=[2], fwhm=0.0, nu
 			newmap_Q, newmap_U = noiserealisation_QU(C)
 		if do_smoothing:
 			# smooth it
-			if do_polarisation
+			if do_polarisation:
 				alms = hp.map2alm([newmap, newmap_Q, newmap_U], pol=True)
 				alms = hp.sphtfunc.smoothalm(alms, beam_window=conv_windowfunction,pol=True)
-				newmaps = hp.alm2map(alm,nside_in,pol=True)
+				newmaps = hp.alm2map(alms,nside_in,pol=True)
 				newmap = newmaps[0]
 				newmap_Q = newmaps[1]
 				newmap_U = newmaps[2]

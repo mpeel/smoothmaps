@@ -87,7 +87,7 @@ def smoothmap(indir, outdir, inputfile, outputfile, fwhm_arcmin=-1, nside_out=0,
 	newheader = inputfits[1].header.copy(strip=False)
 	inputfits.close()
 
-	if do_pol_combined and i < 3:
+	if do_pol_combined and nmaps < 3:
 		print('do_pol_combined is True, need polarisation maps.')
 		exit()
 

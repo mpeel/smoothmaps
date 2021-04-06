@@ -95,9 +95,9 @@ output_nside = [2048, 1024, 512, 256, 128, 64, 32, 16, 8]
 comment = "Smoothed using Mike Peel's smoothmap.py v1.5 and smoothnoisemap.py v1.0"
 
 # QUIJOTE
-mapdir = directory+'wmap9_tqu_v1.5/'
-noisedir = directory+'wmap9_tqu_noise_v1.0/'
-outdirectory = directory+"wmap9_tqu_v1.5_noise_v1.0/"
+mapdir = directory+'quijote_202103_tqu_v1.5/'
+noisedir = directory+'quijote_202103_tqu_noise_v1.0/'
+outdirectory = directory+"quijote_202103_tqu_v1.5_noise_v1.0/"
 os.makedirs(outdirectory, exist_ok=True)
 
 for nside in output_nside:

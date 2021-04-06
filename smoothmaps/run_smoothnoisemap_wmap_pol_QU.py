@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 # Settings
 output_resolution = [60.0]#,120.0,240.0]
 output_nside = np.asarray([512, 256, 128, 64, 32, 16, 8])
-numrealisations = 1000#0
+numrealisations = 10000
 mapnumbers = [0,1,3,2] # II,QQ,UU,QU
 hdu=2 # WMAP stores the variance maps in the 2nd header
 units_out = 'mK' # MUST MATCH sigma_0 AND sigma_P UNITS BELOW
@@ -18,7 +18,7 @@ units_out = 'mK' # MUST MATCH sigma_0 AND sigma_P UNITS BELOW
 # directory = '/Users/mpeel/Documents/maps/'
 # directory = '/scratch1/mpeel/maps/'
 directory = '/share/nas_cbassarc/mpeel/'
-outdirectory = directory+"wmap9_tqu_noise_v1.0/"#_10k/"
+outdirectory = directory+"wmap9_tqu_noise_v1.0_10k/"
 os.makedirs(outdirectory, exist_ok=True)
 # Read in the beams
 beamtf_K = np.loadtxt(directory+'wmap9/wmap_ampl_bl_K1_9yr_v5p1.txt',usecols=(1,))

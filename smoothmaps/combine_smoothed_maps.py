@@ -18,25 +18,35 @@ def docombine(outfile, iqu_file, II_file, QQ_file='', UU_file='',QU_file='',resc
 		return
 	try:
 		iqu,h = hp.read_map(iqu_file,field=None,h=True)
+		print(iqu_file)
 	except:
 		iqu,h = hp.read_map(iqu_file.replace('60.0','60.00'),field=None,h=True)
+		print('2')
 	try:
 		ii,hii = hp.read_map(II_file,h=True)
+		print(II_file)
 	except:
 		ii,hii = hp.read_map(II_file.replace('60.0','60.00'),h=True)
+		print('3')
 	if QQ_file != '':
 		try:
 			qq,hqq = hp.read_map(QQ_file,field=None,h=True)
+			print(QQ_file)
 		except:
 			qq,hqq = hp.read_map(QQ_file.replace('60.0','60.00'),h=True)
+			print('4')
 		try:
 			uu,huu = hp.read_map(UU_file,h=True)
+			print(UU_file)
 		except:
 			uu,huu = hp.read_map(UU_file.replace('60.0','60.00'),h=True)
+			print('5')
 		try:
 			qu,hqu = hp.read_map(QU_file,h=True)
+			print(QU_file)
 		except:
 			qu,hqu = hp.read_map(QU_file.replace('60.0','60.00'),h=True)
+			print('6')
 		print(np.shape(iqu[0]))
 		print(np.shape(iqu[1]))
 		print(np.shape(iqu[2]))
@@ -107,10 +117,10 @@ for nside in output_nside:
 			try:
 				docombine(outdirectory+str(nside)+'_60.0smoothed_'+namestrings[i]+'_mKCMBunits.fits',\
 					mapdir+str(nside)+'_60.0smoothed_'+namestrings[i]+'_mKCMBunits.fits',\
-					noisedir+'60.0smoothed_'+namestrings[i]+'_mKCMBunits_variance_'+str(nside)+'.fits',\
-					noisedir+'60.0smoothed_'+namestrings[i]+'_mKCMBunits_variance_Q_'+str(nside)+'.fits',\
-					noisedir+'60.0smoothed_'+namestrings[i]+'_mKCMBunits_variance_U_'+str(nside)+'.fits',\
-					noisedir+'60.0smoothed_'+namestrings[i]+'_mKCMBunits_variance_QU_'+str(nside)+'.fits',comment=comment)
+					noisedir+'60.0smoothed_'+namestrings[i]+'_mKCMBunits.fits_variance_'+str(nside)+'.fits',\
+					noisedir+'60.0smoothed_'+namestrings[i]+'_mKCMBunits.fits_variance_Q_'+str(nside)+'.fits',\
+					noisedir+'60.0smoothed_'+namestrings[i]+'_mKCMBunits.fits_variance_U_'+str(nside)+'.fits',\
+					noisedir+'60.0smoothed_'+namestrings[i]+'_mKCMBunits.fits_variance_QU_'+str(nside)+'.fits',comment=comment)
 			except:
 				continue
 

@@ -92,12 +92,12 @@ def docombine(outfile, iqu_file, II_file, QQ_file='', UU_file='',rescale=1.0,com
 # directory = '/scratch1/mpeel/maps/'
 directory = '/share/nas_cbassarc/mpeel/'
 output_nside = [2048, 1024, 512, 256, 128, 64, 32, 16, 8]
-comment = "Smoothed using Mike Peel's smoothmap.py v1.4 and smoothnoisemap.py v0.9"
+comment = "Smoothed using Mike Peel's smoothmap.py v1.5 and smoothnoisemap.py v1.0"
 
 # Planck 2020
-mapdir = directory+'planck2020_tqu_v1.4/'
-noisedir = directory+'planck2020_tqu_noise_v0.9/'
-outdirectory = directory+"planck2020_tqu_v1.4_noise_v0.9_20arcmin/"
+mapdir = directory+'planck2020_tqu_v1.5/'
+noisedir = directory+'planck2020_tqu_noise_v1.0/'
+outdirectory = directory+"planck2020_tqu_v1.5_noise_v0.9_20arcmin/"
 os.makedirs(outdirectory, exist_ok=True)
 rescale=1000.0**2
 for nside in output_nside:

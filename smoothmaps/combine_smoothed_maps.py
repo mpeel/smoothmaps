@@ -105,7 +105,7 @@ for nside in output_nside:
 		namestrings = ['QUIJOTEMFI1_11.0_2021','QUIJOTEMFI1_13.0_2021','QUIJOTEMFI3_11.0_2021','QUIJOTEMFI3_13.0_2021','QUIJOTEMFI2_17.0_2021','QUIJOTEMFI2_19.0_2021','QUIJOTEMFI4_17.0_2021','QUIJOTEMFI4_19.0_2021']
 		for i in range(0,len(namestrings)):
 			try:
-				docombine(outdirectory+str(nside)+'_60.0smoothed_wmap9beamNoise_'+namestrings[i]+'_mKCMBunits.fits',\
+				docombine(outdirectory+str(nside)+'_60.0smoothed_'+namestrings[i]+'_mKCMBunits.fits',\
 					mapdir+str(nside)+'_60.0smoothed_'+namestrings[i]+'_mKCMBunits.fits',\
 					noisedir+'60.0smoothed_'+namestrings[i]+'_mKCMBunits_variance_'+str(nside)+'.fits',\
 					noisedir+'60.0smoothed_'+namestrings[i]+'_mKCMBunits_variance_Q_'+str(nside)+'.fits',\

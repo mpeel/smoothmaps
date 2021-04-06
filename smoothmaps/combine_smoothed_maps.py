@@ -92,11 +92,32 @@ def docombine(outfile, iqu_file, II_file, QQ_file='', UU_file='',QU_file='',resc
 # directory = '/scratch1/mpeel/maps/'
 directory = '/share/nas_cbassarc/mpeel/'
 output_nside = [2048, 1024, 512, 256, 128, 64, 32, 16, 8]
-comment = "Smoothed using Mike Peel's smoothmap.py v1.4 and smoothnoisemap.py v0.9"
+comment = "Smoothed using Mike Peel's smoothmap.py v1.5 and smoothnoisemap.py v1.0"
+
+# QUIJOTE
+mapdir = directory+'wmap9_tqu_v1.5/'
+noisedir = directory+'wmap9_tqu_noise_v1.0/'
+outdirectory = directory+"wmap9_tqu_v1.5_noise_v1.0/"
+os.makedirs(outdirectory, exist_ok=True)
+
+for nside in output_nside:
+	if nside <= 512:
+		namestrings = ['QUIJOTEMFI1_11.0_2021','QUIJOTEMFI1_13.0_2021','QUIJOTEMFI3_11.0_2021','QUIJOTEMFI3_13.0_2021','QUIJOTEMFI2_17.0_2021','QUIJOTEMFI2_19.0_2021','QUIJOTEMFI4_17.0_2021','QUIJOTEMFI4_19.0_2021']
+		for i in range(0,len(namestrings)):
+			try:
+				docombine(outdirectory+str(nside)+'_60.0smoothed_wmap9beamNoise_'+namestrings[i]+'_mKCMBunits.fits',\
+					mapdir+str(nside)+'_60.0smoothed_'+namestrings[i]+'_mKCMBunits.fits',\
+					noisedir+'60.0smoothed_'+namestrings[i]+'_mKCMBunits_variance_'+str(nside)+'.fits',\
+					noisedir+'60.0smoothed_'+namestrings[i]+'_mKCMBunits_variance_Q_'+str(nside)+'.fits',\
+					noisedir+'60.0smoothed_'+namestrings[i]+'_mKCMBunits_variance_U_'+str(nside)+'.fits',\
+					noisedir+'60.0smoothed_'+namestrings[i]+'_mKCMBunits_variance_QU_'+str(nside)+'.fits',comment=comment)
+			except:
+				continue
+
 # WMAP9
-mapdir = directory+'wmap9_tqu_v1.4/'
-noisedir = directory+'wmap9_tqu_noise_v0.9/'
-outdirectory = directory+"wmap9_tqu_v1.4_noise_v0.9/"
+mapdir = directory+'wmap9_tqu_v1.5/'
+noisedir = directory+'wmap9_tqu_noise_v1.0/'
+outdirectory = directory+"wmap9_tqu_v1.5_noise_v1.0/"
 os.makedirs(outdirectory, exist_ok=True)
 
 for nside in output_nside:
@@ -114,9 +135,9 @@ for nside in output_nside:
 				continue
 
 # WMAP9 10k
-mapdir = directory+'wmap9_tqu_v1.4/'
-noisedir = directory+'wmap9_tqu_noise_v0.9_10k/'
-outdirectory = directory+"wmap9_tqu_v1.4_noise_v0.9_10k/"
+mapdir = directory+'wmap9_tqu_v1.5/'
+noisedir = directory+'wmap9_tqu_noise_v1.0_10k/'
+outdirectory = directory+"wmap9_tqu_v1.5_noise_v1.0_10k/"
 os.makedirs(outdirectory, exist_ok=True)
 
 for nside in output_nside:
@@ -134,9 +155,9 @@ for nside in output_nside:
 				continue
 
 # Planck 2015
-mapdir = directory+'planck2015_tqu_v1.4/'
-noisedir = directory+'planck2015_tqu_noise_v0.9/'
-outdirectory = directory+"planck2015_tqu_v1.4_noise_v0.9/"
+mapdir = directory+'planck2015_tqu_v1.5/'
+noisedir = directory+'planck2015_tqu_noise_v1.0/'
+outdirectory = directory+"planck2015_tqu_v1.5_noise_v1.0/"
 os.makedirs(outdirectory, exist_ok=True)
 rescale=1000.0**2
 for nside in output_nside:
@@ -181,9 +202,9 @@ for nside in output_nside:
 			continue
 
 # Planck 2018
-mapdir = directory+'planck2018_tqu_v1.4/'
-noisedir = directory+'planck2018_tqu_noise_v0.9/'
-outdirectory = directory+"planck2018_tqu_v1.4_noise_v0.9/"
+mapdir = directory+'planck2018_tqu_v1.5/'
+noisedir = directory+'planck2018_tqu_noise_v1.0/'
+outdirectory = directory+"planck2018_tqu_v1.5_noise_v1.0/"
 os.makedirs(outdirectory, exist_ok=True)
 for nside in output_nside:
 	# Standard maps
@@ -235,9 +256,9 @@ for nside in output_nside:
 		except:
 			continue
 
-mapdir = directory+'planck2018_tqu_v1.4/'
-noisedir = directory+'planck2018_tqu_noise_v0.9_10k/'
-outdirectory = directory+"planck2018_tqu_v1.4_noise_v0.9_10k/"
+mapdir = directory+'planck2018_tqu_v1.5/'
+noisedir = directory+'planck2018_tqu_noise_v1.0_10k/'
+outdirectory = directory+"planck2018_tqu_v1.5_noise_v1.0_10k/"
 os.makedirs(outdirectory, exist_ok=True)
 for nside in output_nside:
 	# Planck 2018 10k
@@ -258,9 +279,9 @@ for nside in output_nside:
 
 
 # Planck 2020
-mapdir = directory+'planck2020_tqu_v1.4/'
-noisedir = directory+'planck2020_tqu_noise_v0.9/'
-outdirectory = directory+"planck2020_tqu_v1.4_noise_v0.9/"
+mapdir = directory+'planck2020_tqu_v1.5/'
+noisedir = directory+'planck2020_tqu_noise_v1.0/'
+outdirectory = directory+"planck2020_tqu_v1.5_noise_v1.0/"
 os.makedirs(outdirectory, exist_ok=True)
 for nside in output_nside:
 	# Standard maps
@@ -299,9 +320,9 @@ for nside in output_nside:
 
 
 # Planck 2020 10k
-mapdir = directory+'planck2020_tqu_v1.4/'
-noisedir = directory+'planck2020_tqu_noise_v0.9_10k/'
-outdirectory = directory+"planck2020_tqu_v1.4_noise_v0.9_10k/"
+mapdir = directory+'planck2020_tqu_v1.5/'
+noisedir = directory+'planck2020_tqu_noise_v1.0_10k/'
+outdirectory = directory+"planck2020_tqu_v1.5_noise_v1.0_10k/"
 os.makedirs(outdirectory, exist_ok=True)
 for nside in output_nside:
 	# Standard maps

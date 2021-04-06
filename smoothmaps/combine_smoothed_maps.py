@@ -84,6 +84,7 @@ def docombine(outfile, iqu_file, II_file, QQ_file='', UU_file='',QU_file='',resc
 	bin_hdu.header['ORDERING']='RING'
 	bin_hdu.header['POLCONV']='COSMO'
 	bin_hdu.header['PIXTYPE']='HEALPIX'
+	bin_hdu.header['INDXSCHM']='IMPLICIT'
 	bin_hdu.header['COMMENT']=comment
 	bin_hdu.header['NSIDE'] = get_header_val(hii,'NSIDE')
 	bin_hdu.header['TUNIT1'] = get_header_val(h,'TUNIT1')
@@ -115,7 +116,12 @@ for nside in output_nside:
 		namestrings = ['QUIJOTEMFI1_11.0_2021','QUIJOTEMFI1_13.0_2021','QUIJOTEMFI3_11.0_2021','QUIJOTEMFI3_13.0_2021','QUIJOTEMFI2_17.0_2021','QUIJOTEMFI2_19.0_2021','QUIJOTEMFI4_17.0_2021','QUIJOTEMFI4_19.0_2021']
 		for i in range(0,len(namestrings)):
 			try:
-				docombine(outdirectory+str(nside)+'_60.0smoothed_'+namestrings[i]+'_mKCMBunits.fits',\
+				if i == 0 or i == 1:
+					docombine(outdirectory+str(nside)+'_60.0smoothed_'+namestrings[i]+'_mKCMBunits.fits',\
+					mapdir+str(nside)+'_60.0smoothed_'+namestrings[i]+'_mKCMBunits.fits',\
+					noisedir+'60.0smoothed_'+namestrings[i]+'_mKCMBunits.fits_variance_'+str(nside)+'.fits',comment=comment)
+				else:
+					docombine(outdirectory+str(nside)+'_60.0smoothed_'+namestrings[i]+'_mKCMBunits.fits',\
 					mapdir+str(nside)+'_60.0smoothed_'+namestrings[i]+'_mKCMBunits.fits',\
 					noisedir+'60.0smoothed_'+namestrings[i]+'_mKCMBunits.fits_variance_'+str(nside)+'.fits',\
 					noisedir+'60.0smoothed_'+namestrings[i]+'_mKCMBunits.fits_variance_Q_'+str(nside)+'.fits',\

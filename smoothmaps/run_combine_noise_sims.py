@@ -11,7 +11,7 @@ import scipy.io as io
 # Settings
 output_resolution = [60.0]#,120.0,240.0]
 output_nside = np.asarray([512, 256, 128, 64, 32, 16, 8])
-numrealisations = 5
+numrealisations = 1000
 mapnumbers = [0, 1, 2] # II,QQ,UU,QU
 rescale = 1.0 # Convert from K to mK - this is applied to the noise map
 units_out = 'mKCMB' # Must match rescale!

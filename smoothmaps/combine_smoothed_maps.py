@@ -124,24 +124,24 @@ for nside in output_nside:
 				else:
 					docombine(outdirectory+str(nside)+'_60.0smoothed_'+namestrings[i]+'_mKCMBunits.fits',\
 					mapdir+str(nside)+'_60.0smoothed_'+namestrings[i]+'_mKCMBunits.fits',\
-					noisedir+'60.0smoothed_'+namestrings[i]+'_sims_mKCMBunits.fits_variance_'+str(nside)+'.fits',\
-					noisedir+'60.0smoothed_'+namestrings[i]+'_sims_mKCMBunits.fits_variance_Q_'+str(nside)+'.fits',\
-					noisedir+'60.0smoothed_'+namestrings[i]+'_sims_mKCMBunits.fits_variance_U_'+str(nside)+'.fits',\
-					noisedir+'60.0smoothed_'+namestrings[i]+'_sims_mKCMBunits.fits_variance_QU_'+str(nside)+'.fits',comment=comment)
+					noisedir+'60.0smoothed_'+namestrings[i]+'_mKCMBunits.fits_variance_'+str(nside)+'.fits',\
+					noisedir+'60.0smoothed_'+namestrings[i]+'_mKCMBunits.fits_variance_Q_'+str(nside)+'.fits',\
+					noisedir+'60.0smoothed_'+namestrings[i]+'_mKCMBunits.fits_variance_U_'+str(nside)+'.fits',\
+					noisedir+'60.0smoothed_'+namestrings[i]+'_mKCMBunits.fits_variance_QU_'+str(nside)+'.fits',comment=comment)
 			except:
 				continue
-			try:
-				if i == 0 or i == 1:
-					null = 0
-				else:
-					docombine(outdirectory+str(nside)+'_60.0smoothed_'+namestrings[i]+'simnoise_mKCMBunits.fits',\
-					mapdir+str(nside)+'_60.0smoothed_'+namestrings[i]+'_mKCMBunits.fits',\
-					noisedir2+'60.0smoothed_'+namestrings[i]+'_mKCMBunits.fits_variance_'+str(nside)+'.fits',\
-					noisedir2+'60.0smoothed_'+namestrings[i]+'_mKCMBunits.fits_variance_Q_'+str(nside)+'.fits',\
-					noisedir2+'60.0smoothed_'+namestrings[i]+'_mKCMBunits.fits_variance_U_'+str(nside)+'.fits',\
-					noisedir2+'60.0smoothed_'+namestrings[i]+'_mKCMBunits.fits_variance_QU_'+str(nside)+'.fits',comment=comment)
-			except:
-				continue
+			# try:
+			if i == 0 or i == 1:
+				null = 0
+			else:
+				docombine(outdirectory+str(nside)+'_60.0smoothed_'+namestrings[i]+'simnoise_mKCMBunits.fits',\
+				mapdir+str(nside)+'_60.0smoothed_'+namestrings[i]+'_mKCMBunits.fits',\
+				noisedir2+'60.0smoothed_'+namestrings[i]+'_sims_mKCMBunits.fits_variance_'+str(nside)+'.fits',\
+				noisedir2+'60.0smoothed_'+namestrings[i]+'_sims_mKCMBunits.fits_variance_Q_'+str(nside)+'.fits',\
+				noisedir2+'60.0smoothed_'+namestrings[i]+'_sims_mKCMBunits.fits_variance_U_'+str(nside)+'.fits',\
+				noisedir2+'60.0smoothed_'+namestrings[i]+'_sims_mKCMBunits.fits_variance_QU_'+str(nside)+'.fits',comment=comment)
+			# except:
+			# 	continue
 
 # WMAP9
 mapdir = directory+'wmap9_tqu_v1.5/'

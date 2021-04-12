@@ -108,6 +108,7 @@ comment = "Smoothed using Mike Peel's smoothmap.py v1.5 and smoothnoisemap.py v1
 # QUIJOTE
 mapdir = directory+'quijote_202103_tqu_v1.5/'
 noisedir = directory+'quijote_202103_tqu_noise_v1.0/'
+noisedir2 = directory+'quijote_202103_sims/'
 outdirectory = directory+"quijote_202103_tqu_v1.5_noise_v1.0/"
 os.makedirs(outdirectory, exist_ok=True)
 
@@ -127,6 +128,12 @@ for nside in output_nside:
 					noisedir+'60.0smoothed_'+namestrings[i]+'_mKCMBunits.fits_variance_Q_'+str(nside)+'.fits',\
 					noisedir+'60.0smoothed_'+namestrings[i]+'_mKCMBunits.fits_variance_U_'+str(nside)+'.fits',\
 					noisedir+'60.0smoothed_'+namestrings[i]+'_mKCMBunits.fits_variance_QU_'+str(nside)+'.fits',comment=comment)
+					docombine(outdirectory+str(nside)+'_60.0smoothed_'+namestrings[i]+'simnoise_mKCMBunits.fits',\
+					mapdir+str(nside)+'_60.0smoothed_'+namestrings[i]+'_mKCMBunits.fits',\
+					noisedir2+'60.0smoothed_'+namestrings[i]+'_mKCMBunits.fits_variance_'+str(nside)+'.fits',\
+					noisedir2+'60.0smoothed_'+namestrings[i]+'_mKCMBunits.fits_variance_Q_'+str(nside)+'.fits',\
+					noisedir2+'60.0smoothed_'+namestrings[i]+'_mKCMBunits.fits_variance_U_'+str(nside)+'.fits',\
+					noisedir2+'60.0smoothed_'+namestrings[i]+'_mKCMBunits.fits_variance_QU_'+str(nside)+'.fits',comment=comment)
 			except:
 				continue
 

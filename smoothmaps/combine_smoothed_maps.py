@@ -136,10 +136,10 @@ for nside in output_nside:
 			else:
 				docombine(outdirectory+str(nside)+'_60.0smoothed_'+namestrings[i]+'simnoise_mKCMBunits.fits',\
 				mapdir+str(nside)+'_60.0smoothed_'+namestrings[i]+'_mKCMBunits.fits',\
-				noisedir2+'60.0smoothed_'+namestrings[i]+'_sims_mKCMBunits.fits_variance_'+str(nside)+'.fits',\
-				noisedir2+'60.0smoothed_'+namestrings[i]+'_sims_mKCMBunits.fits_variance_Q_'+str(nside)+'.fits',\
-				noisedir2+'60.0smoothed_'+namestrings[i]+'_sims_mKCMBunits.fits_variance_U_'+str(nside)+'.fits',\
-				noisedir2+'60.0smoothed_'+namestrings[i]+'_sims_mKCMBunits.fits_variance_QU_'+str(nside)+'.fits',comment=comment)
+				noisedir2+'60.0smoothed_'+namestrings[i].replace('_2021','')+'_sims_mKCMBunits.fits_variance_'+str(nside)+'.fits',\
+				noisedir2+'60.0smoothed_'+namestrings[i].replace('_2021','')+'_sims_mKCMBunits.fits_variance_Q_'+str(nside)+'.fits',\
+				noisedir2+'60.0smoothed_'+namestrings[i].replace('_2021','')+'_sims_mKCMBunits.fits_variance_U_'+str(nside)+'.fits',\
+				noisedir2+'60.0smoothed_'+namestrings[i].replace('_2021','')+'_sims_mKCMBunits.fits_variance_QU_'+str(nside)+'.fits',comment=comment)
 			# except:
 			# 	continue
 

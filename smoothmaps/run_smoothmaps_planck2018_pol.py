@@ -74,8 +74,8 @@ for i in range(0,numnside):
 
 		# HFI unpolarised channels
 		if subtractmaps_name[j] == '':
-			smoothmap(directory+'planck2018/',outdirectory,'HFI_SkyMap_545_2048_R3.01_full.fits',str(output_nside[i])+'_60.00smoothed_PlanckR3fullbeam'+subtractmaps_name[j]+'_545_2048_2018_MJySrunits.fits', output_resolution,nside_out=output_nside[i],windowfunction=beamtf_p545,smoothvariance=smoothvariance)
-			smoothmap(directory+'planck2018/',outdirectory,'HFI_SkyMap_857_2048_R3.01_full.fits',str(output_nside[i])+'_60.00smoothed_PlanckR3fullbeam'+subtractmaps_name[j]+'_857_2048_2018_MJySrunits.fits', output_resolution,nside_out=output_nside[i],windowfunction=beamtf_p857,smoothvariance=smoothvariance)
+			smoothmap(directory+'planck2018/',outdirectory,'HFI_SkyMap_545_2048_R3.01_full.fits',str(output_nside[i])+'_60.00smoothed_PlanckR3fullbeam'+subtractmaps_name[j]+'_545_2048_2018_MJySrunits.fits', output_resolution,nside_out=output_nside[i],windowfunction=beamtf_p545,smoothvariance=smoothvariance,do_pol_combined=False)
+			smoothmap(directory+'planck2018/',outdirectory,'HFI_SkyMap_857_2048_R3.01_full.fits',str(output_nside[i])+'_60.00smoothed_PlanckR3fullbeam'+subtractmaps_name[j]+'_857_2048_2018_MJySrunits.fits', output_resolution,nside_out=output_nside[i],windowfunction=beamtf_p857,smoothvariance=smoothvariance,do_pol_combined=False)
 
 
 # EOF

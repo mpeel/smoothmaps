@@ -301,6 +301,17 @@ def weighted_pol_map(nside=512,indirectory='',outdirectory='',date='',prefix='',
 			var_q[var_q == 0.0] = 1e4
 			var_u[var_u == 0.0] = 1e4
 
+		else:
+			# var_i = mapdata[varianceindex[i][0]].copy()
+			var_q = mapdata[varianceindex[i][1]].copy()
+			var_u = mapdata[varianceindex[i][2]].copy()
+			if doqu:
+				var_qu = mapdata[varianceindex[i][3]].copy()
+			var_q[:] = var_q[:] * (rescale_vals[1,i])**2.0
+			var_u[:] = var_u[:] * (rescale_vals[2,i])**2.0
+			# var_i[var_i == 0.0] = 1e4
+			var_q[var_q == 0.0] = 1e4
+			var_u[var_u == 0.0] = 1e4
 
 		# print(maps[i])
 		# print(np.median(np.sqrt(var_i[var_i[:] >=0])))
@@ -501,17 +512,17 @@ def weighted_pol_map(nside=512,indirectory='',outdirectory='',date='',prefix='',
 		plt.close()
 		plt.clf()
 
-		hp.write_map(outdirectory+prefix+'_combine_P.fits',np.sqrt(combine_q**2+combine_u**2)*commonmask,overwrite=True)
-		hp.mollview(np.sqrt(combine_q**2+combine_u**2)*commonmask,min=0,max=np.sqrt(threshold**2+threshold**2),cmap=plt.get_cmap('jet'))
-		plt.savefig(outdirectory+prefix+'_combine_P.pdf')
-		plt.close()
-		plt.clf()
+	hp.write_map(outdirectory+prefix+'_combine_P.fits',np.sqrt(combine_q**2+combine_u**2)*commonmask,overwrite=True)
+	hp.mollview(np.sqrt(combine_q**2+combine_u**2)*commonmask,min=0,max=np.sqrt(threshold**2+threshold**2),cmap=plt.get_cmap('jet'))
+	plt.savefig(outdirectory+prefix+'_combine_P.pdf')
+	plt.close()
+	plt.clf()
 
-		hp.write_map(outdirectory+prefix+'_combine_P_nomask.fits',np.sqrt(combine_q**2+combine_u**2),overwrite=True)
-		hp.mollview(np.sqrt(combine_q**2+combine_u**2),min=0,max=np.sqrt(threshold**2+threshold**2),cmap=plt.get_cmap('jet'))
-		plt.savefig(outdirectory+prefix+'_combine_P_nomask.pdf')
-		plt.close()
-		plt.clf()
+	hp.write_map(outdirectory+prefix+'_combine_P_nomask.fits',np.sqrt(combine_q**2+combine_u**2),overwrite=True)
+	hp.mollview(np.sqrt(combine_q**2+combine_u**2),min=0,max=np.sqrt(threshold**2+threshold**2),cmap=plt.get_cmap('jet'))
+	plt.savefig(outdirectory+prefix+'_combine_P_nomask.pdf')
+	plt.close()
+	plt.clf()
 
 
 	cols = []

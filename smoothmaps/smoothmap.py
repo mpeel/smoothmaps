@@ -25,6 +25,7 @@
 # v1.4b Mike Peel   07 Oct 2020   Tweak to use 'usehealpixfits' for 'subtractmap'
 # v1.4c Mike Peel   22 Mar 2020   Add option for precomputed window function smoothing
 # v1.5  Mike Peel   05 Apr 2021   Fix polarisation smoothing to be done simulatenously
+# v1.5a Mike Peel   09 Apr 2021   Tweak to avoid healpix maps without ordering (assume ring)
 #
 # Requirements:
 # Numpy, healpy, matplotlib
@@ -49,7 +50,7 @@ def gaussfit(x, param):
 	return hp.gauss_beam(np.radians(param/60.0),300)
 
 
-def smoothmap(indir, outdir, inputfile, outputfile, fwhm_arcmin=-1, nside_out=0,maxnummaps=-1, frequency=100.0, units_in='',units_out='', windowfunction = [],windowfunction_pol = [],nobs_out=False,variance_out=True, sigma_0 = -1, sigma_0_unit='', rescale=1.0, nosmooth=[], outputmaps=[],appendmap='',appendmapname='',appendmapunit='',subtractmap='',subtractmap_units='',usehealpixfits=False,taper=False,lmin_taper=350,lmax_taper=600, cap_one=False, cap_oneall=False,minmapvalue=0,maxmapvalue=0,minmaxmaps=[0],taper_gauss=False,taper_gauss_sigma=0.0,normalise=True,useunseen=False,smoothvariance=False,use_precomputed_wf=False,do_pol_combined=False):
+def smoothmap(indir, outdir, inputfile, outputfile, fwhm_arcmin=-1, nside_out=0,maxnummaps=-1, frequency=10.0, units_in='',units_out='', windowfunction = [],windowfunction_pol = [],nobs_out=False,variance_out=True, sigma_0 = -1, sigma_0_unit='', rescale=1.0, nosmooth=[], outputmaps=[],appendmap='',appendmapname='',appendmapunit='',subtractmap='',subtractmap_units='',usehealpixfits=False,taper=False,lmin_taper=350,lmax_taper=600, cap_one=False, cap_oneall=False,minmapvalue=0,maxmapvalue=0,minmaxmaps=[0],taper_gauss=False,taper_gauss_sigma=0.0,normalise=True,useunseen=False,smoothvariance=False,use_precomputed_wf=False,do_pol_combined=False):
 	ver = "1.5"
 
 	if (os.path.isfile(outdir+outputfile)):
@@ -82,14 +83,17 @@ def smoothmap(indir, outdir, inputfile, outputfile, fwhm_arcmin=-1, nside_out=0,
 			print(len(maps[i]))
 		print(len(maps[0]))
 		# Check to see whether we have nested data, and switch to ring if that is the case.
-		if (inputfits[1].header['ORDERING'] == 'NESTED'):
-			maps = hp.reorder(maps,n2r=True)
+		try:
+			if (inputfits[1].header['ORDERING'] == 'NESTED'):
+				maps = hp.reorder(maps,n2r=True)
+		except:
+			null = 0
 	newheader = inputfits[1].header.copy(strip=False)
 	inputfits.close()
 
 	if do_pol_combined and nmaps < 3:
-		print('do_pol_combined is True, need polarisation maps.')
-		exit()
+		print('do_pol_combined is True, need polarisation maps (only have ' + str(nmaps) + ' maps for ' + inputfile + ').')
+		return 0
 
 	# Do some cleanup of the new header to avoid issues later
 	try:

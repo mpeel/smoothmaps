@@ -122,12 +122,15 @@ def weighted_pol_map(nside=512,indirectory='',outdirectory='',date='',prefix='',
 	# 	combine_qu = np.zeros(npix)
 	# 	weight_qu = np.zeros(npix)
 
-	rescale_vals = np.zeros((3,nummaps))
+	rescale_vals = np.ones((3,nummaps))
 	for i in range(0,nummaps):
 		print(maps[i])
 		mapdata = hp.read_map(indirectory+maps[i],field=None)
 		mapdata = hp.ud_grade(mapdata,nside,order_in='RING',order_out='RING')
 		commonmask[mapdata[0][:] == hp.UNSEEN] = 0
+		tempmask = np.ones(len(mapdata[1]))
+		tempmask[mapdata[1][:] == hp.UNSEEN] = 0.0
+		tempmask[mapdata[2][:] == hp.UNSEEN] = 0.0
 		mapdata[0][mapdata[0][:] == hp.UNSEEN] = 0.0
 		mapdata[1][mapdata[1][:] == hp.UNSEEN] = 0.0
 		mapdata[2][mapdata[2][:] == hp.UNSEEN] = 0.0
@@ -153,15 +156,15 @@ def weighted_pol_map(nside=512,indirectory='',outdirectory='',date='',prefix='',
 		temp_U = mapdata[2]*rescale_amp[i]*(normfreq/freqs[i])**index
 		if not minplots:
 			hp.mollview(temp_Q,min=-threshold,max=threshold)
-			plt.savefig(outdirectory+maps[i].split('/')[-1]+'_I_rescale.pdf')
-			plt.close()
-			plt.clf()
-			hp.mollview(temp_U,min=-threshold,max=threshold)
 			plt.savefig(outdirectory+maps[i].split('/')[-1]+'_Q_rescale.pdf')
 			plt.close()
 			plt.clf()
-			hp.mollview(np.sqrt(temp_Q**2+temp_U**2),min=0,max=np.sqrt(threshold**2+threshold**2),cmap=plt.get_cmap('jet'))
+			hp.mollview(temp_U,min=-threshold,max=threshold)
 			plt.savefig(outdirectory+maps[i].split('/')[-1]+'_U_rescale.pdf')
+			plt.close()
+			plt.clf()
+			hp.mollview(np.sqrt(temp_Q**2+temp_U**2),min=0,max=np.sqrt(threshold**2+threshold**2),cmap=plt.get_cmap('jet'))
+			plt.savefig(outdirectory+maps[i].split('/')[-1]+'_P_rescale.pdf')
 			plt.close()
 			plt.clf()
 		temp_Q = 0
@@ -240,22 +243,21 @@ def weighted_pol_map(nside=512,indirectory='',outdirectory='',date='',prefix='',
 			var_u = hp.ud_grade(var_u,nside,power=2)
 			if doqu:
 				var_qu = hp.ud_grade(var_qu,nside,power=2)
-
-		if use_halfrings:
+		elif use_halfrings:
 			map_half1 = hp.read_map(indirectory+maps_half1[i],field=None)
 			map_half2 = hp.read_map(indirectory+maps_half2[i],field=None)
 			# var_i = (np.abs(map_half1[0] - map_half2[0])/2.0)**2
 			var_q = (np.abs(map_half1[1] - map_half2[1])/2.0)**2
 			var_u = (np.abs(map_half1[2] - map_half2[2])/2.0)**2
-			# var_i[var_i == 0.0] = 1e4
-			var_q[var_q == 0.0] = 1e4
-			var_u[var_u == 0.0] = 1e4
+			# var_i[var_i == 0.0] = 1e10
+			var_q[var_q == 0.0] = 1e10
+			var_u[var_u == 0.0] = 1e10
 			# var_i[var_i < np.median(var_i)] = np.median(var_i)
 			var_q[var_q < np.median(var_q)] = np.median(var_q)
 			var_u[var_u < np.median(var_u)] = np.median(var_u)
-			# var_i[var_i > 1e4] = 1e4
-			var_q[var_q > 1e4] = 1e4
-			var_u[var_u > 1e4] = 1e4
+			# var_i[var_i > 1e10] = 1e10
+			var_q[var_q > 1e4] = 1e10
+			var_u[var_u > 1e4] = 1e10
 		elif use_weights:
 			# Get the variance maps
 			# var_i = hp.read_map(indirectory+maps[i].replace('60.0s','60.00s').replace('_mKCMBunits','_weight_0_variance'),field=None)
@@ -297,9 +299,9 @@ def weighted_pol_map(nside=512,indirectory='',outdirectory='',date='',prefix='',
 			# var_i[:] = var_i[:] * (rescale_vals[0,i])**2.0
 			var_q[:] = var_q[:] * (rescale_vals[1,i])**2.0
 			var_u[:] = var_u[:] * (rescale_vals[2,i])**2.0
-			# var_i[var_i == 0.0] = 1e4
-			var_q[var_q == 0.0] = 1e4
-			var_u[var_u == 0.0] = 1e4
+			# var_i[var_i == 0.0] = 1e10
+			var_q[var_q == 0.0] = 1e10
+			var_u[var_u == 0.0] = 1e10
 
 		else:
 			# var_i = mapdata[varianceindex[i][0]].copy()
@@ -307,11 +309,20 @@ def weighted_pol_map(nside=512,indirectory='',outdirectory='',date='',prefix='',
 			var_u = mapdata[varianceindex[i][2]].copy()
 			if doqu:
 				var_qu = mapdata[varianceindex[i][3]].copy()
-			var_q[:] = var_q[:] * (rescale_vals[1,i])**2.0
-			var_u[:] = var_u[:] * (rescale_vals[2,i])**2.0
-			# var_i[var_i == 0.0] = 1e4
-			var_q[var_q == 0.0] = 1e4
-			var_u[var_u == 0.0] = 1e4
+			# var_i = hp.ud_grade(var_i,nside,power=2)
+			var_q = hp.ud_grade(var_q,nside,power=2)
+			var_u = hp.ud_grade(var_u,nside,power=2)
+			if doqu:
+				var_qu = hp.ud_grade(var_qu,nside,power=2)
+			# var_q[:] = var_q[:] * (rescale_vals[1,i])**2.0
+			# var_u[:] = var_u[:] * (rescale_vals[2,i])**2.0
+			# var_i[var_i == 0.0] = 1e10
+			var_q[var_q < -1e4] = 1e10
+			var_u[var_u < -1e4] = 1e10
+			var_q[var_q == 0.0] = 1e10
+			var_u[var_u == 0.0] = 1e10
+			var_q[tempmask == 0.0] = 1e30
+			var_u[tempmask == 0.0] = 1e30
 
 		# print(maps[i])
 		# print(np.median(np.sqrt(var_i[var_i[:] >=0])))
@@ -319,16 +330,16 @@ def weighted_pol_map(nside=512,indirectory='',outdirectory='',date='',prefix='',
 		# print(np.median(np.sqrt(var_u[var_u[:] >=0])))
 
 		if not minplots:
-			hp.mollview(var_q,norm='hist')
+			hp.mollview(var_q*tempmask,norm='hist')
 			plt.savefig(outdirectory+maps[i].split('/')[-1]+'_Q_var.pdf')
 			plt.close()
 			plt.clf()
-			hp.mollview(var_u,norm='hist')
+			hp.mollview(var_u*tempmask,norm='hist')
 			plt.savefig(outdirectory+maps[i].split('/')[-1]+'_U_var.pdf')
 			plt.close()
 			plt.clf()
 			if doqu:
-				hp.mollview(var_qu,norm='hist')
+				hp.mollview(var_qu*tempmask,norm='hist')
 				plt.savefig(outdirectory+maps[i].split('/')[-1]+'_QU_var.pdf')
 				plt.close()
 				plt.clf()
@@ -338,21 +349,24 @@ def weighted_pol_map(nside=512,indirectory='',outdirectory='',date='',prefix='',
 		var_u = var_u * ((normfreq/freqs[i])**index)**2
 		if doqu:
 			var_qu = var_qu * ((normfreq/freqs[i])**index)**2
-
+		# var_q = np.ones(len(var_q))
+		# var_u = np.ones(len(var_u))
+		# if doqu:
+		# 	var_qu = np.ones(len(var_qu))
 
 		# hp.mollview(var_i,norm='hist')
 		# plt.savefig(outdirectory+maps[i].split('/')[-1]+'_0_var.pdf')
 		if i == 0:
-			qmin = np.min(var_q*rescale_variance[i])
-			qmax = np.max(var_q*rescale_variance[i])/4.0
-			umin = np.min(var_u*rescale_variance[i])
-			umax = np.max(var_u*rescale_variance[i])/4.0
+			qmin = np.min(tempmask*var_q*rescale_variance[i])
+			qmax = np.max(tempmask*var_q*rescale_variance[i])/4.0
+			umin = np.min(tempmask*var_u*rescale_variance[i])
+			umax = np.max(tempmask*var_u*rescale_variance[i])/4.0
 		if not minplots:
-			hp.mollview(var_q*rescale_variance[i],min=qmin*(normfreq/freqs[i])**index,max=qmax*(normfreq/freqs[i])**index)#,norm='hist')
+			hp.mollview(tempmask*var_q*rescale_variance[i],min=qmin*(normfreq/freqs[i])**index,max=qmax*(normfreq/freqs[i])**index)#,norm='hist')
 			plt.savefig(outdirectory+maps[i].split('/')[-1]+'_Q_var_rescale.pdf')
 			plt.close()
 			plt.clf()
-			hp.mollview(var_u*rescale_variance[i],min=umin*(normfreq/freqs[i])**index,max=umax*(normfreq/freqs[i])**index)#,norm='hist')
+			hp.mollview(tempmask*var_u*rescale_variance[i],min=umin*(normfreq/freqs[i])**index,max=umax*(normfreq/freqs[i])**index)#,norm='hist')
 			plt.savefig(outdirectory+maps[i].split('/')[-1]+'_U_var_rescale.pdf')
 			plt.close()
 			plt.clf()
@@ -451,16 +465,18 @@ def weighted_pol_map(nside=512,indirectory='',outdirectory='',date='',prefix='',
 			combine = combine + D @ W
 			weight = weight + W
 		else:
-			if i == 0:
-				combine_q = (mapdata[1].copy()*rescale_amp[i]*(normfreq/freqs[i])**index)/(var_q*rescale_variance[i])
-				combine_u = (mapdata[2].copy()*rescale_amp[i]*(normfreq/freqs[i])**index)/(var_u*rescale_variance[i])
-				weight_q = 1.0/(var_q.copy()*rescale_variance[i])
-				weight_u = 1.0/(var_u.copy()*rescale_variance[i])
-			else:
-				combine_q = combine_q+(mapdata[1]*rescale_amp[i]*(normfreq/freqs[i])**index)/(var_q*rescale_variance[i])
-				combine_u = combine_u+(mapdata[2]*rescale_amp[i]*(normfreq/freqs[i])**index)/(var_u*rescale_variance[i])
-				weight_q = weight_q+1.0/(var_q*rescale_variance[i])
-				weight_u = weight_u+1.0/(var_u*rescale_variance[i])
+			# if i == 0:
+			# 	combine_q = (mapdata[1].copy()*rescale_amp[i]*(normfreq/freqs[i])**index)/(var_q*rescale_variance[i])
+			# 	combine_u = (mapdata[2].copy()*rescale_amp[i]*(normfreq/freqs[i])**index)/(var_u*rescale_variance[i])
+			# 	weight_q = 1.0/(var_q.copy()*rescale_variance[i])
+			# 	weight_u = 1.0/(var_u.copy()*rescale_variance[i])
+			# else:
+			newq = (mapdata[1]*rescale_amp[i]*(normfreq/freqs[i])**index)/(var_q*rescale_variance[i])
+			newu = (mapdata[2]*rescale_amp[i]*(normfreq/freqs[i])**index)/(var_u*rescale_variance[i])
+			combine_q[tempmask==1] = combine_q[tempmask==1] + newq[tempmask==1]
+			combine_u[tempmask==1] = combine_u[tempmask==1]+newu[tempmask==1]
+			weight_q[tempmask==1] = weight_q[tempmask==1]+(1.0/(var_q*rescale_variance[i]))[tempmask==1]
+			weight_u[tempmask==1] = weight_u[tempmask==1]+(1.0/(var_u*rescale_variance[i]))[tempmask==1]
 	
 
 	if doqu:
@@ -484,8 +500,8 @@ def weighted_pol_map(nside=512,indirectory='',outdirectory='',date='',prefix='',
 		weight_u = 1.0/inv_W[:,1,1]
 		weight_qu = 1.0/inv_W[:,0,1]
 	else:
-		combine_q /= weight_q
-		combine_u /= weight_u
+		combine_q[weight_q != 0] /= weight_q[weight_q != 0]
+		combine_u[weight_u != 0] /= weight_u[weight_u != 0]
 	
 	if not minplots:
 		hp.write_map(outdirectory+prefix+'_commonmask.fits',commonmask,overwrite=True)
@@ -562,16 +578,16 @@ def weighted_pol_map(nside=512,indirectory='',outdirectory='',date='',prefix='',
 	# hp.write_map(outdirectory+prefix+'_combine.fits',[np.sqrt(combine_q**2+combine_u**2),combine_q,combine_u,1.0/weight_q,1.0/weight_u],overwrite=True)
 
 	if not minplots:
-		hp.mollview(1.0/weight_q,min=qmin,max=qmax)#,norm='hist')
+		hp.mollview(1.0/weight_q,max=threshold*0.01)#min=qmin,max=qmax)#,norm='hist')
 		plt.savefig(outdirectory+prefix+'_combine_Q_var.pdf')
 		plt.close()
 		plt.clf()
-		hp.mollview(1.0/weight_u,min=umin,max=umax)#,norm='hist')
+		hp.mollview(1.0/weight_u,max=threshold*0.01)#min=umin,max=umax)#,norm='hist')
 		plt.savefig(outdirectory+prefix+'_combine_U_var.pdf')
 		plt.close()
 		plt.clf()
 		if doqu:
-			hp.mollview(1.0/weight_qu,min=umin,max=umax)#,norm='hist')
+			hp.mollview(1.0/weight_qu,min=-threshold*0.01,max=threshold*0.01)#min=umin,max=umax)#,norm='hist')
 			plt.savefig(outdirectory+prefix+'_combine_QU_var.pdf')
 			plt.close()
 			plt.clf()

@@ -26,6 +26,7 @@
 # v1.4c Mike Peel   22 Mar 2020   Add option for precomputed window function smoothing
 # v1.5  Mike Peel   05 Apr 2021   Fix polarisation smoothing to be done simulatenously
 # v1.5a Mike Peel   09 Apr 2021   Tweak to avoid healpix maps without ordering (assume ring)
+# v1.5b Mike Peel   21 Apr 2021   Tweak to handle Q/U maps being different area than I!
 #
 # Requirements:
 # Numpy, healpy, matplotlib
@@ -265,6 +266,8 @@ def smoothmap(indir, outdir, inputfile, outputfile, fwhm_arcmin=-1, nside_out=0,
 		if i == 0 and do_pol_combined:
 			print('Doing combined polarisation')
 			map_before = maps[i][:].copy()
+			map_before_Q = maps[i+1][:].copy()
+			map_before_U = maps[i+2][:].copy()
 			print(np.shape(map_before))
 			for j in range(0,3):
 				if useunseen == True:
@@ -300,8 +303,8 @@ def smoothmap(indir, outdir, inputfile, outputfile, fwhm_arcmin=-1, nside_out=0,
 				print(np.sum(smoothed_map[i]))
 				print(np.median(smoothed_map[i]))
 				smoothed_map[i][map_before[:] == hp.UNSEEN] = hp.UNSEEN
-				smoothed_map[i+1][map_before[:] == hp.UNSEEN] = hp.UNSEEN
-				smoothed_map[i+2][map_before[:] == hp.UNSEEN] = hp.UNSEEN
+				smoothed_map[i+1][map_before_Q[:] == hp.UNSEEN] = hp.UNSEEN
+				smoothed_map[i+2][map_before_U[:] == hp.UNSEEN] = hp.UNSEEN
 
 		else:
 			map_before = maps[i][:].copy()

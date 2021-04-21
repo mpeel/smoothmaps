@@ -65,7 +65,7 @@ for i in range(0,numnside):
 
 		# Only want these for the non-CMB subtracted sets.
 		if subtractmaps_name[j] == '':
-			smoothmap(directory+'planck2015/',outdirectory,'HFI_SkyMap_545_2048_R2.02_full.fits',str(output_nside[i])+'_60.00smoothed_PlanckR2fullbeam'+subtractmaps_name[j]+'_545_2048_2015_MJySrunits.fits', output_resolution,nside_out=output_nside[i],windowfunction=beamtf_p545,smoothvariance=smoothvariance)
-			smoothmap(directory+'planck2015/',outdirectory,'HFI_SkyMap_857_2048_R2.02_full.fits',str(output_nside[i])+'_60.00smoothed_PlanckR2fullbeam'+subtractmaps_name[j]+'_857_2048_2015_MJySrunits.fits', output_resolution,nside_out=output_nside[i],windowfunction=beamtf_p857,smoothvariance=smoothvariance)
+			smoothmap(directory+'planck2015/',outdirectory,'HFI_SkyMap_545_2048_R2.02_full.fits',str(output_nside[i])+'_60.00smoothed_PlanckR2fullbeam'+subtractmaps_name[j]+'_545_2048_2015_MJySrunits.fits', output_resolution,nside_out=output_nside[i],windowfunction=beamtf_p545,smoothvariance=smoothvariance,do_pol_combined=False)
+			smoothmap(directory+'planck2015/',outdirectory,'HFI_SkyMap_857_2048_R2.02_full.fits',str(output_nside[i])+'_60.00smoothed_PlanckR2fullbeam'+subtractmaps_name[j]+'_857_2048_2015_MJySrunits.fits', output_resolution,nside_out=output_nside[i],windowfunction=beamtf_p857,smoothvariance=smoothvariance,do_pol_combined=False)
 
 # EOF

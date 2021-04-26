@@ -14,6 +14,7 @@ use_reweight_by_rms_method = 2 # 1 = ricardo, 2 = alberto
 use_planck = False # This was for comparison only
 use_cbass = False
 planckvers = ['2015','2015nobp','2018','2018nobp','2020']
+normfreq = 28.4
 only_wmap = False
 only_planck = False
 folder = 'weighted_wmap_planck_qu'

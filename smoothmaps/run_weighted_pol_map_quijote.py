@@ -26,7 +26,7 @@ version='tqu_v1.5_noise_v1.0'
 version_wmap = version + "_10k"
 version_p18 = version + "_10k"
 version_p20 = version + "_10k"
-doqu = True
+doqu = False
 minplots = True
 maps_half1=[]
 maps_half2=[]
@@ -35,186 +35,99 @@ separate_variance_maps=[]
 for planckver in planckvers:
 	for nside in nsides:
 		for index in indexes:
-			if doing_quijote == False:
-				exit()
-				# date = ''
-				# maps_half1=[]
-				# maps_half2=[]
-				# separate_variance_maps=[]
+			# QUIJOTE
+			# indirectory = '/Users/mpeel/Documents/maps/quijote_201907/smooth/'
+			# outdirectory = '/Users/mpeel/Documents/maps/quijote_201907/weighted/'
+			# date='201907'
+			indirectory = '/Users/mpeel/Documents/maps/quijote_202103_tqu_v1.5_noise_v1.0/'
+			outdirectory = '/Users/mpeel/Documents/maps/quijote_202103_tqu_v1.5_noise_v1.0_weighted/'
+			date='202103'
 
-				# freqs = [28.4, 44.1, 22.8, 33.0, 40.7]
-				# rescale_amp = np.ones(len(freqs))
+			# indirectory = '/Users/mpeel/Documents/maps/quijote_201905/smooth/'
+			# outdirectory = '/Users/mpeel/Documents/maps/quijote_201905/analyse/'
+			# date='201905'
 
-				# # indirectory = '/Users/mpeel/Documents/maps/'
-				# indirectory = '/share/nas_cbassarc/mpeel/'
-				# if planckver == '2015':
-				# 	outdirectory = indirectory+folder+'_'+version+'/'
-				# 	prefix=str(nside)+'_60.0smoothed_wmap9_planck2015_'+version+'_'+str(index)
-				# 	maps = ['planck2015_'+version+'/'+str(nside)+'_60.0smoothed_PlanckR2fullbeambpcorrNoise_28.4_256_2015_mKCMBunits.fits','planck2015_'+version+'/'+str(nside)+'_60.0smoothed_PlanckR2fullbeambpcorrNoise_44.1_256_2015_mKCMBunits.fits','wmap9_'+version_wmap+'/'+str(nside)+'_60.0smoothed_wmap9beamNoise_22.8_512_2013_mKCMBunits.fits','wmap9_'+version_wmap+'/'+str(nside)+'_60.0smoothed_wmap9beamNoise_33.0_512_2013_mKCMBunits.fits','wmap9_'+version_wmap+'/'+str(nside)+'_60.0smoothed_wmap9beamNoise_40.7_512_2013_mKCMBunits.fits']
-				# 	varianceindex=[[3,4,6,5], [3,4,6,5], [3,4,6,5], [3,4,6,5], [3,4,6,5]]
-				# elif planckver == '2015nobp':
-				# 	outdirectory = indirectory+folder+'_'+version+'/'
-				# 	prefix=str(nside)+'_60.0smoothed_wmap9_planck2015nobp_'+version+'_'+str(index)
-				# 	maps = ['planck2015_'+version+'/'+str(nside)+'_60.0smoothed_PlanckR2fullbeamNoise_28.4_1024_2015_mKCMBunits.fits','planck2015_'+version+'/'+str(nside)+'_60.0smoothed_PlanckR2fullbeamNoise_44.1_1024_2015_mKCMBunits.fits','wmap9_'+version_wmap+'/'+str(nside)+'_60.0smoothed_wmap9beamNoise_22.8_512_2013_mKCMBunits.fits','wmap9_'+version_wmap+'/'+str(nside)+'_60.0smoothed_wmap9beamNoise_33.0_512_2013_mKCMBunits.fits','wmap9_'+version_wmap+'/'+str(nside)+'_60.0smoothed_wmap9beamNoise_40.7_512_2013_mKCMBunits.fits']
-				# 	varianceindex=[[3,4,6,5], [3,4,6,5], [3,4,6,5], [3,4,6,5], [3,4,6,5]]
-				# elif planckver == '2018':
-				# 	outdirectory = indirectory+folder+'_'+version+'/'
-				# 	prefix=str(nside)+'_60.0smoothed_wmap9_planck2018_'+version+'_'+str(index)
-				# 	maps = ['planck2018_'+version_p18+'/'+str(nside)+'_60.0smoothed_PlanckR3fullbeamNoise_28.4_1024_2018_mKCMBunits.fits','planck2018_'+version_p18+'/'+str(nside)+'_60.0smoothed_PlanckR3fullbeamNoise_44.1_1024_2018_mKCMBunits.fits','wmap9_'+version_wmap+'/'+str(nside)+'_60.0smoothed_wmap9beamNoise_22.8_512_2013_mKCMBunits.fits','wmap9_'+version_wmap+'/'+str(nside)+'_60.0smoothed_wmap9beamNoise_33.0_512_2013_mKCMBunits.fits','wmap9_'+version_wmap+'/'+str(nside)+'_60.0smoothed_wmap9beamNoise_40.7_512_2013_mKCMBunits.fits']
-				# 	varianceindex=[[3,4,6,5], [3,4,6,5], [3,4,6,5], [3,4,6,5], [3,4,6,5]]
-				# elif planckver == '2018nobp':
-				# 	outdirectory = indirectory+folder+'_'+version+'/'
-				# 	prefix=str(nside)+'_60.0smoothed_wmap9_planck2018nobp_'+version+'_'+str(index)
-				# 	maps = ['planck2018_'+version+'/'+str(nside)+'_60.0smoothed_PlanckR3fullbeamnobpNoise_28.4_1024_2018_mKCMBunits.fits','planck2018_'+version+'/'+str(nside)+'_60.0smoothed_PlanckR3fullbeamnobpNoise_44.1_1024_2018_mKCMBunits.fits','wmap9_'+version_wmap+'/'+str(nside)+'_60.0smoothed_wmap9beamNoise_22.8_512_2013_mKCMBunits.fits','wmap9_'+version_wmap+'/'+str(nside)+'_60.0smoothed_wmap9beamNoise_33.0_512_2013_mKCMBunits.fits','wmap9_'+version_wmap+'/'+str(nside)+'_60.0smoothed_wmap9beamNoise_40.7_512_2013_mKCMBunits.fits']
-				# 	varianceindex=[[3,4,6,5], [3,4,6,5], [3,4,6,5], [3,4,6,5], [3,4,6,5]]
-				# elif planckver == '2018dec':
-				# 	outdirectory = indirectory+folder+'_'+version+'/'
-				# 	prefix=str(nside)+'_60.0smoothed_wmap9_planck2018dec_'+version+'_'+str(index)
-				# 	maps = ['planck2018_'+version+'/'+str(nside)+'_60.0smoothed_PlanckR3decNoise_dec20_70.4_1024_2018_mKCMBunits.fits','planck2018_'+version+'/'+str(nside)+'_60.0smoothed_PlanckR3decNoise_dec30_44.1_1024_2018_mKCMBunits.fits','wmap9_'+version_wmap+'/'+str(nside)+'_60.0smoothed_wmap9beamNoise_22.8_512_2013_mKCMBunits.fits','wmap9_'+version_wmap+'/'+str(nside)+'_60.0smoothed_wmap9beamNoise_33.0_512_2013_mKCMBunits.fits','wmap9_'+version_wmap+'/'+str(nside)+'_60.0smoothed_wmap9beamNoise_40.7_512_2013_mKCMBunits.fits']
-				# 	varianceindex=[[3,4,6,5], [3,4,6,5], [3,4,6,5], [3,4,6,5], [3,4,6,5]]
-				# elif planckver == '2020':
-				# 	outdirectory = indirectory+folder+'_'+version+'/'
-				# 	prefix=str(nside)+'_60.0smoothed_wmap9_planck2020_'+version+'_'+str(index)
-				# 	maps = ['planck2020_'+version_p20+'/'+str(nside)+'_60.0smoothed_PlanckR4fullbeamnodpNoise_28.4_1024_2020_mKCMBunits.fits','planck2020_'+version_p20+'/'+str(nside)+'_60.0smoothed_PlanckR4fullbeamnodpNoise_44.1_1024_2020_mKCMBunits.fits','wmap9_'+version_wmap+'/'+str(nside)+'_60.0smoothed_wmap9beamNoise_22.8_512_2013_mKCMBunits.fits','wmap9_'+version_wmap+'/'+str(nside)+'_60.0smoothed_wmap9beamNoise_33.0_512_2013_mKCMBunits.fits','wmap9_'+version_wmap+'/'+str(nside)+'_60.0smoothed_wmap9beamNoise_40.7_512_2013_mKCMBunits.fits']
-				# 	varianceindex=[[3,4,6,5], [3,4,6,5], [3,4,6,5], [3,4,6,5], [3,4,6,5]]
+			# # Set up QUIJOTE input
+			# prefix='half1mfi'
+			# maps_half1 = [str(nside)+'_60.0smoothed_'+prefix+'2_17.0_512_'+date+'_mKCMBunits.fits',str(nside)+'_60.0smoothed_'+prefix+'2_19.0_512_'+date+'_mKCMBunits.fits',str(nside)+'_60.00smoothed_'+prefix+'3_11.0_512_'+date+'_mKCMBunits.fits',str(nside)+'_60.00smoothed_'+prefix+'3_13.0_512_'+date+'_mKCMBunits.fits',str(nside)+'_60.0smoothed_'+prefix+'4_17.0_512_'+date+'_mKCMBunits.fits',str(nside)+'_60.0smoothed_'+prefix+'4_19.0_512_'+date+'_mKCMBunits.fits']#str(nside)+'_60.00smoothed_'+prefix+'1_11.0_512_'+date+'_mKCMBunits.fits',str(nside)+'_60.00smoothed_'+prefix+'1_13.0_512_'+date+'_mKCMBunits.fits',
 
-				# rescale_variance = rescale_amp.copy()
+			# prefix='half2mfi'
+			# maps_half2 = [str(nside)+'_60.0smoothed_'+prefix+'2_17.0_512_'+date+'_mKCMBunits.fits',str(nside)+'_60.0smoothed_'+prefix+'2_19.0_512_'+date+'_mKCMBunits.fits',str(nside)+'_60.00smoothed_'+prefix+'3_11.0_512_'+date+'_mKCMBunits.fits',str(nside)+'_60.00smoothed_'+prefix+'3_13.0_512_'+date+'_mKCMBunits.fits',str(nside)+'_60.0smoothed_'+prefix+'4_17.0_512_'+date+'_mKCMBunits.fits',str(nside)+'_60.0smoothed_'+prefix+'4_19.0_512_'+date+'_mKCMBunits.fits']#str(nside)+'_60.00smoothed_'+prefix+'1_11.0_512_'+date+'_mKCMBunits.fits',str(nside)+'_60.00smoothed_'+prefix+'1_13.0_512_'+date+'_mKCMBunits.fits',
 
-				# prefix='wmap9_planck2015_tqu_10ghz'
-				# freqs = [28.4, 44.1, 22.8, 33.0, 40.7]
-				# rescale_amp = [1.0, 1.0, 1.0, 1.0, 1.0]
-				# maps = ['512_60.0smoothed_PlanckR2fullbeambpcorr_28.4_256_2015_mKCMBunits.fits','512_60.0smoothed_PlanckR2fullbeambpcorr_44.1_256_2015_mKCMBunits.fits','../wmap9_planck2018_tqu/512_60.0smoothed_wmap9beam_22.8_512_20132018_mKCMBunits.fits','../wmap9_planck2018_tqu/512_60.0smoothed_wmap9beam_33.0_512_20132018_mKCMBunits.fits','../wmap9_planck2018_tqu/512_60.0smoothed_wmap9beam_40.7_512_20132018_mKCMBunits.fits']
-				# indirectory = '/Users/mpeel/Documents/maps/wmap9_planck2015_tqu/'
-				# outdirectory = '/Users/mpeel/Documents/maps/wmap9_planck2015_weight/'
-
-				# Planck and WMAP colour corrections
-				# rescale_amp[0] *= fastcc('P30',index+2.0)
-				# rescale_amp[1] *= fastcc('P44',index+2.0)
-				# rescale_amp[2] *= fastcc('WK',index+2.0)
-				# rescale_amp[3] *= fastcc('WKa',index+2.0)
-				# rescale_amp[4] *= fastcc('WQ',index+2.0)
-				# print(rescale_amp)
-
-				# Rescale the WMAP variances as the wrong sigma_0 was used to generate them.
-				# No longer needed for noise realisations of v0.8
-				# rescale_variance[2] *= (1.435/1.429)**2
-				# rescale_variance[3] *= (1.472/1.466)**2
-				# rescale_variance[4] *= (2.197/2.188)**2
-				# print(rescale_variance)
-				# exit()
-
-				# Test rescaling the variances by the difference in beam size
-				# rescale_variance[0] *= (32.0/60.0)**4
-				# rescale_variance[1] *= (27.0/60.0)**4
-				# rescale_variance[2] *= (49.0/60.0)**4
-				# rescale_variance[3] *= (40.0/60.0)**4
-				# rescale_variance[4] *= (31.0/60.0)**4
-
-				# print(rescale_variance)
-
-				# apply_extra_mask=np.zeros(len(freqs))
-				# extra_mask=''
-				# apply_extra_mask[0] = 1
-				# apply_extra_mask[1] = 1
-				# extra_mask='compare_wmap_planck_polmap_mask.fits'
-
-				# if only_wmap:
-				# 	prefix='wmap9_'+version
-				# 	freqs = [22.8, 33.0, 40.7]
-				# 	maps = ['wmap9_'+version+'/'+str(nside)+'_60.0smoothed_wmap9beamNoise_22.8_512_2013_mKCMBunits.fits','wmap9_'+version+'/'+str(nside)+'_60.0smoothed_wmap9beamNoise_33.0_512_2013_mKCMBunits.fits','wmap9_'+version+'/'+str(nside)+'_60.0smoothed_wmap9beamNoise_40.7_512_2013_mKCMBunits.fits']
-				# 	rescale_amp = np.ones(len(freqs))
-				# 	rescale_variance = np.ones(len(freqs))
-				# 	rescale_amp[0] *= fastcc('K',index+2.0)
-				# 	rescale_amp[1] *= fastcc('Ka',index+2.0)
-				# 	rescale_amp[2] *= fastcc('Q',index+2.0)
-				# 	varianceindex=[[3,4,6,5], [3,4,6,5], [3,4,6,5]]
-				# if only_planck:
-				# 	maps = maps[0:2]
-				# 	prefix = prefix.replace('wmap9_','')
-				# prefix='planck2018'
-				# freqs = [28.4, 44.1]
-				# maps = ['512_60.0smoothed_PlanckR3fullbeam_28.4_1024_2018_mKCMBunits.fits','512_60.0smoothed_PlanckR3fullbeam_44.1_1024_2018_mKCMBunits.fits']
-
-				# prefix='wmap9_planck2018_10ghz'
-				# normfreq = 10.0
-				# indirectory = '/Users/mpeel/Documents/maps/quijote_201907/smooth/'
-				# outdirectory = '/Users/mpeel/Documents/maps/quijote_201907/weighted/'
-
-				# maps = ['../../wmap9_planck2018_tqu/512_60.0smoothed_PlanckR3fullbeam_28.4_1024_2018_mKCMBunits.fits','../../wmap9_planck2018_tqu/512_60.0smoothed_PlanckR3fullbeam_44.1_1024_2018_mKCMBunits.fits','../../wmap9_planck2018_tqu/512_60.0smoothed_wmap9beam_22.8_512_20132018_mKCMBunits.fits','../../wmap9_planck2018_tqu/512_60.0smoothed_wmap9beam_33.0_512_20132018_mKCMBunits.fits','../../wmap9_planck2018_tqu/512_60.0smoothed_wmap9beam_40.7_512_20132018_mKCMBunits.fits']
+			usewei = False
+			prefix='mfi'
+			if usewei:
+				maps = [str(nside)+'_60.0smoothed_QUIJOTEMFI2_17.0_2021_mKCMBunits.fits',str(nside)+'_60.0smoothed_QUIJOTEMFI2_19.0_2021_mKCMBunits.fits',str(nside)+'_60.0smoothed_QUIJOTEMFI3_11.0_2021_mKCMBunits.fits',str(nside)+'_60.0smoothed_QUIJOTEMFI3_13.0_2021_mKCMBunits.fits',str(nside)+'_60.0smoothed_QUIJOTEMFI4_17.0_2021_mKCMBunits.fits',str(nside)+'_60.0smoothed_QUIJOTEMFI4_19.0_2021_mKCMBunits.fits']
+				prefix=str(nside)+'_60.0smoothed_quijotecombwei10_'+version+'_'+str(index)
 			else:
-				# QUIJOTE
-				# indirectory = '/Users/mpeel/Documents/maps/quijote_201907/smooth/'
-				# outdirectory = '/Users/mpeel/Documents/maps/quijote_201907/weighted/'
-				# date='201907'
-				indirectory = '/Users/mpeel/Documents/maps/quijote_202103_tqu_v1.5_noise_v1.0/'
-				outdirectory = '/Users/mpeel/Documents/maps/quijote_202103_tqu_v1.5_noise_v1.0_weighted/'
-				date='202103'
-
-				# indirectory = '/Users/mpeel/Documents/maps/quijote_201905/smooth/'
-				# outdirectory = '/Users/mpeel/Documents/maps/quijote_201905/analyse/'
-				# date='201905'
-
-				# # Set up QUIJOTE input
-				# prefix='half1mfi'
-				# maps_half1 = [str(nside)+'_60.0smoothed_'+prefix+'2_17.0_512_'+date+'_mKCMBunits.fits',str(nside)+'_60.0smoothed_'+prefix+'2_19.0_512_'+date+'_mKCMBunits.fits',str(nside)+'_60.00smoothed_'+prefix+'3_11.0_512_'+date+'_mKCMBunits.fits',str(nside)+'_60.00smoothed_'+prefix+'3_13.0_512_'+date+'_mKCMBunits.fits',str(nside)+'_60.0smoothed_'+prefix+'4_17.0_512_'+date+'_mKCMBunits.fits',str(nside)+'_60.0smoothed_'+prefix+'4_19.0_512_'+date+'_mKCMBunits.fits']#str(nside)+'_60.00smoothed_'+prefix+'1_11.0_512_'+date+'_mKCMBunits.fits',str(nside)+'_60.00smoothed_'+prefix+'1_13.0_512_'+date+'_mKCMBunits.fits',
-
-				# prefix='half2mfi'
-				# maps_half2 = [str(nside)+'_60.0smoothed_'+prefix+'2_17.0_512_'+date+'_mKCMBunits.fits',str(nside)+'_60.0smoothed_'+prefix+'2_19.0_512_'+date+'_mKCMBunits.fits',str(nside)+'_60.00smoothed_'+prefix+'3_11.0_512_'+date+'_mKCMBunits.fits',str(nside)+'_60.00smoothed_'+prefix+'3_13.0_512_'+date+'_mKCMBunits.fits',str(nside)+'_60.0smoothed_'+prefix+'4_17.0_512_'+date+'_mKCMBunits.fits',str(nside)+'_60.0smoothed_'+prefix+'4_19.0_512_'+date+'_mKCMBunits.fits']#str(nside)+'_60.00smoothed_'+prefix+'1_11.0_512_'+date+'_mKCMBunits.fits',str(nside)+'_60.00smoothed_'+prefix+'1_13.0_512_'+date+'_mKCMBunits.fits',
-
-				prefix='mfi'
-				# maps = [str(nside)+'_60.0smoothed_QUIJOTEMFI2_17.0_2021_mKCMBunits.fits',str(nside)+'_60.0smoothed_QUIJOTEMFI2_19.0_2021_mKCMBunits.fits',str(nside)+'_60.0smoothed_QUIJOTEMFI3_11.0_2021_mKCMBunits.fits',str(nside)+'_60.0smoothed_QUIJOTEMFI3_13.0_2021_mKCMBunits.fits',str(nside)+'_60.0smoothed_QUIJOTEMFI4_17.0_2021_mKCMBunits.fits',str(nside)+'_60.0smoothed_QUIJOTEMFI4_19.0_2021_mKCMBunits.fits']
 				maps = [str(nside)+'_60.0smoothed_QUIJOTEMFI2_17.0_2021simnoise_mKCMBunits.fits',str(nside)+'_60.0smoothed_QUIJOTEMFI2_19.0_2021simnoise_mKCMBunits.fits',str(nside)+'_60.0smoothed_QUIJOTEMFI3_11.0_2021simnoise_mKCMBunits.fits',str(nside)+'_60.0smoothed_QUIJOTEMFI3_13.0_2021simnoise_mKCMBunits.fits',str(nside)+'_60.0smoothed_QUIJOTEMFI4_17.0_2021simnoise_mKCMBunits.fits',str(nside)+'_60.0smoothed_QUIJOTEMFI4_19.0_2021simnoise_mKCMBunits.fits']
-				#_60.0smoothed_'+prefix+'2_17.0_512_'+date+'_mKCMBunits.fits',str(nside)+'_60.0smoothed_'+prefix+'2_19.0_512_'+date+'_mKCMBunits.fits',str(nside)+'_60.00smoothed_'+prefix+'3_11.0_512_'+date+'_mKCMBunits.fits',str(nside)+'_60.00smoothed_'+prefix+'3_13.0_512_'+date+'_mKCMBunits.fits',str(nside)+'_60.0smoothed_'+prefix+'4_17.0_512_'+date+'_mKCMBunits.fits',str(nside)+'_60.0smoothed_'+prefix+'4_19.0_512_'+date+'_mKCMBunits.fits']#str(nside)+'_60.00smoothed_'+prefix+'1_11.0_512_'+date+'_mKCMBunits.fits',str(nside)+'_60.00smoothed_'+prefix+'1_13.0_512_'+date+'_mKCMBunits.fits',
-				varianceindex=[[3,4,6,5], [3,4,6,5], [3,4,6,5], [3,4,6,5], [3,4,6,5], [3,4,6,5], [3,4,6,5]]
 				prefix=str(nside)+'_60.0smoothed_quijotecomb10_'+version+'_'+str(index)
-				rescale_amp = np.ones(len(maps))
-				rescale_variance = rescale_amp.copy()
-				apply_extra_mask=np.zeros(len(freqs))
-				extra_mask = ''
-				rescale_amp[0] *= fastcc('Q17',index+2.0,detector='Q217')
-				rescale_amp[1] *= fastcc('Q19',index+2.0,detector='Q219')
-				rescale_amp[2] *= fastcc('Q11',index+2.0,detector='Q311')
-				rescale_amp[3] *= fastcc('Q13',index+2.0,detector='Q313')
-				rescale_amp[4] *= fastcc('Q17',index+2.0,detector='Q417')
-				rescale_amp[5] *= fastcc('Q19',index+2.0,detector='Q419')
-				print(rescale_amp)
+			#_60.0smoothed_'+prefix+'2_17.0_512_'+date+'_mKCMBunits.fits',str(nside)+'_60.0smoothed_'+prefix+'2_19.0_512_'+date+'_mKCMBunits.fits',str(nside)+'_60.00smoothed_'+prefix+'3_11.0_512_'+date+'_mKCMBunits.fits',str(nside)+'_60.00smoothed_'+prefix+'3_13.0_512_'+date+'_mKCMBunits.fits',str(nside)+'_60.0smoothed_'+prefix+'4_17.0_512_'+date+'_mKCMBunits.fits',str(nside)+'_60.0smoothed_'+prefix+'4_19.0_512_'+date+'_mKCMBunits.fits']#str(nside)+'_60.00smoothed_'+prefix+'1_11.0_512_'+date+'_mKCMBunits.fits',str(nside)+'_60.00smoothed_'+prefix+'1_13.0_512_'+date+'_mKCMBunits.fits',
+			varianceindex=[[3,4,6,5], [3,4,6,5], [3,4,6,5], [3,4,6,5], [3,4,6,5], [3,4,6,5], [3,4,6,5]]
+			rescale_amp = np.ones(len(maps))
+			rescale_variance = rescale_amp.copy()
+			extra_mask = ''
+			rescale_amp[0] *= fastcc('Q17',index+2.0,detector='Q217')
+			rescale_amp[1] *= fastcc('Q19',index+2.0,detector='Q219')
+			rescale_amp[2] *= fastcc('Q11',index+2.0,detector='Q311')
+			rescale_amp[3] *= fastcc('Q13',index+2.0,detector='Q313')
+			rescale_amp[4] *= fastcc('Q17',index+2.0,detector='Q417')
+			rescale_amp[5] *= fastcc('Q19',index+2.0,detector='Q419')
+			print(rescale_amp)
+			if usewei:
+				rescale_variance[0] *= 1.723
+				rescale_variance[1] *= 2.0
+				rescale_variance[2] *= 1.472
+				rescale_variance[3] *= 1.372
+				rescale_variance[4] *= 1.285
+				rescale_variance[5] *= 1.292
+			print(rescale_variance)
 
 
+			# use_planck = True
+			if True:
+				freqs = np.concatenate((freqs,[28.4, 44.1, 22.8, 33.0, 40.7]))
+				varianceindex = np.concatenate((varianceindex,[[3,4,6,5], [3,4,6,5], [3,4,6,5], [3,4,6,5], [3,4,6,5]]))
+				rescale_amp = np.concatenate((rescale_amp,np.ones(5)))
+				rescale_variance = np.concatenate((rescale_variance, np.ones(5)))
+				maps = maps + ['../planck2020_tqu_v1.5_noise_v1.0_10k/512_60.0smoothed_PlanckR4fullbeamnodpNoise_28.4_1024_2020_mKCMBunits.fits','../planck2020_tqu_v1.5_noise_v1.0_10k/512_60.0smoothed_PlanckR4fullbeamnodpNoise_44.1_1024_2020_mKCMBunits.fits','../wmap9_tqu_v1.5_noise_v1.0_10k/512_60.0smoothed_wmap9beamNoise_22.8_512_2013_mKCMBunits.fits','../wmap9_tqu_v1.5_noise_v1.0_10k/512_60.0smoothed_wmap9beamNoise_33.0_512_2013_mKCMBunits.fits','../wmap9_tqu_v1.5_noise_v1.0_10k/512_60.0smoothed_wmap9beamNoise_40.7_512_2013_mKCMBunits.fits']
+				# print(maps)
+				# exit()
+			# 	# indirectory = '/Users/mpeel/Documents/maps/wmap9_planck2018_tqu/'
+			# 	# outdirectory = '/Users/mpeel/Documents/maps/wmap9_planck2018_weight/'
 
-				# if use_planck:
-				# 	startindex = len(freqs)
-				# 	freqs = [17,19,11,13,17,19,28.4, 44.1, 22.8, 33.0, 40.7]
-				# 	rescale_amp = np.ones(len(freqs))
-				# 	rescale_variance = np.ones(len(freqs))
-				# 	prefix='mfi'
-				# 	maps = [str(nside)+'_60.0smoothed_'+prefix+'2_17.0_512_'+date+'_mKCMBunits.fits',str(nside)+'_60.0smoothed_'+prefix+'2_19.0_512_'+date+'_mKCMBunits.fits',str(nside)+'_60.00smoothed_'+prefix+'3_11.0_512_'+date+'_mKCMBunits.fits',str(nside)+'_60.00smoothed_'+prefix+'3_13.0_512_'+date+'_mKCMBunits.fits',str(nside)+'_60.0smoothed_'+prefix+'4_17.0_512_'+date+'_mKCMBunits.fits',str(nside)+'_60.0smoothed_'+prefix+'4_19.0_512_'+date+'_mKCMBunits.fits','../../wmap9_planck2018_tqu/512_60.0smoothed_PlanckR3fullbeam_28.4_1024_2018_mKCMBunits.fits','../../wmap9_planck2018_tqu/512_60.0smoothed_PlanckR3fullbeam_44.1_1024_2018_mKCMBunits.fits','../../wmap9_planck2018_tqu/512_60.0smoothed_wmap9beam_22.8_512_20132018_mKCMBunits.fits','../../wmap9_planck2018_tqu/512_60.0smoothed_wmap9beam_33.0_512_20132018_mKCMBunits.fits','../../wmap9_planck2018_tqu/512_60.0smoothed_wmap9beam_40.7_512_20132018_mKCMBunits.fits']
-				# 	print(maps)
-				# 	# indirectory = '/Users/mpeel/Documents/maps/wmap9_planck2018_tqu/'
-				# 	# outdirectory = '/Users/mpeel/Documents/maps/wmap9_planck2018_weight/'
+			# 	# Planck and WMAP colour corrections
+				rescale_amp[6] *= fastcc('P30',index+2.0)
+				rescale_amp[7] *= fastcc('P44',index+2.0)
+				rescale_amp[8] *= fastcc('WK',index+2.0)
+				rescale_amp[9] *= fastcc('WKa',index+2.0)
+				rescale_amp[10] *= fastcc('WQ',index+2.0)
+				prefix = prefix + '_wmapplanck'
 
-				# 	prefix='mfi_planck_10ghz'
-				
+			if True:
+				freqs = [28.4, 44.1, 22.8, 33.0, 40.7]
+				varianceindex = [[3,4,6,5], [3,4,6,5], [3,4,6,5], [3,4,6,5], [3,4,6,5]]
+				rescale_amp = np.ones(5)
+				rescale_variance = np.ones(5)
+				maps = ['../planck2020_tqu_v1.5_noise_v1.0_10k/512_60.0smoothed_PlanckR4fullbeamnodpNoise_28.4_1024_2020_mKCMBunits.fits','../planck2020_tqu_v1.5_noise_v1.0_10k/512_60.0smoothed_PlanckR4fullbeamnodpNoise_44.1_1024_2020_mKCMBunits.fits','../wmap9_tqu_v1.5_noise_v1.0_10k/512_60.0smoothed_wmap9beamNoise_22.8_512_2013_mKCMBunits.fits','../wmap9_tqu_v1.5_noise_v1.0_10k/512_60.0smoothed_wmap9beamNoise_33.0_512_2013_mKCMBunits.fits','../wmap9_tqu_v1.5_noise_v1.0_10k/512_60.0smoothed_wmap9beamNoise_40.7_512_2013_mKCMBunits.fits']
+				# print(maps)
+				# exit()
+			# 	# indirectory = '/Users/mpeel/Documents/maps/wmap9_planck2018_tqu/'
+			# 	# outdirectory = '/Users/mpeel/Documents/maps/wmap9_planck2018_weight/'
 
-				# 	# Planck and WMAP colour corrections
-				# 	rescale_amp[startindex+0] *= fastcc('30',index+2.0)
-				# 	rescale_amp[startindex+1] *= fastcc('44',index+2.0)
-				# 	rescale_amp[startindex+2] *= fastcc('K',index+2.0)
-				# 	rescale_amp[startindex+3] *= fastcc('Ka',index+2.0)
-				# 	rescale_amp[startindex+4] *= fastcc('Q',index+2.0)
-				# 	print(rescale_amp)
+			# 	# Planck and WMAP colour corrections
+				rescale_amp[0] *= fastcc('P30',index+2.0)
+				rescale_amp[1] *= fastcc('P44',index+2.0)
+				rescale_amp[2] *= fastcc('WK',index+2.0)
+				rescale_amp[3] *= fastcc('WKa',index+2.0)
+				rescale_amp[4] *= fastcc('WQ',index+2.0)
+				prefix = 'wmapplanck'
+			# 	apply_extra_mask=np.zeros(len(freqs))
+			# 	apply_extra_mask[startindex+0] = 1
+			# 	apply_extra_mask[startindex+1] = 1
+			# 	extra_mask='compare_wmap_planck_polmap_mask.fits'
 
-				# 	# Rescale the WMAP variances as the wrong sigma_0 was used to generate them.
-				# 	# No longer needed for noise realisations of v0.8
-				# 	# rescale_variance[startindex+2] *= (1.435/1.429)**2
-				# 	# rescale_variance[startindex+3] *= (1.472/1.466)**2
-				# 	# rescale_variance[startindex+4] *= (2.197/2.188)**2
-				# 	# print(rescale_variance)
-				# 	# exit()
-
-				# 	apply_extra_mask=np.zeros(len(freqs))
-				# 	apply_extra_mask[startindex+0] = 1
-				# 	apply_extra_mask[startindex+1] = 1
-				# 	extra_mask='compare_wmap_planck_polmap_mask.fits'
+			apply_extra_mask=np.zeros(len(freqs))
 
 			# Make sure the output directory exists
 			os.makedirs(outdirectory, exist_ok=True)

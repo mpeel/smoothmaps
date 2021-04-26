@@ -592,14 +592,15 @@ def weighted_pol_map(nside=512,indirectory='',outdirectory='',date='',prefix='',
 			plt.close()
 			plt.clf()
 
-		snmap = np.sqrt(combine_q**2+combine_u**2)*commonmask/np.sqrt(1.0/weight_q+1.0/weight_u)
+	snmap = np.sqrt(combine_q**2+combine_u**2)*commonmask/np.sqrt(1.0/weight_q+1.0/weight_u)
+	print('Final:')
+	print('Median S/N:' + str(np.median(snmap[commonmask==1])))
+	print('Mean S/N:' + str(np.mean(snmap[commonmask==1])))
+	hp.mollview(snmap,min=0,max=3.0)#,norm='hist')
+	plt.savefig(outdirectory+prefix+'_snmap.pdf')
+	plt.close()
+	plt.clf()
 
-		print('Median S/N:' + str(np.median(snmap[commonmask==1])))
-		print('Mean S/N:' + str(np.mean(snmap[commonmask==1])))
-		hp.mollview(snmap,min=0,max=3.0)#,norm='hist')
-		plt.savefig(outdirectory+prefix+'_snmap.pdf')
-		plt.close()
-		plt.clf()
 
 	# commonmask2 = hp.ud_grade(commonmask,256,order_in='RING',order_out='RING')
 	if use_planck:

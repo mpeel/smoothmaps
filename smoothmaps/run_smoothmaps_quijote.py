@@ -13,15 +13,32 @@ output_nside = [512, 256, 128, 64, 32, 16, 8]
 # directory = '/Users/mpeel/Documents/maps/quijote_202103/reform/'
 # outdirectory = '/Users/mpeel/Documents/maps/quijote_202103/smooth/'
 directory = '/share/nas_cbassarc/mpeel/quijote_202103/'
-outdirectory = directory+"../quijote_202103_tqu_v1.5/"
+outdirectory = directory+"../quijote_202103_tqu_v1.5_newwf/"
 os.makedirs(outdirectory, exist_ok=True)
 
-# Window functions
-wf = io.readsav(directory+'mfi_blconv_wl.sav')
-# wfq = wf['wl_mfi'].T
-wfq = wf['bl'].T
-wfq_l = range(0,len(wfq[0][0]))
+wf_new = fits.open(directory+'mfi_btf.fits')
+print(wf_new.info())
+print(wf_new[1].columns)
+print(np.shape(wf_new[1].data[0][0]))
+wfq = (wf_new[1].data[0]['BL_CONV'].T)
+# exit()
 
+# Window functions
+# wf = io.readsav(directory+'mfi_blconv_wl.sav')
+# # wfq = wf['wl_mfi'].T
+# wfq = wf['bl'].T
+# wfq_l = range(0,len(wfq[0][0]))
+#
+# for i in range(0,4):
+# 	plt.plot(wfq[i][0])
+# 	plt.plot(wfq_new[i][0])
+# 	plt.savefig('test_'+str(i)+'_0.png')
+# 	plt.clf()
+# 	plt.plot(wfq[i][1])
+# 	plt.plot(wfq_new[i][1])
+# 	plt.savefig('test_'+str(i)+'_1.png')
+# 	plt.clf()
+# exit()
 
 prefixes = ['mfi_mar2021','mfi_mar2021_daynight1','mfi_mar2021_daynight2','mfi_mar2021_half1','mfi_mar2021_half2','mfi_mar2021_halfring1','mfi_mar2021_halfring2','mfi_mar2021_period1','mfi_mar2021_period2','mfi_mar2021_period5','mfi_mar2021_period6','mfi_mar2021_pwv1','mfi_mar2021_pwv2']
 

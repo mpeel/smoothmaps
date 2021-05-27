@@ -27,6 +27,7 @@
 # v1.5  Mike Peel   05 Apr 2021   Fix polarisation smoothing to be done simulatenously
 # v1.5a Mike Peel   09 Apr 2021   Tweak to avoid healpix maps without ordering (assume ring)
 # v1.5b Mike Peel   21 Apr 2021   Tweak to handle Q/U maps being different area than I!
+# v1.5c Mike Peel   27 May 2021   Check length before padding if needed
 #
 # Requirements:
 # Numpy, healpy, matplotlib
@@ -136,8 +137,9 @@ def smoothmap(indir, outdir, inputfile, outputfile, fwhm_arcmin=-1, nside_out=0,
 	if use_precomputed_wf:
 		print('Using precomputed window function')
 		conv_windowfunction = windowfunction
-		conv_windowfunction = np.pad(conv_windowfunction, (0, 3*nside - len(conv_windowfunction)), 'constant')
-		
+		if 3*nside - len(conv_windowfunction) > 0:
+			conv_windowfunction = np.pad(conv_windowfunction, (0, 3*nside - len(conv_windowfunction)), 'constant')
+
 	elif (fwhm_arcmin != -1):
 		# if do_pol_combined:
 		# 	conv_windowfunction = hp.gauss_beam(np.radians(fwhm_arcmin/60.0),3*nside,pol=True)
@@ -448,7 +450,7 @@ def smoothmap(indir, outdir, inputfile, outputfile, fwhm_arcmin=-1, nside_out=0,
 			conversion = convertunits(const, subtractmap_units, units_out, frequency, pix_area)
 		# ... and do the subtraction
 		smoothed_map[0] = smoothed_map[0] - sub_maps * conversion
-	
+
 	for i in range(0,nmaps):
 		cols.append(fits.Column(name=col_names[i], format='E', array=smoothed_map[i]))
 
@@ -474,7 +476,7 @@ def smoothmap(indir, outdir, inputfile, outputfile, fwhm_arcmin=-1, nside_out=0,
 	bin_hdu.header['NSIDE']=nside_out
 	bin_hdu.header['COMMENT']="Smoothed using Mike Peel's smoothmap.py version "+ver +" modified by Adam Barr"
 	print(bin_hdu.header)
-	
+
 	bin_hdu.writeto(outdir+outputfile)
 
 	return
@@ -504,22 +506,22 @@ def calc_variance_windowfunction(conv_windowfunction):
 	const = get_spectrum_constants()
 	nbl = len(conv_windowfunction)
 	ll = np.arange(0,nbl,1)
-	
+
 	# Choose scale to match size of beam. First find half-power point
 	lhalf = [ n for n,i in enumerate(conv_windowfunction) if i<0.5 ][0]
-	
+
 	# Calculate beam out to about 40 * half-power radius, roughly (note that
 	# this gives 100 points out to the half-power point).
 	numelements = 4000
 	rad = np.arange(0,numelements,1)*10.0*const['pi']/(float(lhalf)*float(numelements))
-	
+
 	x = np.cos(rad)
 	sinrad = np.sin(rad)
 
 	lgndr = np.zeros((numelements,nbl))
 	for i in range(0,nbl):
 		lgndr[:,i] = special.lpmv(0, i, x)
-	
+
 	# Generate radial profile of convolving beam:
 	conva = np.zeros(numelements)
 	for j in range(0,numelements):

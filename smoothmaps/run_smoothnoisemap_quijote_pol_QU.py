@@ -19,14 +19,19 @@ numres = len(output_resolution)
 # directory = '/Users/mpeel/Documents/maps/quijote_202103/reform/'
 # directory = '/scratch1/mpeel/maps/'
 directory = '/share/nas_cbassarc/mpeel/quijote_202103/'
-outdirectory = directory+"../quijote_202103_tqu_noise_v1.0/"
+outdirectory = directory+"../quijote_202103_tqu_noise_v1.0_newwf/"
 os.makedirs(outdirectory, exist_ok=True)
 
 # Window functions
-wf = io.readsav(directory+'mfi_blconv_wl.sav')
-# wfq = wf['wl_mfi'].T
-wfq = wf['bl'].T
-wfq_l = range(0,len(wfq[0][0]))
+# wf = io.readsav(directory+'mfi_blconv_wl.sav')
+# # wfq = wf['wl_mfi'].T
+# wfq = wf['bl'].T
+# wfq_l = range(0,len(wfq[0][0]))
+wf_new = fits.open(directory+'mfi_btf.fits')
+print(wf_new.info())
+print(wf_new[1].columns)
+print(np.shape(wf_new[1].data[0][0]))
+wfq = (wf_new[1].data[0]['BL_CONV'].T)
 
 for i in range(0,numres):
 	resolution = "%.2f" % output_resolution[i]

@@ -33,7 +33,7 @@ print(wf_new[1].columns)
 print(np.shape(wf_new[1].data[0][0]))
 wfq = (wf_new[1].data[0]['BL_CONV'].T)
 
-exts = ['_period1', '_period2', '_period5', '_period6']#,''
+exts = ['_period2', '_period5', '_period6']#,'', '_period1'
 for ext in exts:
 	for i in range(0,numres):
 		resolution = "%.2f" % output_resolution[i]

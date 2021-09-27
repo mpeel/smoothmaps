@@ -33,16 +33,18 @@ print(wf_new[1].columns)
 print(np.shape(wf_new[1].data[0][0]))
 wfq = (wf_new[1].data[0]['BL_CONV'].T)
 
-for i in range(0,numres):
-	resolution = "%.2f" % output_resolution[i]
+exts = ['_period1', '_period2', '_period5', '_period6']#,''
+for ext in exts:
+	for i in range(0,numres):
+		resolution = "%.2f" % output_resolution[i]
 
-	smoothnoisemap(directory, outdirectory, resolution+'smoothed_QUIJOTEMFI1_11.0_2021_mKCMBunits.fits', 'mfi_mar2021_11.0_1.fits',mapnumber=mapnumbers,numrealisations=numrealisations,fwhm=output_resolution[i],nside=output_nside,windowfunction=wfq[0][0],rescale=rescale,do_intensity=True,do_polarisation=False,units_out=units_out)
-	smoothnoisemap(directory, outdirectory, resolution+'smoothed_QUIJOTEMFI1_13.0_2021_mKCMBunits.fits', 'mfi_mar2021_13.0_1.fits',mapnumber=mapnumbers,numrealisations=numrealisations,fwhm=output_resolution[i],nside=output_nside,windowfunction=wfq[0][1],rescale=rescale,do_intensity=True,do_polarisation=False,units_out=units_out)
-	smoothnoisemap(directory, outdirectory, resolution+'smoothed_QUIJOTEMFI3_11.0_2021_mKCMBunits.fits', 'mfi_mar2021_11.0_3.fits',mapnumber=mapnumbers,numrealisations=numrealisations,fwhm=output_resolution[i],nside=output_nside,windowfunction=wfq[2][0],rescale=rescale,do_intensity=True,do_polarisation=True,units_out=units_out)
-	smoothnoisemap(directory, outdirectory, resolution+'smoothed_QUIJOTEMFI3_13.0_2021_mKCMBunits.fits', 'mfi_mar2021_13.0_3.fits',mapnumber=mapnumbers,numrealisations=numrealisations,fwhm=output_resolution[i],nside=output_nside,windowfunction=wfq[2][1],rescale=rescale,do_intensity=True,do_polarisation=True,units_out=units_out)
-	smoothnoisemap(directory, outdirectory, resolution+'smoothed_QUIJOTEMFI2_17.0_2021_mKCMBunits.fits', 'mfi_mar2021_17.0_2.fits',mapnumber=mapnumbers,numrealisations=numrealisations,fwhm=output_resolution[i],nside=output_nside,windowfunction=wfq[1][0],rescale=rescale,do_intensity=True,do_polarisation=True,units_out=units_out)
-	smoothnoisemap(directory, outdirectory, resolution+'smoothed_QUIJOTEMFI2_19.0_2021_mKCMBunits.fits', 'mfi_mar2021_19.0_2.fits',mapnumber=mapnumbers,numrealisations=numrealisations,fwhm=output_resolution[i],nside=output_nside,windowfunction=wfq[1][1],rescale=rescale,do_intensity=True,do_polarisation=True,units_out=units_out)
-	smoothnoisemap(directory, outdirectory, resolution+'smoothed_QUIJOTEMFI4_17.0_2021_mKCMBunits.fits', 'mfi_mar2021_17.0_4.fits',mapnumber=mapnumbers,numrealisations=numrealisations,fwhm=output_resolution[i],nside=output_nside,windowfunction=wfq[3][0],rescale=rescale,do_intensity=True,do_polarisation=True,units_out=units_out)
-	smoothnoisemap(directory, outdirectory, resolution+'smoothed_QUIJOTEMFI4_19.0_2021_mKCMBunits.fits', 'mfi_mar2021_19.0_4.fits',mapnumber=mapnumbers,numrealisations=numrealisations,fwhm=output_resolution[i],nside=output_nside,windowfunction=wfq[3][1],rescale=rescale,do_intensity=True,do_polarisation=True,units_out=units_out)
+		smoothnoisemap(directory, outdirectory, resolution+'smoothed_QUIJOTEMFI1'+ext+'_11.0_2021_mKCMBunits.fits', 'mfi_mar2021'+ext+'_11.0_1.fits',mapnumber=mapnumbers,numrealisations=numrealisations,fwhm=output_resolution[i],nside=output_nside,windowfunction=wfq[0][0],rescale=rescale,do_intensity=True,do_polarisation=False,units_out=units_out)
+		smoothnoisemap(directory, outdirectory, resolution+'smoothed_QUIJOTEMFI1'+ext+'_13.0_2021_mKCMBunits.fits', 'mfi_mar2021'+ext+'_13.0_1.fits',mapnumber=mapnumbers,numrealisations=numrealisations,fwhm=output_resolution[i],nside=output_nside,windowfunction=wfq[0][1],rescale=rescale,do_intensity=True,do_polarisation=False,units_out=units_out)
+		smoothnoisemap(directory, outdirectory, resolution+'smoothed_QUIJOTEMFI3'+ext+'_11.0_2021_mKCMBunits.fits', 'mfi_mar2021'+ext+'_11.0_3.fits',mapnumber=mapnumbers,numrealisations=numrealisations,fwhm=output_resolution[i],nside=output_nside,windowfunction=wfq[2][0],rescale=rescale,do_intensity=True,do_polarisation=True,units_out=units_out)
+		smoothnoisemap(directory, outdirectory, resolution+'smoothed_QUIJOTEMFI3'+ext+'_13.0_2021_mKCMBunits.fits', 'mfi_mar2021'+ext+'_13.0_3.fits',mapnumber=mapnumbers,numrealisations=numrealisations,fwhm=output_resolution[i],nside=output_nside,windowfunction=wfq[2][1],rescale=rescale,do_intensity=True,do_polarisation=True,units_out=units_out)
+		smoothnoisemap(directory, outdirectory, resolution+'smoothed_QUIJOTEMFI2'+ext+'_17.0_2021_mKCMBunits.fits', 'mfi_mar2021'+ext+'_17.0_2.fits',mapnumber=mapnumbers,numrealisations=numrealisations,fwhm=output_resolution[i],nside=output_nside,windowfunction=wfq[1][0],rescale=rescale,do_intensity=True,do_polarisation=True,units_out=units_out)
+		smoothnoisemap(directory, outdirectory, resolution+'smoothed_QUIJOTEMFI2'+ext+'_19.0_2021_mKCMBunits.fits', 'mfi_mar2021'+ext+'_19.0_2.fits',mapnumber=mapnumbers,numrealisations=numrealisations,fwhm=output_resolution[i],nside=output_nside,windowfunction=wfq[1][1],rescale=rescale,do_intensity=True,do_polarisation=True,units_out=units_out)
+		smoothnoisemap(directory, outdirectory, resolution+'smoothed_QUIJOTEMFI4'+ext+'_17.0_2021_mKCMBunits.fits', 'mfi_mar2021'+ext+'_17.0_4.fits',mapnumber=mapnumbers,numrealisations=numrealisations,fwhm=output_resolution[i],nside=output_nside,windowfunction=wfq[3][0],rescale=rescale,do_intensity=True,do_polarisation=True,units_out=units_out)
+		smoothnoisemap(directory, outdirectory, resolution+'smoothed_QUIJOTEMFI4'+ext+'_19.0_2021_mKCMBunits.fits', 'mfi_mar2021'+ext+'_19.0_4.fits',mapnumber=mapnumbers,numrealisations=numrealisations,fwhm=output_resolution[i],nside=output_nside,windowfunction=wfq[3][1],rescale=rescale,do_intensity=True,do_polarisation=True,units_out=units_out)
 
 # EOF

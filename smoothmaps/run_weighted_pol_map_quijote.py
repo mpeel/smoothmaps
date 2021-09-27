@@ -3,7 +3,7 @@ from astrocode.colourcorrections.fastcc import *
 import os
 
 # General settings
-nsides = [256]#[8, 16, 32, 64, 128, 256]
+nsides = [512]#[8, 16, 32, 64, 128, 256]
 indexes = [-3.0]#[-2.9, -2.95, -3.0, -3.05, -3.1,-3.15, -3.2]
 # Settings for this run file
 doing_quijote = True
@@ -17,6 +17,7 @@ use_planck = False # This was for comparison only
 use_cbass = False
 freqs = [16.7,18.7,11.1,12.9,17,19]
 normfreq = 10.0
+use_planckwmap = True # Also combine with Planck/WMAP
 # planckvers = ['2015','2015nobp','2018','2018nobp','2020']
 planckvers = ['2020']
 only_wmap = False
@@ -27,7 +28,7 @@ version_wmap = version + "_10k"
 version_p18 = version + "_10k"
 version_p20 = version + "_10k"
 doqu = False
-minplots = True
+minplots = False
 maps_half1=[]
 maps_half2=[]
 separate_variance_maps=[]
@@ -36,16 +37,9 @@ for planckver in planckvers:
 	for nside in nsides:
 		for index in indexes:
 			# QUIJOTE
-			# indirectory = '/Users/mpeel/Documents/maps/quijote_201907/smooth/'
-			# outdirectory = '/Users/mpeel/Documents/maps/quijote_201907/weighted/'
-			# date='201907'
-			indirectory = '/Users/mpeel/Documents/maps/quijote_202103_tqu_v1.5_noise_v1.0/'
+			indirectory = '/Users/mpeel/Documents/maps/quijote_202103_tqu_v1.5_noise_v1.0_newwf/'
 			outdirectory = '/Users/mpeel/Documents/maps/quijote_202103_tqu_v1.5_noise_v1.0_weighted/'
 			date='202103'
-
-			# indirectory = '/Users/mpeel/Documents/maps/quijote_201905/smooth/'
-			# outdirectory = '/Users/mpeel/Documents/maps/quijote_201905/analyse/'
-			# date='201905'
 
 			# # Set up QUIJOTE input
 			# prefix='half1mfi'
@@ -54,7 +48,7 @@ for planckver in planckvers:
 			# prefix='half2mfi'
 			# maps_half2 = [str(nside)+'_60.0smoothed_'+prefix+'2_17.0_512_'+date+'_mKCMBunits.fits',str(nside)+'_60.0smoothed_'+prefix+'2_19.0_512_'+date+'_mKCMBunits.fits',str(nside)+'_60.00smoothed_'+prefix+'3_11.0_512_'+date+'_mKCMBunits.fits',str(nside)+'_60.00smoothed_'+prefix+'3_13.0_512_'+date+'_mKCMBunits.fits',str(nside)+'_60.0smoothed_'+prefix+'4_17.0_512_'+date+'_mKCMBunits.fits',str(nside)+'_60.0smoothed_'+prefix+'4_19.0_512_'+date+'_mKCMBunits.fits']#str(nside)+'_60.00smoothed_'+prefix+'1_11.0_512_'+date+'_mKCMBunits.fits',str(nside)+'_60.00smoothed_'+prefix+'1_13.0_512_'+date+'_mKCMBunits.fits',
 
-			usewei = False
+			usewei = True
 			prefix='mfi'
 			if usewei:
 				maps = [str(nside)+'_60.0smoothed_QUIJOTEMFI2_17.0_2021_mKCMBunits.fits',str(nside)+'_60.0smoothed_QUIJOTEMFI2_19.0_2021_mKCMBunits.fits',str(nside)+'_60.0smoothed_QUIJOTEMFI3_11.0_2021_mKCMBunits.fits',str(nside)+'_60.0smoothed_QUIJOTEMFI3_13.0_2021_mKCMBunits.fits',str(nside)+'_60.0smoothed_QUIJOTEMFI4_17.0_2021_mKCMBunits.fits',str(nside)+'_60.0smoothed_QUIJOTEMFI4_19.0_2021_mKCMBunits.fits']
@@ -75,17 +69,16 @@ for planckver in planckvers:
 			rescale_amp[5] *= fastcc('Q19',index+2.0,detector='Q419')
 			print(rescale_amp)
 			if usewei:
-				rescale_variance[0] *= 1.723
-				rescale_variance[1] *= 2.0
-				rescale_variance[2] *= 1.472
-				rescale_variance[3] *= 1.372
-				rescale_variance[4] *= 1.285
-				rescale_variance[5] *= 1.292
+				rescale_variance[0] *= 1.759
+				rescale_variance[1] *= 2.044
+				rescale_variance[2] *= 1.504
+				rescale_variance[3] *= 1.401
+				rescale_variance[4] *= 1.309
+				rescale_variance[5] *= 1.319
 			print(rescale_variance)
 
 
-			# use_planck = True
-			if True:
+			if use_planckwmap:
 				freqs = np.concatenate((freqs,[28.4, 44.1, 22.8, 33.0, 40.7]))
 				varianceindex = np.concatenate((varianceindex,[[3,4,6,5], [3,4,6,5], [3,4,6,5], [3,4,6,5], [3,4,6,5]]))
 				rescale_amp = np.concatenate((rescale_amp,np.ones(5)))
@@ -104,7 +97,8 @@ for planckver in planckvers:
 				rescale_amp[10] *= fastcc('WQ',index+2.0)
 				prefix = prefix + '_wmapplanck'
 
-			if True:
+			# This is only Palnck+WMAP
+			if False:
 				freqs = [28.4, 44.1, 22.8, 33.0, 40.7]
 				varianceindex = [[3,4,6,5], [3,4,6,5], [3,4,6,5], [3,4,6,5], [3,4,6,5]]
 				rescale_amp = np.ones(5)
@@ -133,4 +127,5 @@ for planckver in planckvers:
 			os.makedirs(outdirectory, exist_ok=True)
 			# ... and run the weighted map!
 			print(maps)
-			weighted_pol_map(nside=nside,indirectory=indirectory,outdirectory=outdirectory,date=date,prefix=prefix,index=index,freqs=freqs,maps=maps,maps_half1=maps_half1,maps_half2=maps_half2,use_halfrings=use_halfrings,use_weights=use_weights,use_reweight_by_rms=use_reweight_by_rms,use_reweight_by_rms_method=use_reweight_by_rms_method,use_planck=use_planck,use_cbass=use_cbass,normfreq=normfreq,rescale_amp=rescale_amp,rescale_variance=rescale_variance,apply_extra_mask=apply_extra_mask,extra_mask=extra_mask,varianceindex=varianceindex,threshold=1.0,separate_variance_maps=separate_variance_maps,doqu=doqu,minplots=minplots)
+			print(prefix)
+			weighted_pol_map(nside=nside,indirectory=indirectory,outdirectory=outdirectory,date=date,prefix=prefix,index=index,freqs=freqs,maps=maps,maps_half1=maps_half1,maps_half2=maps_half2,use_halfrings=use_halfrings,use_weights=use_weights,use_reweight_by_rms=use_reweight_by_rms,use_reweight_by_rms_method=use_reweight_by_rms_method,use_planck=use_planck,use_cbass=use_cbass,normfreq=normfreq,rescale_amp=rescale_amp,rescale_variance=rescale_variance,apply_extra_mask=apply_extra_mask,extra_mask=extra_mask,varianceindex=varianceindex,threshold=1.0,separate_variance_maps=separate_variance_maps,doqu=doqu,minplots=minplots,dodiffs=True)

@@ -2,7 +2,7 @@
 # -*- coding: utf-8  -*-
 #
 # Do a quick analysis of the MFI maps
-# 
+#
 # Version history:
 #
 # 31-May-2019  M. Peel       Started
@@ -21,7 +21,7 @@ def noiserealisation(inputmap, numpixels):
     newmap = np.random.normal(scale=1.0, size=numpixels) * inputmap
     return newmap
 
-def weighted_pol_map(nside=512,indirectory='',outdirectory='',date='',prefix='',index=-3.0,freqs=[],maps=[],maps_half1=[],maps_half2=[],use_halfrings=False,use_weights=False,use_reweight_by_rms=False,use_reweight_by_rms_method=2,use_planck=True,use_cbass=False,normfreq=10.0,rescale_amp=[],rescale_variance=[],apply_extra_mask=[],extra_mask='',threshold=1.0,varianceindex=[],separate_variance_maps=[],doqu=False,minplots=False):
+def weighted_pol_map(nside=512,indirectory='',outdirectory='',date='',prefix='',index=-3.0,freqs=[],maps=[],maps_half1=[],maps_half2=[],use_halfrings=False,use_weights=False,use_reweight_by_rms=False,use_reweight_by_rms_method=2,use_planck=True,use_cbass=False,normfreq=10.0,rescale_amp=[],rescale_variance=[],apply_extra_mask=[],extra_mask='',threshold=1.0,varianceindex=[],separate_variance_maps=[],doqu=False,minplots=False,dodiffs=False):
 	print('Using Nside=' + str(nside))
 	if len(rescale_amp) == 0:
 		rescale_amp=np.ones(len(maps))
@@ -163,7 +163,7 @@ def weighted_pol_map(nside=512,indirectory='',outdirectory='',date='',prefix='',
 			plt.savefig(outdirectory+maps[i].split('/')[-1]+'_U_rescale.pdf')
 			plt.close()
 			plt.clf()
-			hp.mollview(np.sqrt(temp_Q**2+temp_U**2),min=0,max=np.sqrt(threshold**2+threshold**2),cmap=plt.get_cmap('jet'))
+			hp.mollview(np.sqrt(temp_Q**2+temp_U**2),min=0,max=np.sqrt(threshold**2+threshold**2),cmap=plt.get_cmap('jet'),title='')
 			plt.savefig(outdirectory+maps[i].split('/')[-1]+'_P_rescale.pdf')
 			plt.close()
 			plt.clf()
@@ -447,6 +447,7 @@ def weighted_pol_map(nside=512,indirectory='',outdirectory='',date='',prefix='',
 
 		snmap = (np.sqrt(mapdata[1]**2+mapdata[2]**2)*rescale_amp[i]*(normfreq/freqs[i])**index)*commonmask/np.sqrt((var_q*rescale_variance[i])+(var_u*rescale_variance[i]))
 
+		print(maps[i])
 		print('Median S/N:' + str(np.median(snmap[commonmask==1])))
 		print('Mean S/N:' + str(np.mean(snmap[commonmask==1])))
 
@@ -477,7 +478,7 @@ def weighted_pol_map(nside=512,indirectory='',outdirectory='',date='',prefix='',
 			combine_u[tempmask==1] = combine_u[tempmask==1]+newu[tempmask==1]
 			weight_q[tempmask==1] = weight_q[tempmask==1]+(1.0/(var_q*rescale_variance[i]))[tempmask==1]
 			weight_u[tempmask==1] = weight_u[tempmask==1]+(1.0/(var_u*rescale_variance[i]))[tempmask==1]
-	
+
 
 	if doqu:
 		print(combine)
@@ -502,7 +503,7 @@ def weighted_pol_map(nside=512,indirectory='',outdirectory='',date='',prefix='',
 	else:
 		combine_q[weight_q != 0] /= weight_q[weight_q != 0]
 		combine_u[weight_u != 0] /= weight_u[weight_u != 0]
-	
+
 	if not minplots:
 		hp.write_map(outdirectory+prefix+'_commonmask.fits',commonmask,overwrite=True)
 		hp.mollview(commonmask)
@@ -617,5 +618,37 @@ def weighted_pol_map(nside=512,indirectory='',outdirectory='',date='',prefix='',
 	if use_reweight_by_rms:
 		np.set_printoptions(formatter={'float': '{: 0.5f}'.format})
 		print(rescale_vals)
+	if dodiffs:
+
+		for i in range(0,nummaps):
+			print(maps[i])
+			mapdata = hp.read_map(indirectory+maps[i],field=None)
+			mapdata = hp.ud_grade(mapdata,nside,order_in='RING',order_out='RING')
+			mapdata[1] = mapdata[1] * rescale_amp[i] * (normfreq/freqs[i])**index
+			mapdata[2] = mapdata[2] * rescale_amp[i] * (normfreq/freqs[i])**index
+			mapdata_pol = np.sqrt(mapdata[1]**2+mapdata[2]**2)
+			map = mapdata[1]-combine_q
+			hp.mollview(map,min=-threshold,max=threshold,title=maps[i].split('/')[-1] + ' - combined')
+			plt.savefig(outdirectory+maps[i].split('/')[-1]+'_Q_diff_to_combined'+prefix+'.png')
+			plt.close()
+			plt.clf()
+			map = mapdata[2]-combine_u
+			map[commonmask==0] = hp.UNSEEN
+			hp.mollview(map,min=-threshold,max=threshold,title=maps[i].split('/')[-1] + ' - combined')
+			plt.savefig(outdirectory+maps[i].split('/')[-1]+'_U_diff_to_combined'+prefix+'.png')
+			plt.close()
+			plt.clf()
+			map = mapdata_pol-np.sqrt(combine_q**2+combine_u**2)
+			map[commonmask==0] = hp.UNSEEN
+			hp.mollview(map,min=0,max=np.sqrt(2)*threshold,title=maps[i].split('/')[-1] + ' - combined')
+			plt.savefig(outdirectory+maps[i].split('/')[-1]+'_P_diff_to_combined'+prefix+'.png')
+			plt.close()
+			plt.clf()
+			map = np.sqrt((mapdata[1]-combine_q)**2+(mapdata[2]-combine_u)**2)
+			map[commonmask==0] = hp.UNSEEN
+			hp.mollview(map,min=0,max=np.sqrt(2)*threshold,title=maps[i].split('/')[-1] + ' - combined')
+			plt.savefig(outdirectory+maps[i].split('/')[-1]+'_P2_diff_to_combined'+prefix+'.png')
+			plt.close()
+			plt.clf()
 
 	return

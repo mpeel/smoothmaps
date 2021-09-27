@@ -122,7 +122,7 @@ def combine_noise_sims(indir, outdir, runname, prefix='',postfix='', mapnumber=[
 		if do_intensity:
 			returnmap[j] = returnmap[j]/(numrealisations-1)
 			# returnmap[j][map_before[0] == hp.UNSEEN] = hp.UNSEEN
-			
+
 			# All done - now just need to write it to disk.
 			cols = []
 			cols.append(fits.Column(name='II_cov', format='E', array=returnmap[j]))
@@ -142,7 +142,7 @@ def combine_noise_sims(indir, outdir, runname, prefix='',postfix='', mapnumber=[
 			returnmap_U[j] = returnmap_U[j]/(numrealisations-1)
 			returnmap_QU[j] = returnmap_QU[j]/(numrealisations-1)
 			# returnmap[j][map_before == hp.UNSEEN] = hp.UNSEEN
-			
+
 			# All done - now just need to write it to disk.
 			cols = []
 			cols.append(fits.Column(name='QQ_cov', format='E', array=returnmap_Q[j]))
@@ -155,7 +155,7 @@ def combine_noise_sims(indir, outdir, runname, prefix='',postfix='', mapnumber=[
 			bin_hdu.header['NSIM']=numrealisations
 			bin_hdu.header['TTYPE1'] = 'QQ'
 			bin_hdu.header['TUNIT1'] = '('+units_out+")^2"
-			bin_hdu.header['COMMENT']="Smoothed variance map calculated by Mike Peel's smoothnoisemap version "+ver +"."
+			bin_hdu.header['COMMENT']="Smoothed variance map calculated by Mike Peel's combine_noise_sims version "+ver +"."
 			bin_hdu.writeto(outdir+"/"+runname+"_variance_Q_"+str(nside[j])+".fits",overwrite=True)
 			cols = []
 			cols.append(fits.Column(name='UU_cov', format='E', array=returnmap_U[j]))
@@ -168,7 +168,7 @@ def combine_noise_sims(indir, outdir, runname, prefix='',postfix='', mapnumber=[
 			bin_hdu.header['NSIM']=numrealisations
 			bin_hdu.header['TTYPE1'] = 'UU'
 			bin_hdu.header['TUNIT1'] = '('+units_out+")^2"
-			bin_hdu.header['COMMENT']="Smoothed variance map calculated by Mike Peel's smoothnoisemap version "+ver +"."
+			bin_hdu.header['COMMENT']="Smoothed variance map calculated by Mike Peel's combine_noise_sims version "+ver +"."
 			bin_hdu.writeto(outdir+"/"+runname+"_variance_U_"+str(nside[j])+".fits",overwrite=True)
 			cols = []
 			cols.append(fits.Column(name='QU_cov', format='E', array=returnmap_QU[j]))
@@ -181,7 +181,7 @@ def combine_noise_sims(indir, outdir, runname, prefix='',postfix='', mapnumber=[
 			bin_hdu.header['NSIM']=numrealisations
 			bin_hdu.header['TTYPE1'] = 'QU'
 			bin_hdu.header['TUNIT1'] = '('+units_out+")^2"
-			bin_hdu.header['COMMENT']="Smoothed variance map calculated by Mike Peel's smoothnoisemap version "+ver +"."
+			bin_hdu.header['COMMENT']="Smoothed variance map calculated by Mike Peel's combine_noise_sims version "+ver +"."
 			bin_hdu.writeto(outdir+"/"+runname+"_variance_QU_"+str(nside[j])+".fits",overwrite=True)
 
 	return

@@ -121,11 +121,11 @@ for ext in exts:
 				try:
 					if i == 0 or i == 1:
 						docombine(outdirectory+str(nside)+'_60.0smoothed_'+namestrings[i]+'_mKCMBunits.fits',\
-						mapdir+str(nside)+'_60.0smoothed_'+namestrings[i]+'_mKCMBunits.fits',\
+						mapdir+str(nside)+'_60.0smoothed_'+namestrings[i].replace('_period','period')+'_mKCMBunits.fits',\
 						noisedir+'60.0smoothed_'+namestrings[i]+'_mKCMBunits.fits_variance_'+str(nside)+'.fits',comment=comment)
 					else:
 						docombine(outdirectory+str(nside)+'_60.0smoothed_'+namestrings[i]+'_mKCMBunits.fits',\
-						mapdir+str(nside)+'_60.0smoothed_'+namestrings[i]+'_mKCMBunits.fits',\
+						mapdir+str(nside)+'_60.0smoothed_'+namestrings[i].replace('_period','period')+'_mKCMBunits.fits',\
 						noisedir+'60.0smoothed_'+namestrings[i]+'_mKCMBunits.fits_variance_'+str(nside)+'.fits',\
 						noisedir+'60.0smoothed_'+namestrings[i]+'_mKCMBunits.fits_variance_Q_'+str(nside)+'.fits',\
 						noisedir+'60.0smoothed_'+namestrings[i]+'_mKCMBunits.fits_variance_U_'+str(nside)+'.fits',\

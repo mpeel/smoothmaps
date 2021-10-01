@@ -112,36 +112,38 @@ noisedir2 = directory+'quijote_202103_sims/'
 outdirectory = directory+"quijote_202103_tqu_v1.5_noise_v1.0_newwf/"
 os.makedirs(outdirectory, exist_ok=True)
 
-for nside in output_nside:
-	if nside <= 512:
-		namestrings = ['QUIJOTEMFI1_11.0_2021','QUIJOTEMFI1_13.0_2021','QUIJOTEMFI3_11.0_2021','QUIJOTEMFI3_13.0_2021','QUIJOTEMFI2_17.0_2021','QUIJOTEMFI2_19.0_2021','QUIJOTEMFI4_17.0_2021','QUIJOTEMFI4_19.0_2021']
-		for i in range(0,len(namestrings)):
-			try:
-				if i == 0 or i == 1:
-					docombine(outdirectory+str(nside)+'_60.0smoothed_'+namestrings[i]+'_mKCMBunits.fits',\
-					mapdir+str(nside)+'_60.0smoothed_'+namestrings[i]+'_mKCMBunits.fits',\
-					noisedir+'60.0smoothed_'+namestrings[i]+'_mKCMBunits.fits_variance_'+str(nside)+'.fits',comment=comment)
-				else:
-					docombine(outdirectory+str(nside)+'_60.0smoothed_'+namestrings[i]+'_mKCMBunits.fits',\
-					mapdir+str(nside)+'_60.0smoothed_'+namestrings[i]+'_mKCMBunits.fits',\
-					noisedir+'60.0smoothed_'+namestrings[i]+'_mKCMBunits.fits_variance_'+str(nside)+'.fits',\
-					noisedir+'60.0smoothed_'+namestrings[i]+'_mKCMBunits.fits_variance_Q_'+str(nside)+'.fits',\
-					noisedir+'60.0smoothed_'+namestrings[i]+'_mKCMBunits.fits_variance_U_'+str(nside)+'.fits',\
-					noisedir+'60.0smoothed_'+namestrings[i]+'_mKCMBunits.fits_variance_QU_'+str(nside)+'.fits',comment=comment)
-			except:
-				continue
-			try:
-				if i == 0 or i == 1:
-					null = 0
-				else:
-					docombine(outdirectory+str(nside)+'_60.0smoothed_'+namestrings[i]+'simnoise_mKCMBunits.fits',\
-					mapdir+str(nside)+'_60.0smoothed_'+namestrings[i]+'_mKCMBunits.fits',\
-					noisedir2+'60.0smoothed_'+namestrings[i].replace('_2021','')+'_sims_mKCMBunits.fits_variance_'+str(nside)+'.fits',\
-					noisedir2+'60.0smoothed_'+namestrings[i].replace('_2021','')+'_sims_mKCMBunits.fits_variance_Q_'+str(nside)+'.fits',\
-					noisedir2+'60.0smoothed_'+namestrings[i].replace('_2021','')+'_sims_mKCMBunits.fits_variance_U_'+str(nside)+'.fits',\
-					noisedir2+'60.0smoothed_'+namestrings[i].replace('_2021','')+'_sims_mKCMBunits.fits_variance_QU_'+str(nside)+'.fits',comment=comment)
-			except:
-				continue
+exts = ['', '_period1', '_period2', '_period5', '_period6']
+for ext in exts:
+	for nside in output_nside:
+		if nside <= 512:
+			namestrings = ['QUIJOTEMFI1'+ext+'_11.0_2021','QUIJOTEMFI1'+ext+'_13.0_2021','QUIJOTEMFI3'+ext+'_11.0_2021','QUIJOTEMFI3'+ext+'_13.0_2021','QUIJOTEMFI2'+ext+'_17.0_2021','QUIJOTEMFI2'+ext+'_19.0_2021','QUIJOTEMFI4'+ext+'_17.0_2021','QUIJOTEMFI4'+ext+'_19.0_2021']
+			for i in range(0,len(namestrings)):
+				try:
+					if i == 0 or i == 1:
+						docombine(outdirectory+str(nside)+'_60.0smoothed_'+namestrings[i]+'_mKCMBunits.fits',\
+						mapdir+str(nside)+'_60.0smoothed_'+namestrings[i]+'_mKCMBunits.fits',\
+						noisedir+'60.0smoothed_'+namestrings[i]+'_mKCMBunits.fits_variance_'+str(nside)+'.fits',comment=comment)
+					else:
+						docombine(outdirectory+str(nside)+'_60.0smoothed_'+namestrings[i]+'_mKCMBunits.fits',\
+						mapdir+str(nside)+'_60.0smoothed_'+namestrings[i]+'_mKCMBunits.fits',\
+						noisedir+'60.0smoothed_'+namestrings[i]+'_mKCMBunits.fits_variance_'+str(nside)+'.fits',\
+						noisedir+'60.0smoothed_'+namestrings[i]+'_mKCMBunits.fits_variance_Q_'+str(nside)+'.fits',\
+						noisedir+'60.0smoothed_'+namestrings[i]+'_mKCMBunits.fits_variance_U_'+str(nside)+'.fits',\
+						noisedir+'60.0smoothed_'+namestrings[i]+'_mKCMBunits.fits_variance_QU_'+str(nside)+'.fits',comment=comment)
+				except:
+					continue
+				try:
+					if i == 0 or i == 1:
+						null = 0
+					else:
+						docombine(outdirectory+str(nside)+'_60.0smoothed_'+namestrings[i]+'simnoise_mKCMBunits.fits',\
+						mapdir+str(nside)+'_60.0smoothed_'+namestrings[i]+'_mKCMBunits.fits',\
+						noisedir2+'60.0smoothed_'+namestrings[i].replace('_2021','')+'_sims_mKCMBunits.fits_variance_'+str(nside)+'.fits',\
+						noisedir2+'60.0smoothed_'+namestrings[i].replace('_2021','')+'_sims_mKCMBunits.fits_variance_Q_'+str(nside)+'.fits',\
+						noisedir2+'60.0smoothed_'+namestrings[i].replace('_2021','')+'_sims_mKCMBunits.fits_variance_U_'+str(nside)+'.fits',\
+						noisedir2+'60.0smoothed_'+namestrings[i].replace('_2021','')+'_sims_mKCMBunits.fits_variance_QU_'+str(nside)+'.fits',comment=comment)
+				except:
+					continue
 
 # WMAP9
 mapdir = directory+'wmap9_tqu_v1.5/'

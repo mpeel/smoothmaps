@@ -4,7 +4,9 @@ import os
 
 # General settings
 nsides = [512]#[8, 16, 32, 64, 128, 256]
-indexes = [-3.0]#[-2.9, -2.95, -3.0, -3.05, -3.1,-3.15, -3.2]
+# indexes = [-3.0]
+# indexes = [-2.9, -2.95, -3.0, -3.05, -3.1,-3.15, -3.2]
+indexes = [-1.8, -1.9, -2.0, -2.1]#[-2.2, -2.3, -2.4, -2.6]#, -2.5, -2.7, -2.8, -2.9, -3.0, -3.1, -3.2, -3.3, -3.4, -3.5]
 # Settings for this run file
 doing_quijote = True
 
@@ -27,11 +29,12 @@ version='tqu_v1.5_noise_v1.0'
 version_wmap = version + "_10k"
 version_p18 = version + "_10k"
 version_p20 = version + "_10k"
-doqu = False
-minplots = False
+doqu = True
+minplots = True
 maps_half1=[]
 maps_half2=[]
 separate_variance_maps=[]
+statsmask = '/Users/mpeel/Documents/maps/quijote_masks/mask_quijote_ncp_lowdec_nside512.fits'
 
 for planckver in planckvers:
 	for nside in nsides:
@@ -97,7 +100,7 @@ for planckver in planckvers:
 				rescale_amp[10] *= fastcc('WQ',index+2.0)
 				prefix = prefix + '_wmapplanck'
 
-			# This is only Palnck+WMAP
+			# This is only Planck+WMAP
 			if False:
 				freqs = [28.4, 44.1, 22.8, 33.0, 40.7]
 				varianceindex = [[3,4,6,5], [3,4,6,5], [3,4,6,5], [3,4,6,5], [3,4,6,5]]
@@ -128,4 +131,4 @@ for planckver in planckvers:
 			# ... and run the weighted map!
 			print(maps)
 			print(prefix)
-			weighted_pol_map(nside=nside,indirectory=indirectory,outdirectory=outdirectory,date=date,prefix=prefix,index=index,freqs=freqs,maps=maps,maps_half1=maps_half1,maps_half2=maps_half2,use_halfrings=use_halfrings,use_weights=use_weights,use_reweight_by_rms=use_reweight_by_rms,use_reweight_by_rms_method=use_reweight_by_rms_method,use_planck=use_planck,use_cbass=use_cbass,normfreq=normfreq,rescale_amp=rescale_amp,rescale_variance=rescale_variance,apply_extra_mask=apply_extra_mask,extra_mask=extra_mask,varianceindex=varianceindex,threshold=1.0,separate_variance_maps=separate_variance_maps,doqu=doqu,minplots=minplots,dodiffs=True)
+			weighted_pol_map(nside=nside,indirectory=indirectory,outdirectory=outdirectory,date=date,prefix=prefix,index=index,freqs=freqs,maps=maps,maps_half1=maps_half1,maps_half2=maps_half2,use_halfrings=use_halfrings,use_weights=use_weights,use_reweight_by_rms=use_reweight_by_rms,use_reweight_by_rms_method=use_reweight_by_rms_method,use_planck=use_planck,use_cbass=use_cbass,normfreq=normfreq,rescale_amp=rescale_amp,rescale_variance=rescale_variance,apply_extra_mask=apply_extra_mask,extra_mask=extra_mask,varianceindex=varianceindex,threshold=1.0,separate_variance_maps=separate_variance_maps,doqu=doqu,minplots=minplots,dodiffs=False,statsmask=statsmask)

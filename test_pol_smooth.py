@@ -1,14 +1,13 @@
-import numpy as np
-# import numba
-import healpy as hp
-from smoothmap import smoothmap, conv_nobs_variance_map
 import astropy.io.fits as fits
+import healpy as hp
+import matplotlib.pyplot as plt
+import numpy as np
 import os
 import scipy.io as io
-from scipy import optimize
-import matplotlib.pyplot as plt
 from matplotlib.cm import get_cmap
 from matplotlib.colors import ListedColormap
+from scipy import optimize
+from smoothmap import smoothmap, conv_nobs_variance_map
 
 nside=512
 

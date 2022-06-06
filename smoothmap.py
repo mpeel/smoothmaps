@@ -41,12 +41,12 @@ import math as m
 import matplotlib as mpl
 mpl.use('Agg')
 
-import matplotlib.pyplot as plt
-from astrocode.fitspectrum.spectra import *
 import astropy.io.fits as fits
-from scipy import special
+import matplotlib.pyplot as plt
 import os.path
+from scipy import special
 from scipy import optimize
+from astrocode.spectra import *
 
 def gaussfit(x, param):
 	return hp.gauss_beam(np.radians(param/60.0),300)

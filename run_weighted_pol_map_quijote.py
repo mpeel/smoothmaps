@@ -1,5 +1,5 @@
 from weighted_pol_map import *
-from astrocode.colourcorrections.fastcc import *
+from fastcc.fastcc import *
 import os
 
 # General settings

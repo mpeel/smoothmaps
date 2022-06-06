@@ -1,8 +1,9 @@
-from smoothmap import *
-import numpy as np
-import healpy as hp
 import astropy.io.fits as fits
+import healpy as hp
+import numpy as np
 import os
+
+from smoothmap import *
 
 def get_hfi_beam(FITSfile):
 	fits.info(FITSfile) # print list of extensions found in FITSfile
@@ -55,7 +56,7 @@ for i in range(0,numnside):
 			smoothmap(directory+'planck2015/',outdirectory,'LFI_SkyMap_030_1024_R2.01_full.fits',str(output_nside[i])+'_'+str(output_resolution)+'smoothed_PlanckR2fullbeam'+subtractmaps_name[j]+'_28.4_1024_2015_mKCMBunits.fits', output_resolution,nside_out=output_nside[i],windowfunction=beamtf_p30,units_out='mKCMB',subtractmap=subtractmaps[j],smoothvariance=smoothvariance,do_pol_combined=True)
 
 			smoothmap(directory+'planck2015/',outdirectory,'LFI_SkyMap_044_1024_R2.01_full.fits',str(output_nside[i])+'_'+str(output_resolution)+'smoothed_PlanckR2fullbeam'+subtractmaps_name[j]+'_44.1_1024_2015_mKCMBunits.fits', output_resolution,nside_out=output_nside[i],windowfunction=beamtf_p44,units_out='mKCMB',subtractmap=subtractmaps[j],smoothvariance=smoothvariance,do_pol_combined=True)
-		
+
 		smoothmap(directory+'planck2015/',outdirectory,'LFI_SkyMap_070_2048_R2.01_full.fits',str(output_nside[i])+'_'+str(output_resolution)+'smoothed_PlanckR2fullbeam'+subtractmaps_name[j]+'_70.4_2048_2015_mKCMBunits.fits', output_resolution,nside_out=output_nside[i],windowfunction=beamtf_p70,units_out='mKCMB',subtractmap=subtractmaps[j],smoothvariance=smoothvariance,do_pol_combined=True)
 
 		smoothmap(directory+'planck2015/',outdirectory,'HFI_SkyMap_100_2048_R2.02_full.fits',str(output_nside[i])+'_60.00smoothed_PlanckR2fullbeam'+subtractmaps_name[j]+'_100_2048_2015_mKCMBunits.fits', output_resolution,nside_out=output_nside[i],windowfunction=beamtf_p100,units_out='mKCMB',subtractmap=subtractmaps[j],smoothvariance=smoothvariance,do_pol_combined=True)

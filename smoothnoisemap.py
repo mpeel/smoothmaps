@@ -22,10 +22,10 @@
 import numpy as np
 import numba
 import healpy as hp
-from smoothmap import smoothmap, conv_nobs_variance_map
 import astropy.io.fits as fits
 import os
 from scipy import optimize
+from smoothmap import smoothmap, conv_nobs_variance_map
 
 def gaussfit(x, param):
 	return hp.gauss_beam(np.radians(param/60.0),300)
@@ -315,7 +315,7 @@ def smoothnoisemap(indir, outdir, runname, inputmap, mapnumber=[2], fwhm=0.0, nu
 		if do_intensity:
 			returnmap[j] = returnmap[j]/(numrealisations-1)
 			# returnmap[j][map_before[0] == hp.UNSEEN] = hp.UNSEEN
-			
+
 			# All done - now just need to write it to disk.
 			cols = []
 			cols.append(fits.Column(name='II_cov', format='E', array=returnmap[j]))
@@ -381,7 +381,7 @@ def smoothnoisemap(indir, outdir, runname, inputmap, mapnumber=[2], fwhm=0.0, nu
 			returnmap_U[j] = returnmap_U[j]/(numrealisations-1)
 			returnmap_QU[j] = returnmap_QU[j]/(numrealisations-1)
 			# returnmap[j][map_before == hp.UNSEEN] = hp.UNSEEN
-			
+
 			# All done - now just need to write it to disk.
 			cols = []
 			cols.append(fits.Column(name='QQ_cov', format='E', array=returnmap_Q[j]))

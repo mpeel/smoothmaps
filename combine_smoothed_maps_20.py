@@ -1,9 +1,9 @@
 # Read in the various computed smoothed amplitude and noise maps, and save them into easier to use files
 # Mike Peel		21 Sep 2020		Started
-import numpy as np
-import healpy as hp
-import os
 import astropy.io.fits as fits
+import healpy as hp
+import numpy as np
+import os
 
 def get_header_val(hdr,search):
 	for i in range(0,len(hdr)):
@@ -134,4 +134,3 @@ for nside in output_nside:
 				noisedir+'20.0smoothed_PlanckR3fullbeam_'+namestrings[i]+'_MJySrunits_variance_'+str(nside)+'.fits',comment=comment,rescale=rescale)
 		except:
 			continue
-

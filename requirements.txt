@@ -1,0 +1,6 @@
+astropy
+healpy
+numba
+numpy
+scipy
+matplotlib

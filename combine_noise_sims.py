@@ -5,13 +5,12 @@
 # Mike Peel    09 Apr 2021    v1.0 Fork from smoothnoisemap
 # NB: Known bug, the rescale factor does not seem to work!
 
-import numpy as np
-import numba
-import healpy as hp
-from smoothmap import smoothmap, conv_nobs_variance_map
 import astropy.io.fits as fits
+import healpy as hp
+import numpy as np
 import os
 from scipy import optimize
+from smoothmap import smoothmap, conv_nobs_variance_map
 
 def combine_noise_sims(indir, outdir, runname, prefix='',postfix='', mapnumber=[], fwhm=0.0, numrealisations=10, sigma_0 = 0.0,sigma_P=0.0, nside=[512], windowfunction = [], rescale=1.0,usehealpixfits=False,taper=False,lmin_taper=350,lmax_taper=600,taper_gauss=False,taper_gauss_sigma=0.0,normalise=True,hdu=1, use_covariance=False, do_intensity=True, do_polarisation=False, units_out='mK',do_smoothing=True,use_precomputed_wf=False,nside_in=512):
 	ver = "1.0"

@@ -1,12 +1,12 @@
-from smoothnoisemap import *
-import numpy as np
-import healpy as hp
 import astropy.io.fits as fits
-
-from smoothmap import *
-import os
+import healpy as hp
 import matplotlib.pyplot as plt
+import numpy as np
+import os
 import scipy.io as io
+
+from smoothnoisemap import *
+from smoothmap import *
 
 # Settings
 output_resolution = [60.0]#,120.0,240.0]

@@ -1,6 +1,7 @@
 from weighted_pol_map import *
-from astrocode.colourcorrections.fastcc import *
-from astrocode.fitspectrum.spectra import *
+from fastcc.fastcc import *
+from astrocode.spectra import *
+
 # General settings
 nside = 2048
 index = 0.0

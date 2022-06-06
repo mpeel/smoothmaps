@@ -1,11 +1,11 @@
-from smoothnoisemap import *
-import numpy as np
-import healpy as hp
 import astropy.io.fits as fits
-
-from smoothmap import *
-import os
+import healpy as hp
 import matplotlib.pyplot as plt
+import numpy as np
+import os
+
+from smoothnoisemap import *
+from smoothmap import *
 
 def get_hfi_beam(FITSfile):
 	fits.info(FITSfile) # print list of extensions found in FITSfile

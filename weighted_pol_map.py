@@ -8,14 +8,14 @@
 # 05-Jun-2019  M. Peel      Generalised to cope with multiple runs
 # 21-Dec-2020  M. Peel		Add QU support
 # 24-Jan-2022  M. Peel		Add logging
-import healpy as hp
-import numpy as np
-import matplotlib.pyplot as plt
-import matplotlib.colors as colors
-from astrocode.colourcorrections.fastcc import *
 import astropy.io.fits as fits
-from astrocode.fitspectrum.astroutils import *
+import healpy as hp
 import logging
+import matplotlib.colors as colors
+import matplotlib.pyplot as plt
+import numpy as np
+from astrocode.astroutils import *
+from fastcc.fastcc import *
 
 def noiserealisation(inputmap, numpixels):
 	newmap = np.zeros(numpixels)

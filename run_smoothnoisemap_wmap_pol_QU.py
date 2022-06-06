@@ -1,11 +1,11 @@
-from smoothnoisemap import *
-import numpy as np
-import healpy as hp
 import astropy.io.fits as fits
-
-from smoothmap import *
-import os
+import healpy as hp
 import matplotlib.pyplot as plt
+import numpy as np
+import os
+
+from smoothnoisemap import *
+from smoothmap import *
 
 # Settings
 output_resolution = [60.0]#,120.0,240.0]
@@ -50,4 +50,3 @@ for i in range(0,len(output_resolution)):
 	sigma_0 = 6.544 # mK
 	sigma_P = 6.560 # mK
 	smoothnoisemap(directory+'/wmap9/', outdirectory, str(output_resolution[i])+'smoothed_wmap9beam_93.5_512_2013_mKCMBunits', 'wmap_band_iqumap_r9_9yr_W_v5.fits',mapnumber=mapnumbers,numrealisations=numrealisations,fwhm=output_resolution[i],windowfunction=beamtf_W,sigma_0=sigma_0,sigma_P=sigma_P,nside=output_nside,hdu=hdu,do_intensity=True,do_polarisation=do_polarisation,units_out=units_out)
-

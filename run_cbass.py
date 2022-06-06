@@ -1,9 +1,10 @@
-from smoothmap import *
-import numpy as np
-import healpy as hp
 import astropy.io.fits as fits
-import os
+import healpy as hp
+import numpy as np
 import matplotlib.pyplot as plt
+import os
+
+from smoothmap import *
 
 output_resolution = 60.0
 output_nside = [512]#, 256, 128, 64, 32, 16, 8]

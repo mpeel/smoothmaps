@@ -1,10 +1,11 @@
-from smoothmap import *
-import numpy as np
-import healpy as hp
 import astropy.io.fits as fits
+import healpy as hp
+import matplotlib.pyplot as plt
+import numpy as np
 import os
 import scipy.io as io
-import matplotlib.pyplot as plt
+
+from smoothmap import *
 
 indirectory = '/Users/mpeel/Documents/maps/quijote_202103_tqu_v1.5_noise_v1.0/'
 

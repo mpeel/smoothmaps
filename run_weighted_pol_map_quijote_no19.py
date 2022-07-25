@@ -18,9 +18,9 @@ use_reweight_by_rms = False
 use_reweight_by_rms_method = 2 # 1 = ricardo, 2 = alberto
 use_planck = False # This was for comparison only
 use_cbass = False
-freqs = [16.7,18.7,11.1,12.9,17,19]
+freqs = [16.7,11.1,12.9,17]
 normfreq = 10.0
-use_planckwmap = True # Also combine with Planck/WMAP
+use_planckwmap = False # Also combine with Planck/WMAP
 # planckvers = ['2015','2015nobp','2018','2018nobp','2020']
 use_extra_mask_for_qt = False
 planckvers = ['2020']
@@ -57,32 +57,28 @@ for planckver in planckvers:
 			usewei = True
 			prefix='mfi'
 			if usewei:
-				maps = [str(nside)+'_60.0smoothed_QUIJOTEMFI2_17.0_2021_mKCMBunits.fits',str(nside)+'_60.0smoothed_QUIJOTEMFI2_19.0_2021_mKCMBunits.fits',str(nside)+'_60.0smoothed_QUIJOTEMFI3_11.0_2021_mKCMBunits.fits',str(nside)+'_60.0smoothed_QUIJOTEMFI3_13.0_2021_mKCMBunits.fits',str(nside)+'_60.0smoothed_QUIJOTEMFI4_17.0_2021_mKCMBunits.fits',str(nside)+'_60.0smoothed_QUIJOTEMFI4_19.0_2021_mKCMBunits.fits']
-				prefix=str(nside)+'_60.0smoothed_quijotecombwei10_'+version+'_'+str(index)
+				maps = [str(nside)+'_60.0smoothed_QUIJOTEMFI2_17.0_2021_mKCMBunits.fits',str(nside)+'_60.0smoothed_QUIJOTEMFI3_11.0_2021_mKCMBunits.fits',str(nside)+'_60.0smoothed_QUIJOTEMFI3_13.0_2021_mKCMBunits.fits',str(nside)+'_60.0smoothed_QUIJOTEMFI4_17.0_2021_mKCMBunits.fits']
+				prefix=str(nside)+'_60.0smoothed_quijotecombwei10_'+version+'_'+str(index)+'_no19'
 			else:
-				maps = [str(nside)+'_60.0smoothed_QUIJOTEMFI2_17.0_2021simnoise_mKCMBunits.fits',str(nside)+'_60.0smoothed_QUIJOTEMFI2_19.0_2021simnoise_mKCMBunits.fits',str(nside)+'_60.0smoothed_QUIJOTEMFI3_11.0_2021simnoise_mKCMBunits.fits',str(nside)+'_60.0smoothed_QUIJOTEMFI3_13.0_2021simnoise_mKCMBunits.fits',str(nside)+'_60.0smoothed_QUIJOTEMFI4_17.0_2021simnoise_mKCMBunits.fits',str(nside)+'_60.0smoothed_QUIJOTEMFI4_19.0_2021simnoise_mKCMBunits.fits']
-				prefix=str(nside)+'_60.0smoothed_quijotecomb10_'+version+'_'+str(index)
+				maps = [str(nside)+'_60.0smoothed_QUIJOTEMFI2_17.0_2021simnoise_mKCMBunits.fits',str(nside)+'_60.0smoothed_QUIJOTEMFI3_11.0_2021simnoise_mKCMBunits.fits',str(nside)+'_60.0smoothed_QUIJOTEMFI3_13.0_2021simnoise_mKCMBunits.fits',str(nside)+'_60.0smoothed_QUIJOTEMFI4_17.0_2021simnoise_mKCMBunits.fits']
+				prefix=str(nside)+'_60.0smoothed_quijotecomb10_'+version+'_'+str(index)+'_no19'
 			#_60.0smoothed_'+prefix+'2_17.0_512_'+date+'_mKCMBunits.fits',str(nside)+'_60.0smoothed_'+prefix+'2_19.0_512_'+date+'_mKCMBunits.fits',str(nside)+'_60.00smoothed_'+prefix+'3_11.0_512_'+date+'_mKCMBunits.fits',str(nside)+'_60.00smoothed_'+prefix+'3_13.0_512_'+date+'_mKCMBunits.fits',str(nside)+'_60.0smoothed_'+prefix+'4_17.0_512_'+date+'_mKCMBunits.fits',str(nside)+'_60.0smoothed_'+prefix+'4_19.0_512_'+date+'_mKCMBunits.fits']#str(nside)+'_60.00smoothed_'+prefix+'1_11.0_512_'+date+'_mKCMBunits.fits',str(nside)+'_60.00smoothed_'+prefix+'1_13.0_512_'+date+'_mKCMBunits.fits',
-			varianceindex=[[3,4,6,5], [3,4,6,5], [3,4,6,5], [3,4,6,5], [3,4,6,5], [3,4,6,5], [3,4,6,5]]
+			varianceindex=[[3,4,6,5], [3,4,6,5], [3,4,6,5], [3,4,6,5], [3,4,6,5]]
 			rescale_amp = np.ones(len(maps))
 			rescale_variance = rescale_amp.copy()
 			extra_mask = ''
 			if use_extra_mask_for_qt == True:
 				extra_mask = '/Users/mpeel/Documents/maps/quijote_masks/mask_quijote_ncp_satband_nside512.fits'
 			rescale_amp[0] *= fastcc('Q17',index+2.0,detector='Q217')
-			rescale_amp[1] *= fastcc('Q19',index+2.0,detector='Q219')
-			rescale_amp[2] *= fastcc('Q11',index+2.0,detector='Q311')
-			rescale_amp[3] *= fastcc('Q13',index+2.0,detector='Q313')
-			rescale_amp[4] *= fastcc('Q17',index+2.0,detector='Q417')
-			rescale_amp[5] *= fastcc('Q19',index+2.0,detector='Q419')
+			rescale_amp[1] *= fastcc('Q11',index+2.0,detector='Q311')
+			rescale_amp[2] *= fastcc('Q13',index+2.0,detector='Q313')
+			rescale_amp[3] *= fastcc('Q17',index+2.0,detector='Q417')
 			print(rescale_amp)
 			if usewei:
 				rescale_variance[0] *= 1.759
-				rescale_variance[1] *= 2.044
-				rescale_variance[2] *= 1.504
-				rescale_variance[3] *= 1.401
-				rescale_variance[4] *= 1.309
-				rescale_variance[5] *= 1.319
+				rescale_variance[1] *= 1.504
+				rescale_variance[2] *= 1.401
+				rescale_variance[3] *= 1.309
 			print(rescale_variance)
 
 
@@ -98,15 +94,15 @@ for planckver in planckvers:
 			# 	# outdirectory = '/Users/mpeel/Documents/maps/wmap9_planck2018_weight/'
 
 			# 	# Planck and WMAP colour corrections
-				rescale_amp[6] *= fastcc('P30',index+2.0)
-				rescale_amp[7] *= fastcc('P44',index+2.0)
-				rescale_amp[8] *= fastcc('WK',index+2.0)
-				rescale_amp[9] *= fastcc('WKa',index+2.0)
-				rescale_amp[10] *= fastcc('WQ',index+2.0)
+				rescale_amp[4] *= fastcc('P30',index+2.0)
+				rescale_amp[5] *= fastcc('P44',index+2.0)
+				rescale_amp[6] *= fastcc('WK',index+2.0)
+				rescale_amp[7] *= fastcc('WKa',index+2.0)
+				rescale_amp[8] *= fastcc('WQ',index+2.0)
 				prefix = prefix + '_wmapplanck'
 
 			# This is only Planck+WMAP
-			if True:
+			if False:
 				freqs = [28.4, 44.1, 22.8, 33.0, 40.7]
 				varianceindex = [[3,4,6,5], [3,4,6,5], [3,4,6,5], [3,4,6,5], [3,4,6,5]]
 				rescale_amp = np.ones(5)
@@ -136,8 +132,6 @@ for planckver in planckvers:
 				apply_extra_mask[1] = 1
 				apply_extra_mask[2] = 1
 				apply_extra_mask[3] = 1
-				apply_extra_mask[4] = 1
-				apply_extra_mask[5] = 1
 				prefix = prefix + '_qtmask'
 
 			# Make sure the output directory exists

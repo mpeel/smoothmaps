@@ -470,6 +470,7 @@ def weighted_pol_map(nside=512,indirectory='',outdirectory='',date='',prefix='',
 		# exit()
 
 		if doqu:
+			# NB: FREQUENCY SCALING ALREADY INCLUDED IN var_q ABOVE!
 			W = np.linalg.inv(np.asarray([[var_q*rescale_variance[i],var_qu*rescale_variance[i]],[var_qu*rescale_variance[i],var_u*rescale_variance[i]]]).T)
 			D = np.asarray([[mapdata[1]*rescale_amp[i]*(normfreq/freqs[i])**index,np.zeros(len(mapdata[1]))],[np.zeros(len(mapdata[1])),mapdata[2]*rescale_amp[i]*(normfreq/freqs[i])**index]]).T
 			combine = combine + D @ W

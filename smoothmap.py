@@ -145,7 +145,7 @@ def smoothmap(indir, outdir, inputfile, outputfile, fwhm_arcmin=-1, nside_out=0,
 		# 	conv_windowfunction = hp.gauss_beam(np.radians(fwhm_arcmin/60.0),3*nside,pol=True)
 		# else:
 		conv_windowfunction = hp.gauss_beam(np.radians(fwhm_arcmin/60.0),3*nside)
-		if (windowfunction != []):
+		if (len(windowfunction) != 0):
 			window_len = len(conv_windowfunction)
 			beam_len = len(windowfunction)
 
@@ -552,6 +552,7 @@ def get_beam(FITSfile,hdu=0):
 	# data, header = fits.getdata(FITSfile, 'ABC', header=True) # read extension having EXTNAME='ABC' (data and header)
 	# print(header) # print header
 	# print(data.names) # print column names
+	# print(data['BL'])
 	# pylab.plot( data.field(0).flatten() ) # plot 1st column of binary table
 	newdata = np.zeros(len(data))
 	for i in range(0,len(data)):

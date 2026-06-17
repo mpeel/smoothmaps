@@ -195,7 +195,7 @@ def smoothnoisemap(indir, outdir, runname, inputmap, mapnumber=[2], fwhm=0.0, nu
 		conv_windowfunction = np.pad(conv_windowfunction, (0, 3*nside - len(conv_windowfunction)), 'constant')
 	else:
 		conv_windowfunction = hp.gauss_beam(np.radians(fwhm/60.0),4*nside_in)
-		if (windowfunction != []):
+		if (len(windowfunction) != 0):
 			window_len = len(conv_windowfunction)
 			beam_len = len(windowfunction)
 			if (beam_len > window_len):

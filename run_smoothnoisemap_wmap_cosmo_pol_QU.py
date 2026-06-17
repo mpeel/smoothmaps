@@ -11,10 +11,11 @@ from smoothmap import *
 output_resolution = [60.0]
 output_nside = np.asarray([512, 256, 128, 64, 32, 16, 8])
 numrealisations = 10000
-mapnumbers = [4, 5, 6, 7] # II,QQ,UU,QU
+mapnumbers = [3,4, 5, 6] # II,QQ,UU,QU
 rescale = 1.0 # Input maps are mK already
 units_out = 'mK' # Must match rescale!
 numres = len(output_resolution)
+# directory = '/Users/mpeel/Documents/maps/'
 directory = '/mnt/DATA1/mpeel/smoothmaps/'
 indirectory = directory + "cosmoglobe_dr1/"
 outdirectory = directory+"planck2020_tqu_noise_v1.0_10k/"
@@ -35,4 +36,4 @@ beamtf_W4 = np.loadtxt(indirectory+'wmap_ampl_bl_W4_9yr_v5p1.txt',usecols=(1,))
 for i in range(0,numres):
 	resolution = "%.2f" % output_resolution[i]
 
-	smoothnoisemap(indirectory, outdirectory, resolution+'smoothed_PlanckR4fullbeam_28.4_1024_2020_mKCMBunits', 'smoothed_wmap9cosmo_22.8_512_2023_mKCMBunits',mapnumber=mapnumbers,numrealisations=numrealisations,fwhm=output_resolution[i],nside=output_nside[output_nside<=1024],windowfunction=beamtf_K,rescale=rescale,do_intensity=True,do_polarisation=True,units_out=units_out,usehealpixfits=True)
+	smoothnoisemap(indirectory, outdirectory, resolution+'smoothed_PlanckR4fullbeam_28.4_1024_2020_mKCMBunits', 'CG_023-WMAP_K_IQU_n0512_v1.fits',mapnumber=mapnumbers,numrealisations=numrealisations,fwhm=output_resolution[i],nside=output_nside[output_nside<=1024],windowfunction=beamtf_K,rescale=rescale,do_intensity=True,do_polarisation=True,units_out=units_out,usehealpixfits=True)

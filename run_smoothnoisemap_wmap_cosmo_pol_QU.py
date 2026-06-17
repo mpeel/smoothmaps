@@ -10,7 +10,7 @@ from smoothmap import *
 # Settings
 output_resolution = [60.0]
 output_nside = np.asarray([512, 256, 128, 64, 32, 16, 8])
-numrealisations = 10000
+numrealisations = 1000
 mapnumbers = [3,4, 5, 6] # II,QQ,UU,QU
 rescale = 1.0 # Input maps are mK already
 units_out = 'mK' # Must match rescale!

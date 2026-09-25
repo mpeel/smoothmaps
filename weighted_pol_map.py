@@ -38,7 +38,35 @@ def weighted_pol_map(nside=512,indirectory='',outdirectory='',date='',prefix='',
 		apply_extra_mask = np.zeros(len(maps))
 	if extra_mask != '':
 		extra_mask = hp.read_map(extra_mask)
+		extra_mask = hp.ud_grade(extra_mask,nside,order_in='RING',order_out='RING')
+		extra_mask[extra_mask < 1] = 0
 	npix = hp.nside2npix(nside)
+
+	# Create a quick mask that removes the Galactic plane
+	galmask = healpixmask(nside, 0, 360, -10, 10, coordsystem='G')
+	galmask_inv = galmask.copy()
+	galmask_inv[galmask==1]=0
+	galmask_inv[galmask==0]=1
+	allmask = np.ones(len(galmask))
+	if statsmask != '':
+		stats_mask = hp.read_map(statsmask)
+		stats_mask = hp.ud_grade(stats_mask,nside,order_in='RING',order_out='RING')
+		stats_mask[stats_mask < 1] = 0
+		galmask = galmask*stats_mask
+		galmask_inv = galmask_inv*stats_mask
+		allmask = allmask*stats_mask
+	hp.mollview(galmask)
+	plt.savefig(outdirectory+prefix+'_statsmask.png')
+	plt.close()
+	plt.clf()
+	hp.mollview(galmask_inv)
+	plt.savefig(outdirectory+prefix+'_statsmask_inv.png')
+	plt.close()
+	plt.clf()
+	hp.mollview(allmask)
+	plt.savefig(outdirectory+prefix+'_statsmask_all.png')
+	plt.close()
+	plt.clf()
 
 	if use_planck:
 		planckmap = hp.read_map('/Users/mpeel/Documents/maps/wmap_planck_pol/weighted_both_debwk_feb2015_tqu.fits',field=None)
@@ -184,7 +212,7 @@ def weighted_pol_map(nside=512,indirectory='',outdirectory='',date='',prefix='',
 
 		if 'Planck' in maps[i]:
 
-			if separate_variance_maps == [] and varianceindex == []:
+			if separate_variance_maps.size == 0 and varianceindex.size == 0:
 				# var_i = hp.read_map(indirectory+maps[i].replace('tqu','tqu_noise').replace('512_','').replace('60.0s','60.00s').replace('_mKCMBunits','_mKCMBunits_4_variance_'+str(nside)),field=None)
 				var_q = hp.read_map(indirectory+maps[i].replace('tqu','tqu_noise').replace('512_','').replace('60.0s','60.00s').replace('_mKCMBunits','_mKCMBunits_7_variance_'+str(nside)),field=None)
 				var_u = hp.read_map(indirectory+maps[i].replace('tqu','tqu_noise').replace('512_','').replace('60.0s','60.00s').replace('_mKCMBunits','_mKCMBunits_9_variance_'+str(nside)),field=None)
@@ -202,7 +230,7 @@ def weighted_pol_map(nside=512,indirectory='',outdirectory='',date='',prefix='',
 				# 	var_u = hp.read_map(indirectory+maps[i].replace('2048_60.0s','60.0s').replace('20.00s','20.0s').replace('_mKCMBunits','_mKCMBunits_noisenum2_9_actualvariance'),field=None)
 				# except:
 				# 	var_u = var_q.copy()
-			elif separate_variance_maps != []:
+			elif separate_variance_maps.size != 0:
 				# var_i = hp.read_map(indirectory+separate_variance_maps[i],field=None)[varianceindex[i][0]]
 				var_q = hp.read_map(indirectory+separate_variance_maps[i],field=None)[varianceindex[i][1]]
 				var_u = hp.read_map(indirectory+separate_variance_maps[i],field=None)[varianceindex[i][2]]
@@ -229,7 +257,7 @@ def weighted_pol_map(nside=512,indirectory='',outdirectory='',date='',prefix='',
 			# var_q = mapdata[7].copy()
 			# var_u = mapdata[9].copy()
 		elif 'wmap' in maps[i]:
-			if varianceindex == []:
+			if varianceindex.size == 0:
 				# var_i = hp.read_map(indirectory.replace('tqu','tqu_noise')+maps[i].replace('512_6','6').replace('60.0s','60.0s').replace('_mKCMBunits','_mKCMBunits_0.fits_actualvariance').replace('tqu','tqu_noise'),field=None)
 				var_q = hp.read_map(indirectory.replace('tqu','tqu_noise')+maps[i].replace('512_6','6').replace('60.0s','60.0s').replace('_mKCMBunits','_mKCMBunits_1.fits_actualvariance').replace('tqu','tqu_noise'),field=None)
 				var_u = hp.read_map(indirectory.replace('tqu','tqu_noise')+maps[i].replace('512_6','6').replace('60.0s','60.0s').replace('_mKCMBunits','_mKCMBunits_3.fits_actualvariance').replace('tqu','tqu_noise'),field=None)
@@ -456,12 +484,57 @@ def weighted_pol_map(nside=512,indirectory='',outdirectory='',date='',prefix='',
 				var_qu[extra_mask == 0] *= 1e30
 
 		# Calculate the median/mean S/N in the input map
-		snmap = (np.sqrt(mapdata[1]**2+mapdata[2]**2)*rescale_amp[i]*(normfreq/freqs[i])**index)*commonmask/np.sqrt((var_q*rescale_variance[i])+(var_u*rescale_variance[i]))
+		# NB - rescaling by (normfreq/freqs[i])**index is because we did that to variances already above
+		# NB2 - rescale_variance is squared in the run script now (23 Sep 2026).
+		snmap_q = (
+		    mapdata[1]
+		    * stats_mask
+		    * (normfreq / freqs[i])**index
+		    / np.sqrt(var_q * rescale_variance[i])
+		)
+
+		snmap_u = (
+		    mapdata[2]
+		    * stats_mask
+		    * (normfreq / freqs[i])**index
+		    / np.sqrt(var_u * rescale_variance[i])
+		)
+		snmap = (
+		    np.sqrt(mapdata[1]**2+mapdata[2]**2)
+			* (normfreq/freqs[i])**index
+		    * stats_mask
+		    / np.sqrt((var_q*rescale_variance[i])+(var_u*rescale_variance[i]))
+		)
+		hp.mollview(snmap,min=0,max=10,title=maps[i].split('/')[-1] + ' - SNR')
+		plt.savefig(outdirectory+maps[i].split('/')[-1]+'_snr.png')
+		plt.close()
+		plt.clf()
+		hp.mollview(snmap_q,min=0,max=10,title=maps[i].split('/')[-1] + ' - SNR')
+		plt.savefig(outdirectory+maps[i].split('/')[-1]+'_snr_q.png')
+		plt.close()
+		plt.clf()
+		hp.mollview(snmap_u,min=0,max=10,title=maps[i].split('/')[-1] + ' - SNR')
+		plt.savefig(outdirectory+maps[i].split('/')[-1]+'_snr_u.png')
+		plt.close()
+		plt.clf()
 
 		logger.info(maps[i])
-		logger.info('Median S/N:' + str(np.median(snmap[commonmask==1])))
-		logger.info('Mean S/N:' + str(np.mean(snmap[commonmask==1])))
-
+		logger.info(freqs[i])
+		logger.info('Median S/N P:' + str(np.median(snmap[stats_mask==1])))
+		logger.info('Mean S/N P:' + str(np.mean(snmap[stats_mask==1])))
+		logger.info('Min S/N P:' + str(np.min(snmap[stats_mask==1])))
+		logger.info('Max S/N P:' + str(np.max(snmap[stats_mask==1])))
+		logger.info('Median S/N Q:' + str(np.median(np.abs(snmap_q[stats_mask==1]))))
+		logger.info('Mean S/N Q:' + str(np.mean(np.abs(snmap_q[stats_mask==1]))))
+		logger.info('Min S/N Q:' + str(np.min(np.abs(snmap_q[stats_mask==1]))))
+		logger.info('Max S/N Q:' + str(np.max(np.abs(snmap_q[stats_mask==1]))))
+		logger.info('Median S/N U:' + str(np.median(np.abs(snmap_u[stats_mask==1]))))
+		logger.info('Mean S/N U:' + str(np.mean(np.abs(snmap_u[stats_mask==1]))))
+		logger.info('Min S/N U:' + str(np.min(np.abs(snmap_u[stats_mask==1]))))
+		logger.info('Max S/N U:' + str(np.max(np.abs(snmap_u[stats_mask==1]))))
+		logger.info('First 5 pixels:')
+		for temp_i in range(0,5):
+			logger.info(str(temp_i) + ': ' + str(mapdata[1][temp_i]) + '	' + str(mapdata[2][temp_i]) + '	' + str(var_q[temp_i]*rescale_variance[i]/(((normfreq/freqs[i])**index)**2)) + '	' + str(var_u[temp_i]*rescale_variance[i]/(((normfreq/freqs[i])**index)**2)) + '	' + str(np.abs(snmap_q[temp_i])) + '	' + str(np.abs(snmap_u[temp_i])))
 		# p_temp = np.sqrt((mapdata[1]*rescale_amp[i]*(normfreq/freqs[i])**index)**2+(mapdata[2]*rescale_amp[i]*(normfreq/freqs[i])**index)**2)
 		# var_p = ((var_q*(mapdata[1]*rescale_amp[i]*(normfreq/freqs[i])**index)**2)+(var_u*(mapdata[2]*rescale_amp[i]*(normfreq/freqs[i])**index)**2))/(p_temp*p_temp)
 		# snmap = p_temp/np.sqrt(var_p)
@@ -516,11 +589,17 @@ def weighted_pol_map(nside=512,indirectory='',outdirectory='',date='',prefix='',
 		combine_u[weight_u != 0] /= weight_u[weight_u != 0]
 
 	# Calculate the median/mean S/N in the output map
-	snmap = (np.sqrt(combine_q**2+combine_u**2)*commonmask/np.sqrt((1.0/weight_q)+(1.0/weight_u)))
+	snmap_q = combine_q * stats_mask / np.sqrt(1.0/weight_q)
+	snmap_u = combine_u * stats_mask / np.sqrt(1.0/weight_u)
+	snmap = (np.sqrt(combine_q**2+combine_u**2)*stats_mask/np.sqrt((1.0/weight_q)+(1.0/weight_u)))
 
 	logger.info('Weighted map')
-	logger.info('Median S/N:' + str(np.median(snmap[commonmask==1])))
-	logger.info('Mean S/N:' + str(np.mean(snmap[commonmask==1])))
+	logger.info('Median S/N P:' + str(np.median(snmap[stats_mask==1])))
+	logger.info('Mean S/N P:' + str(np.mean(snmap[stats_mask==1])))
+	logger.info('Median S/N Q:' + str(np.median(np.abs(snmap_q[stats_mask==1]))))
+	logger.info('Mean S/N Q:' + str(np.mean(np.abs(snmap_q[stats_mask==1]))))
+	logger.info('Median S/N U:' + str(np.median(np.abs(snmap_u[stats_mask==1]))))
+	logger.info('Mean S/N U:' + str(np.mean(np.abs(snmap_u[stats_mask==1]))))
 
 
 	if not minplots:
@@ -612,12 +691,29 @@ def weighted_pol_map(nside=512,indirectory='',outdirectory='',date='',prefix='',
 			plt.close()
 			plt.clf()
 
-	snmap = np.sqrt(combine_q**2+combine_u**2)*commonmask/np.sqrt(1.0/weight_q+1.0/weight_u)
+
+	# Calculate the median/mean S/N in the output map
+	snmap_q = combine_q * stats_mask / np.sqrt(1.0/weight_q)
+	snmap_u = combine_u * stats_mask / np.sqrt(1.0/weight_u)
+	snmap = (np.sqrt(combine_q**2+combine_u**2)*stats_mask/np.sqrt((1.0/weight_q)+(1.0/weight_u)))
+
+	logger.info('Weighted map')
+	logger.info('Median S/N P:' + str(np.median(snmap[stats_mask==1])))
+	logger.info('Mean S/N P:' + str(np.mean(snmap[stats_mask==1])))
+	logger.info('Median S/N Q:' + str(np.median(np.abs(snmap_q[stats_mask==1]))))
+	logger.info('Mean S/N Q:' + str(np.mean(np.abs(snmap_q[stats_mask==1]))))
+	logger.info('Median S/N U:' + str(np.median(np.abs(snmap_u[stats_mask==1]))))
+	logger.info('Mean S/N U:' + str(np.mean(np.abs(snmap_u[stats_mask==1]))))
+	snmap = np.sqrt(combine_q**2+combine_u**2)*stats_mask/np.sqrt(1.0/weight_q+1.0/weight_u)
 	logger.info('Final:')
-	logger.info('Median S/N:' + str(np.median(snmap[commonmask==1])))
-	logger.info('Mean S/N:' + str(np.mean(snmap[commonmask==1])))
+	logger.info('Median S/N:' + str(np.median(snmap[stats_mask==1])))
+	logger.info('Mean S/N:' + str(np.mean(snmap[stats_mask==1])))
 	hp.mollview(snmap,min=0,max=3.0)#,norm='hist')
 	plt.savefig(outdirectory+prefix+'_snmap.pdf')
+	hp.mollview(snmap_q,min=0,max=3.0)#,norm='hist')
+	plt.savefig(outdirectory+prefix+'_snmap_q.pdf')
+	hp.mollview(snmap_u,min=0,max=3.0)#,norm='hist')
+	plt.savefig(outdirectory+prefix+'_snmap_u.pdf')
 	plt.close()
 	plt.clf()
 
@@ -669,31 +765,6 @@ def weighted_pol_map(nside=512,indirectory='',outdirectory='',date='',prefix='',
 			plt.savefig(outdirectory+maps[i].split('/')[-1]+'_P2_diff_to_combined'+prefix+'.png')
 			plt.close()
 			plt.clf()
-
-	# Create a quick mask that removes the Galactic plane
-	galmask = healpixmask(nside, 0, 360, -10, 10, coordsystem='G')
-	galmask_inv = galmask.copy()
-	galmask_inv[galmask==1]=0
-	galmask_inv[galmask==0]=1
-	allmask = np.ones(len(galmask))
-	if statsmask != '':
-		stats_mask = hp.read_map(statsmask)
-		stats_mask = hp.ud_grade(stats_mask,nside,order_in='RING',order_out='RING')
-		galmask = galmask*stats_mask
-		galmask_inv = galmask_inv*stats_mask
-		allmask = allmask*stats_mask
-	hp.mollview(galmask)
-	plt.savefig(outdirectory+prefix+'_statsmask.png')
-	plt.close()
-	plt.clf()
-	hp.mollview(galmask_inv)
-	plt.savefig(outdirectory+prefix+'_statsmask_inv.png')
-	plt.close()
-	plt.clf()
-	hp.mollview(allmask)
-	plt.savefig(outdirectory+prefix+'_statsmask_all.png')
-	plt.close()
-	plt.clf()
 
 	# Go back through the input maps and calculate residuals
 	for i in range(0,nummaps):

@@ -3,7 +3,7 @@ from fastcc.fastcc import *
 import os
 
 # General settings
-nsides = [512]#[8, 16, 32, 64, 128, 256]
+nsides = [64]#[8, 16, 32, 64, 128, 256]
 # indexes = [-3.0]
 # indexes = [-2.9, -2.95, -3.0, -3.05, -3.1,-3.15, -3.2]
 # indexes = [-1.8, -1.9, -2.0, -2.1]#[-2.2, -2.3, -2.4, -2.6]#, -2.5, -2.7, -2.8, -2.9, -3.0, -3.1, -3.2, -3.3, -3.4, -3.5]
@@ -22,7 +22,8 @@ freqs = [16.7,18.7,11.1,12.9,17,19]
 normfreq = 10.0
 use_planckwmap = True # Also combine with Planck/WMAP
 # planckvers = ['2015','2015nobp','2018','2018nobp','2020']
-use_extra_mask_for_qt = False
+use_extra_mask_for_qt = True
+# planckvers = ['2018']
 planckvers = ['2020']
 only_wmap = False
 only_planck = False
@@ -36,16 +37,17 @@ doqu = True
 minplots = True
 maps_half1=[]
 maps_half2=[]
-separate_variance_maps=[]
-statsmask = '/Users/mpeel/Documents/maps/quijote_masks/mask_quijote_ncp_lowdec_nside512.fits'
+separate_variance_maps=np.array([])
+# statsmask = '/Users/mpeel/Documents/maps/quijote_masks/mask_quijote_ncp_lowdec_nside512.fits'
+statsmask = '/Users/mpeel/Documents/maps/quijote_masks/mask_quijote_ncp_satband_nside512.fits'
 
 for planckver in planckvers:
 	for nside in nsides:
 		for index in indexes:
 			# QUIJOTE
 			indirectory = '/Users/mpeel/Documents/maps/quijote_202103_tqu_v1.5_noise_v1.0_newwf/'
-			outdirectory = '/Users/mpeel/Documents/maps/quijote_202103_tqu_v1.5_noise_v1.0_weighted_fdec/'
-			date='202103'
+			outdirectory = '/Users/mpeel/Documents/maps/quijote_202103_tqu_v1.5_noise_v1.0_weighted_fdec_new/'
+			date='202609'
 
 			# # Set up QUIJOTE input
 			# prefix='half1mfi'
@@ -77,12 +79,12 @@ for planckver in planckvers:
 			rescale_amp[5] *= fastcc('Q19',index+2.0,detector='Q419')
 			print(rescale_amp)
 			if usewei:
-				rescale_variance[0] *= 1.759
-				rescale_variance[1] *= 2.044
-				rescale_variance[2] *= 1.504
-				rescale_variance[3] *= 1.401
-				rescale_variance[4] *= 1.309
-				rescale_variance[5] *= 1.319
+				rescale_variance[0] *= 1.759**2
+				rescale_variance[1] *= 2.044**2
+				rescale_variance[2] *= 1.504**2
+				rescale_variance[3] *= 1.401**2
+				rescale_variance[4] *= 1.309**2
+				rescale_variance[5] *= 1.319**2
 			print(rescale_variance)
 
 
@@ -106,7 +108,7 @@ for planckver in planckvers:
 				prefix = prefix + '_wmapplanck'
 
 			# This is only Planck+WMAP
-			if True:
+			if False:
 				freqs = [28.4, 44.1, 22.8, 33.0, 40.7]
 				varianceindex = [[3,4,6,5], [3,4,6,5], [3,4,6,5], [3,4,6,5], [3,4,6,5]]
 				rescale_amp = np.ones(5)
@@ -145,4 +147,6 @@ for planckver in planckvers:
 			# ... and run the weighted map!
 			print(maps)
 			print(prefix)
+			print(type(separate_variance_maps), np.shape(separate_variance_maps))
+			print(type(varianceindex), np.shape(varianceindex))
 			weighted_pol_map(nside=nside,indirectory=indirectory,outdirectory=outdirectory,date=date,prefix=prefix,index=index,freqs=freqs,maps=maps,maps_half1=maps_half1,maps_half2=maps_half2,use_halfrings=use_halfrings,use_weights=use_weights,use_reweight_by_rms=use_reweight_by_rms,use_reweight_by_rms_method=use_reweight_by_rms_method,use_planck=use_planck,use_cbass=use_cbass,normfreq=normfreq,rescale_amp=rescale_amp,rescale_variance=rescale_variance,apply_extra_mask=apply_extra_mask,extra_mask=extra_mask,varianceindex=varianceindex,threshold=1.0,separate_variance_maps=separate_variance_maps,doqu=doqu,minplots=minplots,dodiffs=False,statsmask=statsmask)

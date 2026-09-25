@@ -3,7 +3,7 @@ from fastcc.fastcc import *
 import os
 
 # General settings
-nsides = [512]#[8, 16, 32, 64, 128, 256]
+nsides = [256]#512]#[8, 16, 32, 64, 128, 256]
 # indexes = [-3.0]
 # indexes = [-2.9, -2.95, -3.0, -3.05, -3.1,-3.15, -3.2]
 # indexes = [-1.8, -1.9, -2.0, -2.1]#[-2.2, -2.3, -2.4, -2.6]#, -2.5, -2.7, -2.8, -2.9, -3.0, -3.1, -3.2, -3.3, -3.4, -3.5]
@@ -36,15 +36,15 @@ doqu = True
 minplots = True
 maps_half1=[]
 maps_half2=[]
-separate_variance_maps=[]
-statsmask = '/Users/mpeel/Documents/maps/quijote_masks/mask_quijote_ncp_lowdec_nside512.fits'
+separate_variance_maps=np.array([])
+statsmask = '/Users/mpeel/Documents/maps/quijote_masks/mask_quijote_ncp_satband_nside512.fits'
 
 for planckver in planckvers:
 	for nside in nsides:
 		for index in indexes:
 			# QUIJOTE
 			indirectory = '/Users/mpeel/Documents/maps/quijote_202103_tqu_v1.5_noise_v1.0_newwf/'
-			outdirectory = '/Users/mpeel/Documents/maps/quijote_202103_tqu_v1.5_noise_v1.0_weighted_fdec/'
+			outdirectory = '/Users/mpeel/Documents/maps/quijote_202103_tqu_v1.5_noise_v1.0_weighted_fdec_new/'
 			date='202103'
 
 			# # Set up QUIJOTE input
@@ -73,8 +73,8 @@ for planckver in planckvers:
 			rescale_amp[1] *= fastcc('Q13',index+2.0,detector='Q313')
 			print(rescale_amp)
 			if usewei:
-				rescale_variance[0] *= 1.504
-				rescale_variance[1] *= 1.401
+				rescale_variance[0] *= 1.504**2
+				rescale_variance[1] *= 1.401**2
 			print(rescale_variance)
 
 
@@ -100,7 +100,7 @@ for planckver in planckvers:
 			# This is only Planck+WMAP
 			if False:
 				freqs = [28.4, 44.1, 22.8, 33.0, 40.7]
-				varianceindex = [[3,4,6,5], [3,4,6,5], [3,4,6,5], [3,4,6,5], [3,4,6,5]]
+				varianceindex = np.array([[3,4,6,5], [3,4,6,5], [3,4,6,5], [3,4,6,5], [3,4,6,5]])
 				rescale_amp = np.ones(5)
 				rescale_variance = np.ones(5)
 				maps = ['../planck2020_tqu_v1.5_noise_v1.0_10k/512_60.0smoothed_PlanckR4fullbeamnodp'+version_fdec+'Noise_28.4_1024_2020_mKCMBunits.fits','../planck2020_tqu_v1.5_noise_v1.0_10k/512_60.0smoothed_PlanckR4fullbeamnodp'+version_fdec+'Noise_44.1_1024_2020_mKCMBunits.fits','../wmap9_tqu_v1.5_noise_v1.0_10k/512_60.0smoothed_wmap9beam'+version_fdec+'Noise_22.8_512_2013_mKCMBunits.fits','../wmap9_tqu_v1.5_noise_v1.0_10k/512_60.0smoothed_wmap9beam'+version_fdec+'Noise_33.0_512_2013_mKCMBunits.fits','../wmap9_tqu_v1.5_noise_v1.0_10k/512_60.0smoothed_wmap9beam'+version_fdec+'Noise_40.7_512_2013_mKCMBunits.fits']

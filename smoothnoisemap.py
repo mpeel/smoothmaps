@@ -192,7 +192,7 @@ def smoothnoisemap(indir, outdir, runname, inputmap, mapnumber=[2], fwhm=0.0, nu
 	if use_precomputed_wf:
 		print('Using precomputed window function')
 		conv_windowfunction = windowfunction
-		conv_windowfunction = np.pad(conv_windowfunction, (0, 3*nside - len(conv_windowfunction)), 'constant')
+		conv_windowfunction = np.pad(conv_windowfunction, (0, max(0, 4*nside_in - len(conv_windowfunction))), 'constant')
 	else:
 		conv_windowfunction = hp.gauss_beam(np.radians(fwhm/60.0),4*nside_in)
 		if (len(windowfunction) != 0):

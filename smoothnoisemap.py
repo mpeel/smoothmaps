@@ -67,7 +67,7 @@ def noiserealisation_QU(C):
 	Q,U = np.einsum('nij,nj->ni', C, vals).T
 	return Q, U
 
-def smoothnoisemap(indir, outdir, runname, inputmap, mapnumber=[2], fwhm=0.0, numrealisations=10, sigma_0 = 0.0,sigma_P=0.0, nside=[512], windowfunction = [], rescale=1.0,usehealpixfits=False,taper=False,lmin_taper=350,lmax_taper=600,taper_gauss=False,taper_gauss_sigma=0.0,normalise=True,hdu=1, use_covariance=False, do_intensity=True, do_polarisation=False, units_out='mK',do_smoothing=True,use_precomputed_wf=False):
+def smoothnoisemap(indir, outdir, runname, inputmap, mapnumber=[2], fwhm=0.0, numrealisations=10, sigma_0 = 0.0,sigma_P=0.0, nside=[512], windowfunction = [], rescale=1.0,usehealpixfits=False,taper=False,lmin_taper=350,lmax_taper=600,taper_gauss=False,taper_gauss_sigma=0.0,normalise=True,hdu=1, use_covariance=False, do_intensity=True, do_polarisation=False, units_out='mK',do_smoothing=True,use_precomputed_wf=False,qu_rms_input=False):
 	ver = "1.0"
 
 	if (os.path.isfile(indir+"/"+runname+"_actualvariance.fits")):
@@ -104,6 +104,11 @@ def smoothnoisemap(indir, outdir, runname, inputmap, mapnumber=[2], fwhm=0.0, nu
 		maps[mapnum][~np.isfinite(maps[mapnum])] = 0.0#hp.UNSEEN
 		print(np.max(maps[mapnum]))
 		print(np.min(maps[mapnum]))
+
+	# Q and U given as rms (e.g. Cosmoglobe Q_RMS, U_RMS) rather than variances: square them. QU is already a covariance.
+	if qu_rms_input:
+		maps[mapnumber[1]] = maps[mapnumber[1]]**2
+		maps[mapnumber[2]] = maps[mapnumber[2]]**2
 
 	# If we have Nobs maps, we need to do some preprocessing
 	if sigma_0 != 0.0 and do_intensity:
@@ -192,7 +197,7 @@ def smoothnoisemap(indir, outdir, runname, inputmap, mapnumber=[2], fwhm=0.0, nu
 	if use_precomputed_wf:
 		print('Using precomputed window function')
 		conv_windowfunction = windowfunction
-		conv_windowfunction = np.pad(conv_windowfunction, (0, 3*nside - len(conv_windowfunction)), 'constant')
+		conv_windowfunction = np.pad(conv_windowfunction, (0, max(0, 4*nside_in - len(conv_windowfunction))), 'constant')
 	else:
 		conv_windowfunction = hp.gauss_beam(np.radians(fwhm/60.0),4*nside_in)
 		if (len(windowfunction) != 0):
